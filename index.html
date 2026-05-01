@@ -522,8 +522,13 @@
       border-radius: 50%;
     }
 
-    .map-legend-item.lor-item { color: var(--lor-light); }
-    .map-legend-item.gia-item { color: var(--gia-light); }
+    .map-legend-item.lor-item {
+      color: var(--lor-light);
+    }
+
+    .map-legend-item.gia-item {
+      color: var(--gia-light);
+    }
 
     .biome-toggle {
       display: flex;
@@ -544,8 +549,8 @@
     }
 
     .biome-toggle.active {
-      background: rgba(52,211,153,.12);
-      border-color: rgba(52,211,153,.5);
+      background: rgba(52, 211, 153, .12);
+      border-color: rgba(52, 211, 153, .5);
       color: #34d399;
     }
 
@@ -595,7 +600,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 9px;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
     }
 
     .room-card {
@@ -708,7 +713,7 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 18px 16px;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
       position: relative;
       overflow: hidden;
       backdrop-filter: blur(8px);
@@ -1030,6 +1035,52 @@
     }
 
     /* ─────────────────────────────────────────
+       ACTIVE RULES
+    ───────────────────────────────────────── */
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .active-rule-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .active-rule-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+    }
+
+    .active-rule-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .no-rules-msg {
+      font-size: 13px;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 16px;
+      background: var(--bg2);
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+    }
+
+    /* ─────────────────────────────────────────
        ROOM MODAL
     ───────────────────────────────────────── */
     .rm-header {
@@ -1108,6 +1159,12 @@
       transform: scale(.96);
     }
 
+    .btn-player:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
     textarea {
       width: 100%;
       background: var(--bg2);
@@ -1126,6 +1183,12 @@
     textarea:focus {
       outline: none;
       border-color: var(--lor);
+    }
+
+    textarea:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: var(--bg);
     }
 
     /* ─────────────────────────────────────────
@@ -1391,7 +1454,8 @@
             </select>
           </div>
 
-          <div id="no-profile-msg" style="text-align:center;padding:10px;font-size:12px;color:var(--text-dim);background:var(--bg2);border-radius:10px;border:1px dashed var(--border)">
+          <div id="no-profile-msg"
+            style="text-align:center;padding:10px;font-size:12px;color:var(--text-dim);background:var(--bg2);border-radius:10px;border:1px dashed var(--border)">
             ⚠️ Seleziona un profilo in alto per attaccare
           </div>
 
@@ -1404,6 +1468,12 @@
 
           <button class="btn-attack attack-lor" id="btn-attack" onclick="initiateAttack()">🎯 Lancia i Dadi</button>
         </div>
+      </div>
+
+      <!-- ACTIVE RULES -->
+      <div class="sec-title">📜 Regole Impostate</div>
+      <div id="active-rules-list" class="rules-list">
+        <!-- Rendered by JS -->
       </div>
 
       <!-- RULES -->
@@ -1476,7 +1546,7 @@
       <textarea id="rm-rule" placeholder="Nessuna regola attiva…"></textarea>
       <div class="modal-btns">
         <button class="btn-sec" onclick="closeModal('room-modal')">Chiudi</button>
-        <button class="btn-pri" onclick="saveRoom()">Salva</button>
+        <button class="btn-pri" id="rm-btn-save" onclick="saveRoom()">Salva</button>
       </div>
     </div>
   </div>
@@ -1514,6 +1584,26 @@
     </div>
   </div>
 
+  <!-- UPDATE MODAL -->
+  <div class="modal-overlay" id="update-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🔄 Aggiornamento disponibile</div>
+      <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:16px;line-height:1.7">
+        Una nuova versione di <strong>House of Conquest</strong> è pronta.
+      </p>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:20px;">
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;text-align:center;">
+          L'aggiornamento avviene in-app: <strong>non perderai i progressi.</strong><br>L'app si riavvierà automaticamente.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-pri" id="btn-update-confirm" style="width:100%;justify-content:center;">✅ Aggiorna ora</button>
+        <button class="btn-sec" id="btn-update-dismiss" style="width:100%;justify-content:center;">⏳ Ricordamelo tra una settimana</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
@@ -1536,15 +1626,15 @@
     };
 
     const ROOMS_DEF = [
-      { id: 'cucina',    name: 'Cucina',          icon: '🍳' },
-      { id: 'sala',      name: 'Sala',             icon: '🛋️' },
-      { id: 'bagno1',    name: 'Bagno 1',          icon: '🚿' },
-      { id: 'camera-l',  name: 'Camera Lorenzo',   icon: '🛏️' },
-      { id: 'corridoio', name: 'Corridoio',         icon: '🚪' },
-      { id: 'camera-gen',name: 'Cam. Genitori',    icon: '👨‍👩' },
-      { id: 'bagno2',    name: 'Bagno 2',          icon: '🛁' },
-      { id: 'camera-g',  name: 'Camera Giacomo',   icon: '🛏️' },
-      { id: 'studio',    name: 'Studio',           icon: '📚' },
+      { id: 'cucina', name: 'Cucina', icon: '🍳' },
+      { id: 'sala', name: 'Sala', icon: '🛋️' },
+      { id: 'bagno1', name: 'Bagno 1', icon: '🚿' },
+      { id: 'camera-l', name: 'Camera Lorenzo', icon: '🛏️' },
+      { id: 'corridoio', name: 'Corridoio', icon: '🚪' },
+      { id: 'camera-gen', name: 'Cam. Genitori', icon: '👨‍👩' },
+      { id: 'bagno2', name: 'Bagno 2', icon: '🛁' },
+      { id: 'camera-g', name: 'Camera Giacomo', icon: '🛏️' },
+      { id: 'studio', name: 'Studio', icon: '📚' },
     ];
 
     // SVG floor plan layout: viewBox 0 0 300 246
@@ -1552,17 +1642,17 @@
     // Left→Right order per row matches requested order
     const ROOM_RECTS = {
       // Row 1: Cucina | Sala | Bagno1
-      'cucina':     { x:0,   y:0,   w:106, h:80, lines:['Cucina'],      biome:'desert',   biomeIcon:'🏜️', biomeColor:'#d4824a', biomeFill:'rgba(212,130,74,.22)' },
-      'sala':       { x:112, y:0,   w:100, h:80, lines:['Sala'],         biome:'lake',     biomeIcon:'🏞️', biomeColor:'#38bdf8', biomeFill:'rgba(56,189,248,.18)' },
-      'bagno1':     { x:218, y:0,   w:82,  h:80, lines:['Bagno 1'],      biome:'river',    biomeIcon:'🌊', biomeColor:'#7dd3fc', biomeFill:'rgba(125,211,252,.18)' },
+      'cucina': { x: 0, y: 0, w: 106, h: 80, lines: ['Cucina'], biome: 'desert', biomeIcon: '🏜️', biomeColor: '#d4824a', biomeFill: 'rgba(212,130,74,.22)' },
+      'sala': { x: 112, y: 0, w: 100, h: 80, lines: ['Sala'], biome: 'lake', biomeIcon: '🏞️', biomeColor: '#38bdf8', biomeFill: 'rgba(56,189,248,.18)' },
+      'bagno1': { x: 218, y: 0, w: 82, h: 80, lines: ['Bagno 1'], biome: 'river', biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)' },
       // Row 2: Cam.Lorenzo | Corridoio | Cam.Genitori
-      'camera-l':   { x:0,   y:86,  w:96,  h:80, lines:['Cam.','Lorenzo'], biome:'mountain', biomeIcon:'⛰️', biomeColor:'#94a3b8', biomeFill:'rgba(148,163,184,.18)' },
-      'corridoio':  { x:102, y:86,  w:54,  h:80, lines:['Corridoio'],   biome:'forest',   biomeIcon:'🌿', biomeColor:'#4ade80', biomeFill:'rgba(74,222,128,.15)' },
-      'camera-gen': { x:162, y:86,  w:138, h:80, lines:['Cam.','Genitori'], biome:'valley', biomeIcon:'🌸', biomeColor:'#c084fc', biomeFill:'rgba(192,132,252,.15)' },
+      'camera-l': { x: 0, y: 86, w: 96, h: 80, lines: ['Cam.', 'Lorenzo'], biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)' },
+      'corridoio': { x: 102, y: 86, w: 54, h: 80, lines: ['Corridoio'], biome: 'forest', biomeIcon: '🌿', biomeColor: '#4ade80', biomeFill: 'rgba(74,222,128,.15)' },
+      'camera-gen': { x: 162, y: 86, w: 138, h: 80, lines: ['Cam.', 'Genitori'], biome: 'valley', biomeIcon: '🌸', biomeColor: '#c084fc', biomeFill: 'rgba(192,132,252,.15)' },
       // Row 3: Bagno2 | Cam.Giacomo | Studio
-      'bagno2':     { x:0,   y:172, w:72,  h:74, lines:['Bagno 2'],      biome:'river',    biomeIcon:'🌊', biomeColor:'#7dd3fc', biomeFill:'rgba(125,211,252,.18)' },
-      'camera-g':   { x:78,  y:172, w:110, h:74, lines:['Cam.','Giacomo'], biome:'volcano', biomeIcon:'🌋', biomeColor:'#fb923c', biomeFill:'rgba(251,146,60,.18)' },
-      'studio':     { x:194, y:172, w:106, h:74, lines:['Studio'],        biome:'mountain', biomeIcon:'⛰️', biomeColor:'#94a3b8', biomeFill:'rgba(148,163,184,.18)' },
+      'bagno2': { x: 0, y: 172, w: 72, h: 74, lines: ['Bagno 2'], biome: 'river', biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)' },
+      'camera-g': { x: 78, y: 172, w: 110, h: 74, lines: ['Cam.', 'Giacomo'], biome: 'volcano', biomeIcon: '🌋', biomeColor: '#fb923c', biomeFill: 'rgba(251,146,60,.18)' },
+      'studio': { x: 194, y: 172, w: 106, h: 74, lines: ['Studio'], biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)' },
     };
 
     const DEFAULT_STATE = {
@@ -1681,7 +1771,7 @@
         iconEl.style.borderColor = 'var(--border)';
         iconEl.style.background = 'var(--bg2)';
       }
-      
+
       const btnL = document.getElementById('prof-btn-L');
       const btnG = document.getElementById('prof-btn-G');
       if (btnL) btnL.classList.toggle('active', myProfile === 'L');
@@ -1926,6 +2016,35 @@
         grid.appendChild(card);
       });
 
+      // Active Rules
+      const rulesList = document.getElementById('active-rules-list');
+      if (rulesList) {
+        rulesList.innerHTML = '';
+        let hasRules = false;
+        ROOMS_DEF.forEach(room => {
+          const data = gameState.rooms[room.id] || { owner: 'L', rule: '' };
+          if (data.rule && data.rule.trim() !== '') {
+            hasRules = true;
+            const ownerColor = data.owner === 'L' ? 'var(--lor)' : 'var(--gia)';
+            const ownerIcon = data.owner === 'L' ? '👑' : '🛡️';
+            const card = document.createElement('div');
+            card.className = 'active-rule-card';
+            card.innerHTML = `
+              <div class="active-rule-header">
+                <span style="font-size:16px">${room.icon}</span>
+                <span>${room.name}</span>
+                <span style="color:${ownerColor}; margin-left:auto">${ownerIcon} ${pName(data.owner)}</span>
+              </div>
+              <div class="active-rule-text">"${data.rule}"</div>
+            `;
+            rulesList.appendChild(card);
+          }
+        });
+        if (!hasRules) {
+          rulesList.innerHTML = '<div class="no-rules-msg">Nessuna regola impostata attualmente.</div>';
+        }
+      }
+
       updateTargetSelect();
     }
 
@@ -2128,8 +2247,37 @@
       document.getElementById('rm-owner-label').innerHTML =
         `Proprietà di <span style="color:${ownerColor}">${pName(data.owner)}</span>`;
 
-      document.getElementById('rm-rule').value = data.rule || '';
+      const ruleInput = document.getElementById('rm-rule');
+      ruleInput.value = data.rule || '';
       highlightOwner(data.owner);
+
+      const isOwner = myProfile === data.owner;
+      const myRoomsCount = Object.values(gameState.rooms).filter(r => r.owner === myProfile).length;
+      const isEmpire = myRoomsCount >= 6;
+
+      const btnL = document.getElementById('rm-btn-L');
+      const btnG = document.getElementById('rm-btn-G');
+      const saveBtn = document.getElementById('rm-btn-save');
+
+      const canEditOwner = isOwner;
+      const canEditRule = isOwner && isEmpire;
+
+      btnL.disabled = !canEditOwner;
+      btnG.disabled = !canEditOwner;
+      ruleInput.disabled = !canEditRule;
+
+      if (!isOwner) {
+        ruleInput.placeholder = "Nessuna regola attiva…";
+      } else if (!isEmpire) {
+        ruleInput.placeholder = "Devi essere IMPERO (6+ stanze) per imporre regole.";
+      } else {
+        ruleInput.placeholder = "Nessuna regola attiva…";
+      }
+
+      if (saveBtn) {
+        saveBtn.style.display = isOwner ? 'block' : 'none';
+      }
+
       openModal('room-modal');
     }
 
@@ -2143,8 +2291,20 @@
 
     async function saveRoom() {
       if (!currentRoom || !gameState) return;
-      const rule = document.getElementById('rm-rule').value.trim();
-      const owner = pendingOwner || gameState.rooms[currentRoom]?.owner || 'L';
+      
+      const data = gameState.rooms[currentRoom] || { owner: 'L', rule: '' };
+      const isOwner = myProfile === data.owner;
+      const myRoomsCount = Object.values(gameState.rooms).filter(r => r.owner === myProfile).length;
+      const isEmpire = myRoomsCount >= 6;
+      
+      if (!isOwner) return;
+
+      let rule = data.rule;
+      if (isEmpire) {
+        rule = document.getElementById('rm-rule').value.trim();
+      }
+      
+      const owner = pendingOwner || data.owner;
 
       await gameRef.update({
         [`rooms.${currentRoom}.rule`]: rule,
@@ -2180,7 +2340,7 @@
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-    ['dice-modal', 'room-modal', 'newday-modal', 'profile-modal'].forEach(id => {
+    ['dice-modal', 'room-modal', 'newday-modal', 'profile-modal', 'update-modal'].forEach(id => {
       document.getElementById(id).addEventListener('click', function (e) {
         if (e.target === this) closeModal(id);
       });
@@ -2205,14 +2365,79 @@
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(() => { });
+      setTimeout(checkForUpdates, 4000);
+    }
+
+    function checkForUpdates() {
+      try {
+        const ignoredUntil = localStorage.getItem('hoc_update_ignored');
+        if (ignoredUntil && Date.now() < parseInt(ignoredUntil)) return;
+
+        fetch('https://api.github.com/repos/lollo21x/house-of-conquest/commits/main')
+          .then(res => { if (!res.ok) throw new Error('rate limit or network'); return res.json(); })
+          .then(data => {
+            const latestSha = data.sha;
+            if (!latestSha) return;
+            const currentSha = localStorage.getItem('hoc_current_sha');
+
+            if (!currentSha) {
+              localStorage.setItem('hoc_current_sha', latestSha);
+              return;
+            }
+
+            if (latestSha === currentSha) return;
+
+            openModal('update-modal');
+
+            const hidePrompt = () => {
+              closeModal('update-modal');
+              localStorage.setItem('hoc_update_ignored', Date.now() + 7 * 24 * 60 * 60 * 1000);
+            };
+
+            document.getElementById('btn-update-dismiss').onclick = hidePrompt;
+
+            document.getElementById('update-modal').addEventListener('click', (e) => {
+              if (e.target === document.getElementById('update-modal')) {
+                localStorage.setItem('hoc_update_ignored', Date.now() + 7 * 24 * 60 * 60 * 1000);
+              }
+            });
+
+            document.getElementById('btn-update-confirm').onclick = async () => {
+              const btn = document.getElementById('btn-update-confirm');
+              btn.textContent = 'Aggiornamento...';
+              btn.style.pointerEvents = 'none';
+
+              localStorage.setItem('hoc_current_sha', latestSha);
+              localStorage.removeItem('hoc_update_ignored');
+
+              try {
+                if ('caches' in window) {
+                  const keys = await caches.keys();
+                  await Promise.all(keys.map(k => caches.delete(k)));
+                }
+                if ('serviceWorker' in navigator) {
+                  const regs = await navigator.serviceWorker.getRegistrations();
+                  await Promise.all(regs.map(r => r.unregister()));
+                }
+              } catch (e) {
+                console.warn('Cache clear parziale:', e);
+              }
+
+              window.location.reload();
+            };
+          })
+          .catch(err => console.log('Update check skipped:', err));
+      } catch (e) {
+        console.error('Update logic error:', e);
+      }
     }
 
     // ═══════════════════════════════════════════
     //  INIT
     // ═══════════════════════════════════════════
 
-    (function init() { 
-      connectFirebase(); 
+    (function init() {
+      connectFirebase();
       applyProfile();
     })();
   </script>
