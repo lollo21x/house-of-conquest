@@ -1364,7 +1364,7 @@
       <div class="players-grid">
 
         <div class="player-card lorenzo">
-          <div class="p-avatar">👑</div>
+          <div class="p-avatar" id="avatar-L">👑</div>
           <div class="p-name">Lorenzo</div>
           <div id="status-L" class="p-status s-impero">⭐ Impero</div>
           <div class="p-stat">
@@ -1379,7 +1379,7 @@
         </div>
 
         <div class="player-card giacomo">
-          <div class="p-avatar">🛡️</div>
+          <div class="p-avatar" id="avatar-G">🛡️</div>
           <div class="p-name">Giacomo</div>
           <div id="status-G" class="p-status s-regno">🛡️ Regno</div>
           <div class="p-stat">
@@ -1449,8 +1449,8 @@
           <div class="select-group" id="attacker-select-group" style="display:none">
             <span class="select-label">Chi attacca</span>
             <select id="sel-attacker" onchange="updateTargetSelect(); updateAttackButton();">
-              <option value="L">👑 Lorenzo</option>
-              <option value="G">🛡️ Giacomo</option>
+              <option id="opt-atk-L" value="L">👑 Lorenzo</option>
+              <option id="opt-atk-G" value="G">🛡️ Giacomo</option>
             </select>
           </div>
 
@@ -1537,10 +1537,8 @@
       </div>
       <div class="transfer-label">Cambia proprietario</div>
       <div class="transfer-btns">
-        <button class="btn-player bp-l" id="rm-btn-L" onclick="pendingOwner='L'; highlightOwner('L')">👑
-          Lorenzo</button>
-        <button class="btn-player bp-g" id="rm-btn-G" onclick="pendingOwner='G'; highlightOwner('G')">🛡️
-          Giacomo</button>
+        <button class="btn-player bp-l" id="rm-btn-L" onclick="pendingOwner='L'; highlightOwner('L')">👑 Lorenzo</button>
+        <button class="btn-player bp-g" id="rm-btn-G" onclick="pendingOwner='G'; highlightOwner('G')">🛡️ Giacomo</button>
       </div>
       <div class="transfer-label">Regola della stanza</div>
       <textarea id="rm-rule" placeholder="Nessuna regola attiva…"></textarea>
@@ -1758,12 +1756,17 @@
     function applyProfile() {
       const iconEl = document.getElementById('profile-icon');
       if (!iconEl) return;
+      
+      const myRoomsCount = gameState ? Object.values(gameState.rooms).filter(r => r.owner === myProfile).length : 0;
+      const isEmpire = myRoomsCount >= 6;
+      const iconAvatar = isEmpire ? '👑' : '🛡️';
+
       if (myProfile === 'L') {
-        iconEl.textContent = '👑';
+        iconEl.textContent = iconAvatar;
         iconEl.style.borderColor = 'var(--lor)';
         iconEl.style.background = 'var(--lor-dim)';
       } else if (myProfile === 'G') {
-        iconEl.textContent = '🛡️';
+        iconEl.textContent = iconAvatar;
         iconEl.style.borderColor = 'var(--gia)';
         iconEl.style.background = 'var(--gia-dim)';
       } else {
@@ -1967,6 +1970,7 @@
         document.getElementById(`atk-${p}`).textContent = `${avail}/${maxAtk}`;
 
         const sEl = document.getElementById(`status-${p}`);
+        const avatarEl = document.getElementById(`avatar-${p}`);
         if (p === 'L') {
           sEl.textContent = isImpero ? '⭐ Impero' : '🛡️ Regno';
           sEl.className = `p-status ${isImpero ? 's-impero' : 's-regno-l'}`;
@@ -1974,6 +1978,18 @@
           sEl.textContent = isImpero ? '⭐ Impero' : '🛡️ Regno';
           sEl.className = `p-status ${isImpero ? 's-impero-g' : 's-regno'}`;
         }
+        if (avatarEl) {
+          avatarEl.textContent = isImpero ? '👑' : '🛡️';
+        }
+        
+        const optAtk = document.getElementById(`opt-atk-${p}`);
+        if (optAtk) optAtk.textContent = `${isImpero ? '👑' : '🛡️'} ${p === 'L' ? 'Lorenzo' : 'Giacomo'}`;
+        
+        const rmBtn = document.getElementById(`rm-btn-${p}`);
+        if (rmBtn) rmBtn.innerHTML = `${isImpero ? '👑' : '🛡️'} ${p === 'L' ? 'Lorenzo' : 'Giacomo'}`;
+        
+        const profBtn = document.getElementById(`prof-btn-${p}`);
+        if (profBtn) profBtn.innerHTML = `${isImpero ? '👑' : '🛡️'} ${p === 'L' ? 'Lorenzo' : 'Giacomo'}`;
 
         const dotsEl = document.getElementById(`dots-${p}`);
         dotsEl.innerHTML = '';
@@ -2026,7 +2042,8 @@
           if (data.rule && data.rule.trim() !== '') {
             hasRules = true;
             const ownerColor = data.owner === 'L' ? 'var(--lor)' : 'var(--gia)';
-            const ownerIcon = data.owner === 'L' ? '👑' : '🛡️';
+            const isOwnerEmpire = Object.values(gameState.rooms).filter(r => r.owner === data.owner).length >= 6;
+            const ownerIcon = isOwnerEmpire ? '👑' : '🛡️';
             const card = document.createElement('div');
             card.className = 'active-rule-card';
             card.innerHTML = `
@@ -2044,7 +2061,8 @@
           rulesList.innerHTML = '<div class="no-rules-msg">Nessuna regola impostata attualmente.</div>';
         }
       }
-
+      
+      applyProfile();
       updateTargetSelect();
     }
 
@@ -2216,6 +2234,19 @@
 
       if (conquered && victory) {
         updates[`rooms.${roomId}.owner`] = attacker;
+        updates[`rooms.${roomId}.rule`] = '';
+
+        const defender = gameState.rooms[roomId]?.owner;
+        if (defender && defender !== attacker) {
+          const defenderRooms = Object.entries(gameState.rooms).filter(([id, r]) => r.owner === defender);
+          if (defenderRooms.length === 6) {
+            defenderRooms.forEach(([id, r]) => {
+              if (id !== roomId && r.rule) {
+                updates[`rooms.${id}.rule`] = '';
+              }
+            });
+          }
+        }
       }
 
       await gameRef.update(updates);
@@ -2306,10 +2337,24 @@
       
       const owner = pendingOwner || data.owner;
 
-      await gameRef.update({
+      const updates = {
         [`rooms.${currentRoom}.rule`]: rule,
         [`rooms.${currentRoom}.owner`]: owner,
-      });
+      };
+
+      if (owner !== data.owner) {
+        updates[`rooms.${currentRoom}.rule`] = '';
+        const oldOwnerRooms = Object.entries(gameState.rooms).filter(([id, r]) => r.owner === data.owner);
+        if (oldOwnerRooms.length === 6) {
+          oldOwnerRooms.forEach(([id, r]) => {
+            if (id !== currentRoom && r.rule) {
+              updates[`rooms.${id}.rule`] = '';
+            }
+          });
+        }
+      }
+
+      await gameRef.update(updates);
 
       showToast('Stanza aggiornata! ✅');
       closeModal('room-modal');
