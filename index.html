@@ -23,33 +23,45 @@
 
   <style>
     :root {
-      --bg: #07070f;
-      --bg2: #0e0e1c;
-      --surface: rgba(255, 255, 255, .035);
-      --surface2: rgba(255, 255, 255, .06);
-      --border: rgba(255, 255, 255, .08);
-      --border-dim: rgba(255, 255, 255, .04);
+      --bg: #05050e;
+      --bg2: #0b0b1a;
+      --surface: rgba(255, 255, 255, .042);
+      --surface2: rgba(255, 255, 255, .07);
+      --surface3: rgba(255, 255, 255, .11);
+      --border: rgba(255, 255, 255, .09);
+      --border-dim: rgba(255, 255, 255, .045);
+      --border-bright: rgba(255, 255, 255, .16);
 
       /* ── Lorenzo — Viola Imperiale ── */
       --lor: #a855f7;
       --lor-light: #d8b4fe;
-      --lor-dim: rgba(168, 85, 247, .14);
-      --lor-glow: rgba(168, 85, 247, .28);
-      --lor-border: rgba(168, 85, 247, .35);
+      --lor-mid: #b76ef8;
+      --lor-dim: rgba(168, 85, 247, .16);
+      --lor-glow: rgba(168, 85, 247, .35);
+      --lor-border: rgba(168, 85, 247, .38);
 
       /* ── Giacomo — Ambra Reale ── */
       --gia: #f59e0b;
       --gia-light: #fde68a;
-      --gia-dim: rgba(245, 158, 11, .14);
-      --gia-glow: rgba(245, 158, 11, .28);
-      --gia-border: rgba(245, 158, 11, .35);
+      --gia-mid: #f8b42e;
+      --gia-dim: rgba(245, 158, 11, .16);
+      --gia-glow: rgba(245, 158, 11, .35);
+      --gia-border: rgba(245, 158, 11, .38);
 
       --text: #ede8f8;
-      --text-dim: #5a5472;
+      --text-muted: #8b8099;
+      --text-dim: #4e4868;
       --success: #34d399;
+      --success-dim: rgba(52,211,153,.15);
       --danger: #f87171;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+      /* Kingdom map palette */
+      --parchment: #f2e8c8;
+      --parchment2: #e8d9a8;
+      --ink: #3d2b1f;
+      --ink-light: #6b4c3b;
     }
 
     *,
@@ -79,8 +91,9 @@
 
     body {
       background:
-        radial-gradient(ellipse 70% 50% at 15% -5%, rgba(168, 85, 247, .07) 0%, transparent 55%),
-        radial-gradient(ellipse 55% 40% at 85% 105%, rgba(245, 158, 11, .06) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 10% -10%, rgba(168, 85, 247, .12) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 45% at 90% 110%, rgba(245, 158, 11, .10) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(100, 50, 200, .04) 0%, transparent 60%),
         var(--bg);
     }
 
@@ -108,11 +121,12 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: calc(var(--safe-top) + 13px) 18px 13px;
-      background: rgba(7, 7, 15, .8);
-      backdrop-filter: blur(28px) saturate(1.3);
-      -webkit-backdrop-filter: blur(28px) saturate(1.3);
-      border-bottom: 1px solid var(--border-dim);
+      padding: calc(var(--safe-top) + 14px) 18px 14px;
+      background: rgba(5, 5, 14, .75);
+      backdrop-filter: blur(40px) saturate(1.6) brightness(1.05);
+      -webkit-backdrop-filter: blur(40px) saturate(1.6) brightness(1.05);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      box-shadow: 0 1px 0 rgba(255,255,255,.04), 0 4px 32px rgba(0,0,0,.4);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -238,29 +252,29 @@
     }
 
     .player-card {
-      border-radius: 20px;
-      padding: 16px 14px;
+      border-radius: 22px;
+      padding: 17px 15px;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: transform .2s;
+      backdrop-filter: blur(32px) saturate(1.4);
+      -webkit-backdrop-filter: blur(32px) saturate(1.4);
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
     }
 
     .player-card:active {
-      transform: scale(.985);
+      transform: scale(.97);
     }
 
     .player-card.lorenzo {
-      background: linear-gradient(150deg, rgba(168, 85, 247, .1) 0%, rgba(255, 255, 255, .02) 70%);
+      background: linear-gradient(145deg, rgba(168, 85, 247, .14) 0%, rgba(168,85,247,.04) 50%, rgba(255, 255, 255, .02) 100%);
       border: 1px solid var(--lor-border);
-      box-shadow: 0 0 28px rgba(168, 85, 247, .1), inset 0 1px 0 rgba(168, 85, 247, .12);
+      box-shadow: 0 0 40px rgba(168, 85, 247, .15), 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(168, 85, 247, .2);
     }
 
     .player-card.giacomo {
-      background: linear-gradient(150deg, rgba(245, 158, 11, .1) 0%, rgba(255, 255, 255, .02) 70%);
+      background: linear-gradient(145deg, rgba(245, 158, 11, .14) 0%, rgba(245,158,11,.04) 50%, rgba(255, 255, 255, .02) 100%);
       border: 1px solid var(--gia-border);
-      box-shadow: 0 0 28px rgba(245, 158, 11, .1), inset 0 1px 0 rgba(245, 158, 11, .12);
+      box-shadow: 0 0 40px rgba(245, 158, 11, .15), 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(245, 158, 11, .2);
     }
 
     .player-card::before {
@@ -410,13 +424,14 @@
        TERRITORY BAR
     ───────────────────────────────────────── */
     .territory-wrapper {
-      background: var(--surface);
-      border: 1px solid var(--border-dim);
-      border-radius: 16px;
-      padding: 13px 16px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 17px;
       margin-bottom: 26px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(28px) saturate(1.3);
+      -webkit-backdrop-filter: blur(28px) saturate(1.3);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 4px 24px rgba(0,0,0,.25);
     }
 
     .territory-top {
@@ -460,39 +475,50 @@
     }
 
     .territory-bar {
-      height: 7px;
-      border-radius: 4px;
+      height: 8px;
+      border-radius: 5px;
       overflow: hidden;
       display: flex;
-      background: rgba(255, 255, 255, .04);
+      background: rgba(255, 255, 255, .05);
+      box-shadow: inset 0 1px 3px rgba(0,0,0,.4);
     }
 
     .t-fill-l {
       height: 100%;
-      background: linear-gradient(90deg, var(--lor), #c084fc);
-      border-radius: 4px 0 0 4px;
-      transition: width .55s cubic-bezier(.4, 0, .2, 1);
+      background: linear-gradient(90deg, #7c3aed, var(--lor), #c084fc);
+      border-radius: 5px 0 0 5px;
+      transition: width .65s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 2px 0 8px var(--lor-glow);
     }
 
     .t-fill-g {
       height: 100%;
-      background: linear-gradient(90deg, var(--gia), var(--gia-light));
-      border-radius: 0 4px 4px 0;
-      transition: width .55s cubic-bezier(.4, 0, .2, 1);
+      background: linear-gradient(90deg, var(--gia), var(--gia-light), #fcd34d);
+      border-radius: 0 5px 5px 0;
+      transition: width .65s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: -2px 0 8px var(--gia-glow);
     }
 
     /* ─────────────────────────────────────────
        HOUSE MAP SVG
     ───────────────────────────────────────── */
     .map-wrapper {
-      background: var(--surface);
+      background: rgba(255,255,255,.03);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 14px;
+      border-radius: 22px;
+      padding: 15px;
       margin-bottom: 28px;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+      backdrop-filter: blur(32px) saturate(1.3);
+      -webkit-backdrop-filter: blur(32px) saturate(1.3);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 40px rgba(0,0,0,.35);
+      transition: all .5s ease;
+    }
+
+    .map-wrapper.kingdom-active {
+      border-color: rgba(168,85,247,.25);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06),
+                  0 0 60px rgba(168,85,247,.08),
+                  0 8px 48px rgba(0,0,0,.5);
     }
 
     .map-top-bar {
@@ -534,24 +560,27 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      background: var(--bg2);
+      background: rgba(255,255,255,.05);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 5px 11px;
+      padding: 6px 12px;
       cursor: pointer;
       font-family: 'Syne', sans-serif;
       font-size: 10px;
       font-weight: 700;
-      color: var(--text-dim);
-      letter-spacing: .06em;
-      transition: all .2s;
+      color: var(--text-muted);
+      letter-spacing: .07em;
+      transition: all .3s cubic-bezier(.34,1.56,.64,1);
       user-select: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .biome-toggle.active {
-      background: rgba(52, 211, 153, .12);
-      border-color: rgba(52, 211, 153, .5);
-      color: #34d399;
+      background: rgba(168,85,247,.15);
+      border-color: rgba(168,85,247,.5);
+      color: var(--lor-light);
+      box-shadow: 0 0 16px rgba(168,85,247,.15);
     }
 
     .biome-toggle-dot {
@@ -559,22 +588,24 @@
       height: 8px;
       border-radius: 50%;
       background: var(--border);
-      transition: background .2s;
+      transition: all .3s;
     }
 
     .biome-toggle.active .biome-toggle-dot {
-      background: #34d399;
-      box-shadow: 0 0 6px #34d399;
+      background: var(--lor);
+      box-shadow: 0 0 8px var(--lor-glow);
     }
 
     #house-map {
       width: 100%;
       height: auto;
       display: block;
+      border-radius: 12px;
+      transition: background .5s ease;
     }
 
     #house-map [data-room-rect] {
-      transition: fill .5s ease, stroke .5s ease;
+      transition: fill .5s ease, stroke .5s ease, stroke-width .5s ease;
     }
 
     #house-map [data-biome-bg] {
@@ -593,6 +624,25 @@
       opacity: .7;
     }
 
+    /* Organic territory paths */
+    .territory-path {
+      transition: fill .6s ease, stroke .6s ease, opacity .5s ease;
+      filter: url(#territory-glow);
+    }
+
+    .biome-label {
+      transition: opacity .5s ease;
+    }
+
+    @keyframes kingdom-enter {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .map-wrapper.kingdom-active #house-map {
+      animation: kingdom-enter .5s ease;
+    }
+
     /* ─────────────────────────────────────────
        ROOMS GRID
     ───────────────────────────────────────── */
@@ -604,39 +654,39 @@
     }
 
     .room-card {
-      background: var(--surface);
+      background: rgba(255,255,255,.035);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 13px 7px 11px;
+      border-radius: 18px;
+      padding: 14px 7px 12px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      min-height: 90px;
+      min-height: 92px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      transition: transform .2s, border-color .3s, background .3s, box-shadow .3s;
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), border-color .3s, background .3s, box-shadow .3s;
       user-select: none;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(24px) saturate(1.3);
+      -webkit-backdrop-filter: blur(24px) saturate(1.3);
     }
 
     .room-card:active {
-      transform: scale(.91);
+      transform: scale(.92);
     }
 
     .room-card.owner-L {
       border-color: var(--lor-border);
-      background: linear-gradient(160deg, rgba(168, 85, 247, .08), rgba(255, 255, 255, .02));
-      box-shadow: 0 0 16px rgba(168, 85, 247, .08);
+      background: linear-gradient(150deg, rgba(168, 85, 247, .11), rgba(168,85,247,.03) 60%, rgba(255, 255, 255, .015) 100%);
+      box-shadow: 0 0 24px rgba(168, 85, 247, .1), 0 4px 16px rgba(0,0,0,.3), inset 0 1px 0 rgba(168,85,247,.15);
     }
 
     .room-card.owner-G {
       border-color: var(--gia-border);
-      background: linear-gradient(160deg, rgba(245, 158, 11, .08), rgba(255, 255, 255, .02));
-      box-shadow: 0 0 16px rgba(245, 158, 11, .08);
+      background: linear-gradient(150deg, rgba(245, 158, 11, .11), rgba(245,158,11,.03) 60%, rgba(255, 255, 255, .015) 100%);
+      box-shadow: 0 0 24px rgba(245, 158, 11, .1), 0 4px 16px rgba(0,0,0,.3), inset 0 1px 0 rgba(245,158,11,.15);
     }
 
     .room-strip {
@@ -709,15 +759,16 @@
        ATTACK PANEL
     ───────────────────────────────────────── */
     .attack-panel {
-      background: var(--surface);
+      background: rgba(255,255,255,.035);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 18px 16px;
+      border-radius: 22px;
+      padding: 20px 17px;
       margin-bottom: 32px;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(32px) saturate(1.4);
+      -webkit-backdrop-filter: blur(32px) saturate(1.4);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 40px rgba(0,0,0,.3);
     }
 
     .select-group {
@@ -840,9 +891,9 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, .75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(28px) saturate(1.2);
+      -webkit-backdrop-filter: blur(28px) saturate(1.2);
       z-index: 200;
       display: flex;
       align-items: flex-end;
@@ -861,14 +912,17 @@
     .modal-sheet {
       width: 100%;
       max-width: 520px;
-      background: rgba(14, 14, 28, .97);
-      backdrop-filter: blur(36px) saturate(1.4);
-      -webkit-backdrop-filter: blur(36px) saturate(1.4);
-      border-radius: 28px 28px 0 0;
-      padding: 20px 20px 24px;
-      border-top: 1px solid var(--border);
+      background: rgba(9, 9, 20, .92);
+      backdrop-filter: blur(48px) saturate(1.6);
+      -webkit-backdrop-filter: blur(48px) saturate(1.6);
+      border-radius: 30px 30px 0 0;
+      padding: 22px 20px 26px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      border-left: 1px solid rgba(255,255,255,.05);
+      border-right: 1px solid rgba(255,255,255,.05);
+      box-shadow: 0 -8px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
       transform: translateY(100%);
-      transition: transform .4s cubic-bezier(.16, 1, .3, 1);
+      transition: transform .45s cubic-bezier(.16, 1, .3, 1);
       max-height: 92dvh;
       overflow-y: auto;
     }
@@ -1045,13 +1099,16 @@
     }
 
     .active-rule-card {
-      background: var(--bg2);
+      background: rgba(255,255,255,.04);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 16px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 4px 16px rgba(0,0,0,.2);
     }
 
     .active-rule-header {
@@ -1376,6 +1433,9 @@
             <span class="p-value" id="atk-L">3/3</span>
           </div>
           <div class="attack-dots" id="dots-L"></div>
+          <div class="global-rule" id="gr-L" onclick="openGlobalRuleModal('L')" style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
+             Nessuna legge globale. Clicca per impostare.
+          </div>
         </div>
 
         <div class="player-card giacomo">
@@ -1391,6 +1451,9 @@
             <span class="p-value" id="atk-G">2/2</span>
           </div>
           <div class="attack-dots" id="dots-G"></div>
+          <div class="global-rule" id="gr-G" onclick="openGlobalRuleModal('G')" style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
+             Nessuna legge globale. Clicca per impostare.
+          </div>
         </div>
 
       </div>
@@ -1414,7 +1477,7 @@
       </div>
 
       <!-- LIVE MAP -->
-      <div class="sec-title">🏠 Mappa in Tempo Reale</div>
+      <div class="sec-title">🏠 Mappa in tempo reale</div>
       <div class="map-wrapper">
         <div class="map-top-bar">
           <div class="map-legend">
@@ -1429,7 +1492,7 @@
           </div>
           <button class="biome-toggle" id="biome-toggle-btn" onclick="toggleBiome()">
             <div class="biome-toggle-dot"></div>
-            BIOMI
+            🗺️ BIOMI
           </button>
         </div>
         <svg id="house-map" viewBox="0 0 300 246" xmlns="http://www.w3.org/2000/svg">
@@ -1442,7 +1505,7 @@
       <div class="rooms-grid" id="rooms-grid"></div>
 
       <!-- ATTACK -->
-      <div class="sec-title">🎯 Fase di Attacco</div>
+      <div class="sec-title">🎯 Fase di attacco</div>
       <div class="attack-panel">
         <div style="display:flex;flex-direction:column;gap:12px">
 
@@ -1471,7 +1534,7 @@
       </div>
 
       <!-- ACTIVE RULES -->
-      <div class="sec-title">📜 Regole Impostate</div>
+      <div class="sec-title">📜 Regole impostate</div>
       <div id="active-rules-list" class="rules-list">
         <!-- Rendered by JS -->
       </div>
@@ -1484,13 +1547,11 @@
         <strong>LIMITE GIORNALIERO</strong> — Ogni stanza può essere attaccata una sola volta al giorno dallo stesso
         giocatore.<br><br>
         <strong>IMPERO</strong> — 6+ stanze → +1 attacco/giorno + diritto di imporre regole nelle stanze
-        possedute.<br><br>
-        <strong>ELIMINAZIONE</strong> — Chi rimane con 0 stanze perde la guerra.
+        possedute.
       </div>
 
     </main>
   </div>
-
   <!-- DICE MODAL -->
   <div class="modal-overlay" id="dice-modal">
     <div class="modal-sheet">
@@ -1553,7 +1614,7 @@
   <div class="modal-overlay" id="newday-modal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">📆 Nuovo Giorno?</div>
+      <div class="modal-title">📆 Nuovo giorno?</div>
       <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.7">
         Questo azzererà tutti gli attacchi usati oggi e avanzerà il calendario di una giornata. Sei sicuro?
       </p>
@@ -1568,7 +1629,7 @@
   <div class="modal-overlay" id="profile-modal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">👤 Seleziona Profilo</div>
+      <div class="modal-title">👤 Seleziona profilo</div>
       <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.7">
         Scegli chi sei. Questa scelta verrà ricordata e preimposterà il tuo nome durante la fase di attacco.
       </p>
@@ -1598,6 +1659,22 @@
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button class="btn-pri" id="btn-update-confirm" style="width:100%;justify-content:center;">✅ Aggiorna ora</button>
         <button class="btn-sec" id="btn-update-dismiss" style="width:100%;justify-content:center;">⏳ Ricordamelo tra una settimana</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOBAL RULE MODAL -->
+  <div class="modal-overlay" id="globalrule-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">📜 Legge globale</div>
+      <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.7">
+        Imposta una legge valida per tutto il tuo territorio, indipendentemente dal tuo status.
+      </p>
+      <textarea id="gr-textarea" placeholder="Scrivi la tua legge globale qui..."></textarea>
+      <div class="modal-btns" style="margin-top:16px;">
+        <button class="btn-sec" onclick="closeModal('globalrule-modal')">Annulla</button>
+        <button class="btn-pri" onclick="saveGlobalRule()">Salva</button>
       </div>
     </div>
   </div>
@@ -1640,17 +1717,30 @@
     // Left→Right order per row matches requested order
     const ROOM_RECTS = {
       // Row 1: Cucina | Sala | Bagno1
-      'cucina': { x: 0, y: 0, w: 106, h: 80, lines: ['Cucina'], biome: 'desert', biomeIcon: '🏜️', biomeColor: '#d4824a', biomeFill: 'rgba(212,130,74,.22)' },
-      'sala': { x: 112, y: 0, w: 100, h: 80, lines: ['Sala'], biome: 'lake', biomeIcon: '🏞️', biomeColor: '#38bdf8', biomeFill: 'rgba(56,189,248,.18)' },
-      'bagno1': { x: 218, y: 0, w: 82, h: 80, lines: ['Bagno 1'], biome: 'river', biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)' },
+      'cucina':    { x: 0,   y: 0,   w: 106, h: 80, lines: ['Cucina'],    biome: 'desert',   biomeIcon: '🏜️', biomeColor: '#d4824a', biomeFill: 'rgba(212,130,74,.22)',  biomeMapFill: 'rgba(210,160,90,.55)' },
+      'sala':      { x: 112, y: 0,   w: 100, h: 80, lines: ['Sala'],      biome: 'lake',     biomeIcon: '🏞️', biomeColor: '#38bdf8', biomeFill: 'rgba(56,189,248,.18)',  biomeMapFill: 'rgba(100,190,230,.45)' },
+      'bagno1':    { x: 218, y: 0,   w: 82,  h: 80, lines: ['Bagno 1'],   biome: 'river',    biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)', biomeMapFill: 'rgba(120,200,240,.42)' },
       // Row 2: Cam.Lorenzo | Corridoio | Cam.Genitori
-      'camera-l': { x: 0, y: 86, w: 96, h: 80, lines: ['Cam.', 'Lorenzo'], biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)' },
-      'corridoio': { x: 102, y: 86, w: 54, h: 80, lines: ['Corridoio'], biome: 'forest', biomeIcon: '🌿', biomeColor: '#4ade80', biomeFill: 'rgba(74,222,128,.15)' },
-      'camera-gen': { x: 162, y: 86, w: 138, h: 80, lines: ['Cam.', 'Genitori'], biome: 'valley', biomeIcon: '🌸', biomeColor: '#c084fc', biomeFill: 'rgba(192,132,252,.15)' },
+      'camera-l':  { x: 0,   y: 86,  w: 96,  h: 80, lines: ['Cam.','Lorenzo'],   biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)', biomeMapFill: 'rgba(160,160,150,.45)' },
+      'corridoio': { x: 102, y: 86,  w: 54,  h: 80, lines: ['Corridoio'], biome: 'forest',   biomeIcon: '🌿', biomeColor: '#4ade80', biomeFill: 'rgba(74,222,128,.15)',  biomeMapFill: 'rgba(90,180,100,.45)' },
+      'camera-gen':{ x: 162, y: 86,  w: 138, h: 80, lines: ['Cam.','Genitori'],  biome: 'valley',   biomeIcon: '🌸', biomeColor: '#c084fc', biomeFill: 'rgba(192,132,252,.15)', biomeMapFill: 'rgba(195,160,210,.42)' },
       // Row 3: Bagno2 | Cam.Giacomo | Studio
-      'bagno2': { x: 0, y: 172, w: 72, h: 74, lines: ['Bagno 2'], biome: 'river', biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)' },
-      'camera-g': { x: 78, y: 172, w: 110, h: 74, lines: ['Cam.', 'Giacomo'], biome: 'volcano', biomeIcon: '🌋', biomeColor: '#fb923c', biomeFill: 'rgba(251,146,60,.18)' },
-      'studio': { x: 194, y: 172, w: 106, h: 74, lines: ['Studio'], biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)' },
+      'bagno2':    { x: 0,   y: 172, w: 72,  h: 74, lines: ['Bagno 2'],   biome: 'river',    biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)', biomeMapFill: 'rgba(120,200,240,.42)' },
+      'camera-g':  { x: 78,  y: 172, w: 110, h: 74, lines: ['Cam.','Giacomo'],   biome: 'volcano',  biomeIcon: '🌋', biomeColor: '#fb923c', biomeFill: 'rgba(251,146,60,.18)',  biomeMapFill: 'rgba(220,120,80,.48)' },
+      'studio':    { x: 194, y: 172, w: 106, h: 74, lines: ['Studio'],    biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)', biomeMapFill: 'rgba(160,160,150,.45)' },
+    };
+
+    // Organic territory paths — wavy borders for the dark kingdom map
+    const ORGANIC_PATHS = {
+      'cucina':    'M 0,0 L 109,0 C 106,14 113,28 108,42 C 103,56 112,68 109,82 C 106,83 103,86 99,85 C 92,84 85,78 75,81 C 50,88 20,79 0,83 Z',
+      'sala':      'M 109,0 L 215,0 C 218,12 211,28 216,42 C 221,56 213,68 215,81 C 195,87 175,80 159,84 C 140,88 120,79 109,82 C 112,68 103,56 108,42 C 113,28 106,14 109,0 Z',
+      'bagno1':    'M 215,0 L 300,0 L 300,83 L 285,80 C 265,87 240,78 215,81 C 213,68 221,56 216,42 C 211,28 218,12 215,0 Z',
+      'camera-l':  'M 0,83 C 20,79 50,88 75,81 C 85,78 92,84 99,85 C 96,98 103,112 98,126 C 93,140 102,154 99,168 C 90,166 82,170 75,172 C 70,173 65,175 55,173 C 35,167 15,174 0,170 Z',
+      'corridoio': 'M 99,85 C 103,86 106,83 109,82 C 120,79 140,88 159,84 C 162,97 155,112 160,127 C 165,142 156,156 159,171 C 135,167 115,173 99,168 C 102,154 93,140 98,126 C 103,112 96,98 99,85 Z',
+      'camera-gen':'M 159,84 C 175,80 195,87 215,81 C 240,78 265,87 285,80 L 300,83 L 300,170 L 275,168 C 245,175 215,165 191,169 C 180,166 170,174 159,171 C 156,156 165,142 160,127 C 155,112 162,97 159,84 Z',
+      'bagno2':    'M 0,170 C 15,174 35,167 55,173 C 65,175 70,173 75,172 C 72,186 79,200 74,214 C 69,228 78,240 75,246 L 0,246 Z',
+      'camera-g':  'M 75,172 C 82,170 90,166 99,168 C 115,173 135,167 159,171 C 170,174 180,166 191,169 C 194,183 187,198 192,212 C 197,226 189,238 191,246 L 75,246 C 78,240 69,228 74,214 C 79,200 72,186 75,172 Z',
+      'studio':    'M 191,169 C 215,165 245,175 275,168 L 300,170 L 300,246 L 191,246 C 189,238 197,226 192,212 C 187,198 194,183 191,169 Z',
     };
 
     const DEFAULT_STATE = {
@@ -1812,139 +1902,566 @@
       const svg = document.getElementById('house-map');
       const NS = 'http://www.w3.org/2000/svg';
 
+      // SVG defs — glow filters + terrain gradients
+      const defs = document.createElementNS(NS, 'defs');
+      defs.innerHTML = `
+        <filter id="lor-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
+          <feFlood flood-color="#a855f7" flood-opacity="0.35" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="gia-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
+          <feFlood flood-color="#f59e0b" flood-opacity="0.35" result="color"/>
+          <feComposite in="color" in2="blur" operator="in" result="glow"/>
+          <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="terrain-noise" x="0%" y="0%" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" result="n"/>
+          <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
+          <feBlend in="SourceGraphic" in2="gn" mode="soft-light"/>
+        </filter>
+        <filter id="water-blur">
+          <feGaussianBlur stdDeviation="1.5"/>
+        </filter>
+        <radialGradient id="lake-grad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.5"/>
+          <stop offset="60%" stop-color="#0ea5e9" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#075985" stop-opacity="0.1"/>
+        </radialGradient>
+        <linearGradient id="sand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d4a05a" stop-opacity="0.35"/>
+          <stop offset="50%" stop-color="#c2884a" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#d4a05a" stop-opacity="0.3"/>
+        </linearGradient>
+        <linearGradient id="lava-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%" stop-color="#ef4444" stop-opacity="0.6"/>
+          <stop offset="50%" stop-color="#fb923c" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.2"/>
+        </linearGradient>
+        <linearGradient id="mountain-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%" stop-color="#e2e8f0" stop-opacity="0.7"/>
+          <stop offset="30%" stop-color="#94a3b8" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#475569" stop-opacity="0.2"/>
+        </linearGradient>
+        <linearGradient id="forest-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+          <stop offset="0%" stop-color="#22c55e" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#166534" stop-opacity="0.35"/>
+        </linearGradient>
+      `;
+      svg.insertBefore(defs, svg.firstChild);
+
+      // ── Normal mode layer (rectangular rooms) ──
+      const normalLayer = document.createElementNS(NS, 'g');
+      normalLayer.setAttribute('id', 'normal-layer');
+      normalLayer.style.transition = 'opacity 0.5s ease';
+
       ROOMS_DEF.forEach(room => {
         const r = ROOM_RECTS[room.id];
         if (!r) return;
-        const cx = r.x + r.w / 2;
-        const cy = r.y + r.h / 2;
+        const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
 
         const g = document.createElementNS(NS, 'g');
         g.setAttribute('data-room-group', room.id);
         g.addEventListener('click', () => openRoomModal(room.id));
 
-        // Biome background (hidden by default)
-        const biomeBg = document.createElementNS(NS, 'rect');
-        biomeBg.setAttribute('x', r.x + 1); biomeBg.setAttribute('y', r.y + 1);
-        biomeBg.setAttribute('width', r.w - 2); biomeBg.setAttribute('height', r.h - 2);
-        biomeBg.setAttribute('rx', '7');
-        biomeBg.setAttribute('fill', r.biomeFill || 'transparent');
-        biomeBg.setAttribute('opacity', '0');
-        biomeBg.setAttribute('data-biome-bg', room.id);
-        g.appendChild(biomeBg);
-
-        // Biome icon (top-left, hidden by default)
-        const biomeIconEl = document.createElementNS(NS, 'text');
-        biomeIconEl.setAttribute('x', r.x + 7);
-        biomeIconEl.setAttribute('y', r.y + 13);
-        biomeIconEl.setAttribute('font-size', '10');
-        biomeIconEl.setAttribute('opacity', '0');
-        biomeIconEl.setAttribute('data-biome-icon', room.id);
-        biomeIconEl.textContent = r.biomeIcon || '';
-        g.appendChild(biomeIconEl);
-
-        // Owner rect
         const rect = document.createElementNS(NS, 'rect');
         rect.setAttribute('x', r.x + 1); rect.setAttribute('y', r.y + 1);
         rect.setAttribute('width', r.w - 2); rect.setAttribute('height', r.h - 2);
-        rect.setAttribute('rx', '7');
-        rect.setAttribute('fill', 'rgba(255,255,255,0.03)');
-        rect.setAttribute('stroke', 'rgba(255,255,255,0.09)');
-        rect.setAttribute('stroke-width', '1.5');
+        rect.setAttribute('rx', '6'); rect.setAttribute('fill', 'rgba(255,255,255,0.03)');
+        rect.setAttribute('stroke', 'rgba(255,255,255,0.09)'); rect.setAttribute('stroke-width', '1.5');
         rect.setAttribute('data-room-rect', room.id);
         g.appendChild(rect);
 
-        // Room icon
-        const hasMultiLine = r.lines.length > 1;
-        const iconY = hasMultiLine ? cy - 15 : cy - 11;
+        const hasMulti = r.lines.length > 1;
         const iconEl = document.createElementNS(NS, 'text');
-        iconEl.setAttribute('x', cx); iconEl.setAttribute('y', iconY);
-        iconEl.setAttribute('text-anchor', 'middle');
-        iconEl.setAttribute('dominant-baseline', 'central');
-        iconEl.setAttribute('font-size', '14');
-        iconEl.textContent = room.icon;
+        iconEl.setAttribute('x', cx); iconEl.setAttribute('y', hasMulti ? cy - 16 : cy - 12);
+        iconEl.setAttribute('text-anchor', 'middle'); iconEl.setAttribute('dominant-baseline', 'central');
+        iconEl.setAttribute('font-size', '15'); iconEl.textContent = room.icon;
         g.appendChild(iconEl);
 
-        // Label lines
-        const labelBaseY = hasMultiLine ? cy + 4 : cy + 8;
+        const labelY = hasMulti ? cy + 5 : cy + 9;
         r.lines.forEach((line, i) => {
           const t = document.createElementNS(NS, 'text');
-          t.setAttribute('x', cx);
-          t.setAttribute('y', labelBaseY + i * 9);
-          t.setAttribute('text-anchor', 'middle');
-          t.setAttribute('dominant-baseline', 'central');
-          t.setAttribute('font-size', '5.8');
-          t.setAttribute('font-weight', '600');
-          t.setAttribute('font-family', 'Syne, sans-serif');
-          t.setAttribute('fill', 'rgba(255,255,255,0.7)');
-          t.setAttribute('letter-spacing', '0.02em');
-          t.textContent = line;
+          t.setAttribute('x', cx); t.setAttribute('y', labelY + i * 9);
+          t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'central');
+          t.setAttribute('font-size', '5.8'); t.setAttribute('font-weight', '700');
+          t.setAttribute('font-family', 'Syne, sans-serif'); t.setAttribute('fill', 'rgba(255,255,255,0.75)');
+          t.setAttribute('letter-spacing', '0.04em'); t.textContent = line;
           g.appendChild(t);
         });
 
-        // Owner pip
-        const pipCx = r.x + r.w - 13;
-        const pipCy = r.y + r.h - 13;
+        const pipCx = r.x + r.w - 13, pipCy = r.y + r.h - 13;
         const pip = document.createElementNS(NS, 'circle');
         pip.setAttribute('cx', pipCx); pip.setAttribute('cy', pipCy); pip.setAttribute('r', '9');
-        pip.setAttribute('fill', '#a855f7');
-        pip.setAttribute('data-room-pip', room.id);
+        pip.setAttribute('fill', '#a855f7'); pip.setAttribute('data-room-pip', room.id);
         g.appendChild(pip);
-
         const pipT = document.createElementNS(NS, 'text');
         pipT.setAttribute('x', pipCx); pipT.setAttribute('y', pipCy);
-        pipT.setAttribute('text-anchor', 'middle');
-        pipT.setAttribute('dominant-baseline', 'central');
-        pipT.setAttribute('font-size', '6.5');
-        pipT.setAttribute('font-weight', '900');
-        pipT.setAttribute('font-family', 'Syne, sans-serif');
-        pipT.setAttribute('fill', '#07070f');
-        pipT.setAttribute('data-room-pip-text', room.id);
-        pipT.textContent = 'L';
+        pipT.setAttribute('text-anchor', 'middle'); pipT.setAttribute('dominant-baseline', 'central');
+        pipT.setAttribute('font-size', '6.5'); pipT.setAttribute('font-weight', '900');
+        pipT.setAttribute('font-family', 'Syne, sans-serif'); pipT.setAttribute('fill', '#05050e');
+        pipT.setAttribute('data-room-pip-text', room.id); pipT.textContent = 'L';
         g.appendChild(pipT);
 
-        svg.appendChild(g);
+        normalLayer.appendChild(g);
       });
+      svg.appendChild(normalLayer);
+
+      // ── Biome mode layer (organic dark kingdom map) ──
+      const biomeLayer = document.createElementNS(NS, 'g');
+      biomeLayer.setAttribute('id', 'biome-layer');
+      biomeLayer.style.opacity = '0';
+      biomeLayer.style.pointerEvents = 'none';
+      biomeLayer.style.transition = 'opacity 0.5s ease';
+
+      // Dark map background
+      const mapBg = document.createElementNS(NS, 'rect');
+      mapBg.setAttribute('x', '0'); mapBg.setAttribute('y', '0');
+      mapBg.setAttribute('width', '300'); mapBg.setAttribute('height', '246');
+      mapBg.setAttribute('rx', '8'); mapBg.setAttribute('fill', '#0a0a16');
+      biomeLayer.appendChild(mapBg);
+
+      // Subtle grid/terrain texture
+      const texG = document.createElementNS(NS, 'g');
+      texG.setAttribute('opacity', '0.06');
+      for (let y = 0; y < 246; y += 12) {
+        const line = document.createElementNS(NS, 'line');
+        line.setAttribute('x1', '0'); line.setAttribute('y1', y);
+        line.setAttribute('x2', '300'); line.setAttribute('y2', y);
+        line.setAttribute('stroke', '#fff'); line.setAttribute('stroke-width', '0.3');
+        texG.appendChild(line);
+      }
+      for (let x = 0; x < 300; x += 12) {
+        const line = document.createElementNS(NS, 'line');
+        line.setAttribute('x1', x); line.setAttribute('y1', '0');
+        line.setAttribute('x2', x); line.setAttribute('y2', '246');
+        line.setAttribute('stroke', '#fff'); line.setAttribute('stroke-width', '0.3');
+        texG.appendChild(line);
+      }
+      biomeLayer.appendChild(texG);
+
+      // ── Terrain decoration helpers ──
+      function addTerrain(parent, biome, x, y, w, h) {
+        const g = document.createElementNS(NS, 'g');
+        const cl = (tag) => document.createElementNS(NS, tag);
+
+        // Base terrain fill using gradients
+        if (biome === 'desert') {
+          const bg = cl('rect');
+          bg.setAttribute('x', x); bg.setAttribute('y', y);
+          bg.setAttribute('width', w); bg.setAttribute('height', h);
+          bg.setAttribute('fill', 'url(#sand-grad)');
+          bg.setAttribute('opacity', '0.6');
+          g.appendChild(bg);
+          
+          // Sand dunes with layered curves
+          for (let i = 0; i < 4; i++) {
+            const p = cl('path');
+            const dy = y + 15 + i * 15;
+            p.setAttribute('d', `M ${x-10},${dy} Q ${x+w*0.3},${dy-10} ${x+w*0.5},${dy} T ${x+w+10},${dy+5}`);
+            p.setAttribute('stroke', '#b47b3a'); p.setAttribute('stroke-width', '1.2');
+            p.setAttribute('fill', 'none'); p.setAttribute('opacity', '0.4');
+            g.appendChild(p);
+            
+            // Dune shadow highlight
+            const p2 = cl('path');
+            p2.setAttribute('d', `M ${x-10},${dy+1} Q ${x+w*0.3},${dy-9} ${x+w*0.5},${dy+1} T ${x+w+10},${dy+6}`);
+            p2.setAttribute('stroke', '#e0b576'); p2.setAttribute('stroke-width', '0.8');
+            p2.setAttribute('fill', 'none'); p2.setAttribute('opacity', '0.3');
+            g.appendChild(p2);
+          }
+        }
+
+        if (biome === 'lake') {
+          // Lake base
+          const e = cl('ellipse');
+          e.setAttribute('cx', x + w*0.5); e.setAttribute('cy', y + h*0.55);
+          e.setAttribute('rx', w*0.35); e.setAttribute('ry', h*0.25);
+          e.setAttribute('fill', 'url(#lake-grad)');
+          e.setAttribute('filter', 'url(#water-blur)');
+          e.setAttribute('opacity', '0.85');
+          g.appendChild(e);
+          
+          // Shoreline
+          const e2 = cl('ellipse');
+          e2.setAttribute('cx', x + w*0.5); e2.setAttribute('cy', y + h*0.55);
+          e2.setAttribute('rx', w*0.35); e2.setAttribute('ry', h*0.25);
+          e2.setAttribute('fill', 'none'); e2.setAttribute('stroke', '#7dd3fc');
+          e2.setAttribute('stroke-width', '0.8'); e2.setAttribute('opacity', '0.6');
+          g.appendChild(e2);
+
+          // Ripples
+          for (let i = 0; i < 4; i++) {
+            const p = cl('path');
+            const ry = y + h*0.4 + i*8;
+            const rw = w*0.15 + (i%2)*w*0.1;
+            p.setAttribute('d', `M ${x+w*0.5-rw},${ry} Q ${x+w*0.5},${ry-3} ${x+w*0.5+rw},${ry}`);
+            p.setAttribute('stroke', '#bae6fd'); p.setAttribute('stroke-width', '0.6');
+            p.setAttribute('fill', 'none'); p.setAttribute('opacity', '0.7');
+            g.appendChild(p);
+          }
+        }
+
+        if (biome === 'river') {
+          // Main river bed
+          const pBase = cl('path');
+          const dPath = `M ${x+w*0.2},${y-10} C ${x+w*0.6},${y+h*0.3} ${x+w*0.1},${y+h*0.6} ${x+w*0.7},${y+h+10}`;
+          pBase.setAttribute('d', dPath);
+          pBase.setAttribute('stroke', 'url(#lake-grad)'); pBase.setAttribute('stroke-width', '8');
+          pBase.setAttribute('fill', 'none'); pBase.setAttribute('stroke-linecap', 'round');
+          pBase.setAttribute('filter', 'url(#water-blur)');
+          pBase.setAttribute('opacity', '0.8');
+          g.appendChild(pBase);
+
+          // Water surface lines
+          const pLine1 = cl('path');
+          pLine1.setAttribute('d', dPath);
+          pLine1.setAttribute('stroke', '#7dd3fc'); pLine1.setAttribute('stroke-width', '1.5');
+          pLine1.setAttribute('fill', 'none'); pLine1.setAttribute('opacity', '0.6');
+          g.appendChild(pLine1);
+          
+          const pLine2 = cl('path');
+          pLine2.setAttribute('d', `M ${x+w*0.3},${y} C ${x+w*0.5},${y+h*0.4} ${x+w*0.2},${y+h*0.5} ${x+w*0.6},${y+h}`);
+          pLine2.setAttribute('stroke', '#bae6fd'); pLine2.setAttribute('stroke-width', '0.8');
+          pLine2.setAttribute('fill', 'none'); pLine2.setAttribute('opacity', '0.5');
+          g.appendChild(pLine2);
+        }
+
+        if (biome === 'mountain') {
+          // Layered mountains
+          const peaks = [
+            {px: 0.3, ph: 0.5, bg: true}, {px: 0.7, ph: 0.6, bg: true},
+            {px: 0.2, ph: 0.65}, {px: 0.5, ph: 0.8}, {px: 0.8, ph: 0.55}
+          ];
+          
+          peaks.forEach(({px, ph, bg}) => {
+            const mx = x + w * px, mBase = y + h * (bg ? 0.6 : 0.85);
+            const mH = h * ph * 0.55;
+            const mW = mH * 0.8;
+            
+            // Mountain body
+            const tri = cl('path');
+            tri.setAttribute('d', `M ${mx},${mBase-mH} Q ${mx+mW*0.3},${mBase-mH*0.5} ${mx+mW},${mBase} L ${mx-mW},${mBase} Q ${mx-mW*0.3},${mBase-mH*0.5} ${mx},${mBase-mH} Z`);
+            tri.setAttribute('fill', bg ? '#334155' : 'url(#mountain-grad)');
+            tri.setAttribute('stroke', '#1e293b'); tri.setAttribute('stroke-width', '0.5');
+            tri.setAttribute('opacity', bg ? '0.7' : '0.9');
+            g.appendChild(tri);
+            
+            // Snow cap jagged
+            if (!bg) {
+              const snow = cl('path');
+              const sH = mH * 0.35;
+              const sW = mW * 0.35;
+              snow.setAttribute('d', `M ${mx},${mBase-mH} Q ${mx+sW*0.5},${mBase-mH+sH*0.5} ${mx+sW},${mBase-mH+sH} L ${mx+sW*0.5},${mBase-mH+sH*0.7} L ${mx},${mBase-mH+sH*1.1} L ${mx-sW*0.5},${mBase-mH+sH*0.7} L ${mx-sW},${mBase-mH+sH} Q ${mx-sW*0.5},${mBase-mH+sH*0.5} ${mx},${mBase-mH} Z`);
+              snow.setAttribute('fill', 'rgba(255,255,255,0.85)');
+              g.appendChild(snow);
+              
+              // Shadow side
+              const shadow = cl('path');
+              shadow.setAttribute('d', `M ${mx},${mBase-mH} L ${mx},${mBase} L ${mx+mW},${mBase} Q ${mx+mW*0.3},${mBase-mH*0.5} ${mx},${mBase-mH} Z`);
+              shadow.setAttribute('fill', '#000');
+              shadow.setAttribute('opacity', '0.15');
+              g.appendChild(shadow);
+            }
+          });
+        }
+
+        if (biome === 'forest') {
+          // Forest base layer
+          const bg = cl('rect');
+          bg.setAttribute('x', x); bg.setAttribute('y', y);
+          bg.setAttribute('width', w); bg.setAttribute('height', h);
+          bg.setAttribute('fill', 'url(#forest-grad)');
+          bg.setAttribute('opacity', '0.4');
+          g.appendChild(bg);
+          
+          // Clustered Trees
+          const treePts = [];
+          for(let i=0; i<15; i++) treePts.push([Math.random()*0.8+0.1, Math.random()*0.8+0.1]);
+          // Sort by Y for proper overlap
+          treePts.sort((a,b) => a[1] - b[1]);
+          
+          treePts.forEach(([tx, ty]) => {
+            const treeX = x + w * tx, treeY = y + h * ty;
+            // Trunk
+            const trunk = cl('line');
+            trunk.setAttribute('x1', treeX); trunk.setAttribute('y1', treeY + 3);
+            trunk.setAttribute('x2', treeX); trunk.setAttribute('y2', treeY + 8);
+            trunk.setAttribute('stroke', '#451a03'); trunk.setAttribute('stroke-width', '1.2');
+            g.appendChild(trunk);
+            
+            // Canopy (layered circles for realistic look)
+            const c1 = cl('circle');
+            c1.setAttribute('cx', treeX); c1.setAttribute('cy', treeY);
+            c1.setAttribute('r', '4');
+            c1.setAttribute('fill', '#15803d'); c1.setAttribute('opacity', '0.9');
+            g.appendChild(c1);
+            
+            const c2 = cl('circle');
+            c2.setAttribute('cx', treeX-1.5); c2.setAttribute('cy', treeY-1.5);
+            c2.setAttribute('r', '2.5');
+            c2.setAttribute('fill', '#22c55e');
+            g.appendChild(c2);
+            
+            const c3 = cl('circle');
+            c3.setAttribute('cx', treeX+1.5); c3.setAttribute('cy', treeY-1);
+            c3.setAttribute('r', '2');
+            c3.setAttribute('fill', '#4ade80');
+            g.appendChild(c3);
+          });
+        }
+
+        if (biome === 'valley') {
+          // Lush grass base
+          const bg = cl('rect');
+          bg.setAttribute('x', x); bg.setAttribute('y', y);
+          bg.setAttribute('width', w); bg.setAttribute('height', h);
+          bg.setAttribute('fill', 'url(#forest-grad)');
+          bg.setAttribute('opacity', '0.2');
+          g.appendChild(bg);
+
+          // Detailed Flowers
+          const flowerColors = ['#f472b6', '#fbbf24', '#c084fc', '#60a5fa'];
+          for(let i=0; i<12; i++) {
+            const fX = x + w * (Math.random()*0.8+0.1);
+            const fY = y + h * (Math.random()*0.8+0.1);
+            
+            // Stem
+            const stem = cl('path');
+            stem.setAttribute('d', `M ${fX},${fY} Q ${fX-2},${fY+3} ${fX},${fY+6}`);
+            stem.setAttribute('stroke', '#22c55e'); stem.setAttribute('stroke-width', '0.8');
+            stem.setAttribute('fill', 'none');
+            g.appendChild(stem);
+            
+            // Petals
+            const fc = flowerColors[i % flowerColors.length];
+            const p = cl('path');
+            p.setAttribute('d', `M ${fX},${fY-2} A 1.5 1.5 0 0 1 ${fX+2},${fY} A 1.5 1.5 0 0 1 ${fX},${fY+2} A 1.5 1.5 0 0 1 ${fX-2},${fY} A 1.5 1.5 0 0 1 ${fX},${fY-2}`);
+            p.setAttribute('fill', fc); p.setAttribute('opacity', '0.85');
+            g.appendChild(p);
+            
+            // Center
+            const center = cl('circle');
+            center.setAttribute('cx', fX); center.setAttribute('cy', fY);
+            center.setAttribute('r', '0.8'); center.setAttribute('fill', '#fef08a');
+            g.appendChild(center);
+          }
+        }
+
+        if (biome === 'volcano') {
+          const vx = x + w * 0.5, vBase = y + h * 0.85;
+          const vW = w * 0.4;
+          
+          // Magma base glow
+          const glow = cl('ellipse');
+          glow.setAttribute('cx', vx); glow.setAttribute('cy', vBase);
+          glow.setAttribute('rx', vW*1.2); glow.setAttribute('ry', h*0.2);
+          glow.setAttribute('fill', 'url(#lava-grad)');
+          glow.setAttribute('filter', 'url(#water-blur)');
+          glow.setAttribute('opacity', '0.3');
+          g.appendChild(glow);
+
+          // Volcano body
+          const cone = cl('path');
+          cone.setAttribute('d', `M ${vx-vW*0.25},${y+h*0.3} Q ${vx},${y+h*0.35} ${vx+vW*0.25},${y+h*0.3} L ${vx+vW},${vBase} Q ${vx},${vBase+h*0.1} ${vx-vW},${vBase} Z`);
+          cone.setAttribute('fill', '#292524'); cone.setAttribute('stroke', '#1c1917');
+          cone.setAttribute('stroke-width', '1');
+          g.appendChild(cone);
+          
+          // Lava flowing down sides
+          const lavaFlow = cl('path');
+          lavaFlow.setAttribute('d', `M ${vx-vW*0.1},${y+h*0.32} Q ${vx-vW*0.15},${y+h*0.5} ${vx-vW*0.3},${y+h*0.7} L ${vx-vW*0.1},${y+h*0.75} Q ${vx},${y+h*0.5} ${vx},${y+h*0.34} Z`);
+          lavaFlow.setAttribute('fill', 'url(#lava-grad)');
+          lavaFlow.setAttribute('opacity', '0.8');
+          g.appendChild(lavaFlow);
+          
+          const lavaFlow2 = cl('path');
+          lavaFlow2.setAttribute('d', `M ${vx+vW*0.1},${y+h*0.32} Q ${vx+vW*0.2},${y+h*0.6} ${vx+vW*0.4},${y+h*0.8} L ${vx+vW*0.2},${y+h*0.82} Q ${vx+vW*0.05},${y+h*0.6} ${vx},${y+h*0.34} Z`);
+          lavaFlow2.setAttribute('fill', '#ef4444');
+          lavaFlow2.setAttribute('opacity', '0.9');
+          g.appendChild(lavaFlow2);
+
+          // Crater opening
+          const crater = cl('ellipse');
+          crater.setAttribute('cx', vx); crater.setAttribute('cy', y + h * 0.3);
+          crater.setAttribute('rx', vW*0.25); crater.setAttribute('ry', '4');
+          crater.setAttribute('fill', '#7f1d1d'); crater.setAttribute('stroke', '#450a0a');
+          g.appendChild(crater);
+          
+          // Crater lava
+          const craterLava = cl('ellipse');
+          craterLava.setAttribute('cx', vx); craterLava.setAttribute('cy', y + h * 0.3);
+          craterLava.setAttribute('rx', vW*0.18); craterLava.setAttribute('ry', '2');
+          craterLava.setAttribute('fill', '#fde047');
+          craterLava.setAttribute('filter', 'url(#water-blur)');
+          g.appendChild(craterLava);
+
+          // Thick smoke clouds
+          for (let i = 0; i < 6; i++) {
+            const sc = cl('circle');
+            const sx = vx + (Math.random()-0.5)*vW;
+            const sy = y + h*0.2 - Math.random()*h*0.2;
+            sc.setAttribute('cx', sx); sc.setAttribute('cy', sy);
+            sc.setAttribute('r', 4 + Math.random()*5);
+            sc.setAttribute('fill', '#57534e');
+            sc.setAttribute('opacity', 0.4 + Math.random()*0.3);
+            sc.setAttribute('filter', 'url(#water-blur)');
+            g.appendChild(sc);
+          }
+        }
+
+        parent.appendChild(g);
+      }
+
+      // Territory paths, icons, labels for each room
+      ROOMS_DEF.forEach(room => {
+        const r = ROOM_RECTS[room.id];
+        const pathD = ORGANIC_PATHS[room.id];
+        if (!r || !pathD) return;
+        const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+
+        const tg = document.createElementNS(NS, 'g');
+        tg.setAttribute('data-biome-group', room.id);
+        tg.addEventListener('click', () => openRoomModal(room.id));
+        tg.style.cursor = 'pointer';
+
+        // Territory fill path
+        const path = document.createElementNS(NS, 'path');
+        path.setAttribute('d', pathD);
+        path.setAttribute('fill', 'rgba(168,85,247,0.2)');
+        path.setAttribute('stroke', 'rgba(168,85,247,0.5)');
+        path.setAttribute('stroke-width', '1.8');
+        path.setAttribute('stroke-linejoin', 'round');
+        path.setAttribute('data-territory-path', room.id);
+        path.style.transition = 'fill 0.5s ease, stroke 0.5s ease, filter 0.5s ease';
+        tg.appendChild(path);
+
+        // Biome accent overlay (subtle terrain color)
+        const accent = document.createElementNS(NS, 'path');
+        accent.setAttribute('d', pathD);
+        accent.setAttribute('fill', r.biomeFill || 'transparent');
+        accent.setAttribute('stroke', 'none');
+        accent.setAttribute('opacity', '0.5');
+        tg.appendChild(accent);
+
+        // Clip terrain to territory shape
+        const clipId = `clip-${room.id}`;
+        const clipPath = document.createElementNS(NS, 'clipPath');
+        clipPath.setAttribute('id', clipId);
+        const clipShape = document.createElementNS(NS, 'path');
+        clipShape.setAttribute('d', pathD);
+        clipPath.appendChild(clipShape);
+        tg.appendChild(clipPath);
+
+        // Terrain decorations (clipped to territory)
+        const terrainG = document.createElementNS(NS, 'g');
+        terrainG.setAttribute('clip-path', `url(#${clipId})`);
+        addTerrain(terrainG, r.biome, r.x, r.y, r.w, r.h);
+        tg.appendChild(terrainG);
+
+        // Biome icon
+        const biIcon = document.createElementNS(NS, 'text');
+        biIcon.setAttribute('x', r.x + 10); biIcon.setAttribute('y', r.y + 15);
+        biIcon.setAttribute('font-size', '11'); biIcon.setAttribute('opacity', '0.8');
+        biIcon.textContent = r.biomeIcon || '';
+        tg.appendChild(biIcon);
+
+        // Room icon (center)
+        const ico = document.createElementNS(NS, 'text');
+        ico.setAttribute('x', cx); ico.setAttribute('y', cy - 8);
+        ico.setAttribute('text-anchor', 'middle'); ico.setAttribute('dominant-baseline', 'central');
+        ico.setAttribute('font-size', '16'); ico.setAttribute('opacity', '0.9');
+        ico.textContent = room.icon;
+        tg.appendChild(ico);
+
+        // Room name
+        const nm = document.createElementNS(NS, 'text');
+        nm.setAttribute('x', cx); nm.setAttribute('y', cy + 8);
+        nm.setAttribute('text-anchor', 'middle'); nm.setAttribute('dominant-baseline', 'central');
+        nm.setAttribute('font-size', '6.5'); nm.setAttribute('font-weight', '800');
+        nm.setAttribute('font-family', 'Syne, sans-serif');
+        nm.setAttribute('fill', 'rgba(255,255,255,0.85)');
+        nm.setAttribute('letter-spacing', '0.06em');
+        nm.textContent = r.lines.join(' ');
+        tg.appendChild(nm);
+
+        // Owner badge
+        const badgeCx = r.x + r.w - 14, badgeCy = r.y + r.h - 14;
+        const badge = document.createElementNS(NS, 'circle');
+        badge.setAttribute('cx', badgeCx); badge.setAttribute('cy', badgeCy);
+        badge.setAttribute('r', '8'); badge.setAttribute('fill', '#a855f7');
+        badge.setAttribute('stroke', 'rgba(255,255,255,0.2)'); badge.setAttribute('stroke-width', '1');
+        badge.setAttribute('data-biome-pip', room.id);
+        tg.appendChild(badge);
+        const badgeT = document.createElementNS(NS, 'text');
+        badgeT.setAttribute('x', badgeCx); badgeT.setAttribute('y', badgeCy);
+        badgeT.setAttribute('text-anchor', 'middle'); badgeT.setAttribute('dominant-baseline', 'central');
+        badgeT.setAttribute('font-size', '6'); badgeT.setAttribute('font-weight', '900');
+        badgeT.setAttribute('font-family', 'Syne, sans-serif');
+        badgeT.setAttribute('fill', '#fff');
+        badgeT.setAttribute('data-biome-pip-text', room.id);
+        badgeT.textContent = 'L';
+        tg.appendChild(badgeT);
+
+        biomeLayer.appendChild(tg);
+      });
+
+      svg.appendChild(biomeLayer);
     }
 
     function updateMap() {
       if (!gameState) return;
+      const mapWrapper = document.querySelector('.map-wrapper');
+      const normalLayer = document.getElementById('normal-layer');
+      const biomeLayer = document.getElementById('biome-layer');
+
+      if (biomeMode) {
+        mapWrapper && mapWrapper.classList.add('kingdom-active');
+        if (normalLayer) { normalLayer.style.opacity = '0'; normalLayer.style.pointerEvents = 'none'; }
+        if (biomeLayer) { biomeLayer.style.opacity = '1'; biomeLayer.style.pointerEvents = 'all'; }
+      } else {
+        mapWrapper && mapWrapper.classList.remove('kingdom-active');
+        if (normalLayer) { normalLayer.style.opacity = '1'; normalLayer.style.pointerEvents = 'all'; }
+        if (biomeLayer) { biomeLayer.style.opacity = '0'; biomeLayer.style.pointerEvents = 'none'; }
+      }
+
       ROOMS_DEF.forEach(room => {
         const data = gameState.rooms[room.id] || { owner: 'L' };
-        const r = ROOM_RECTS[room.id];
         const isL = data.owner === 'L';
 
-        let fillCol, strokeCol;
-        if (biomeMode && r) {
-          // In biome mode: tint the border by owner, fill is biome
-          strokeCol = isL ? 'rgba(168,85,247,0.7)' : 'rgba(245,158,11,0.7)';
-          fillCol = 'rgba(255,255,255,0.02)';
-          const biomeBg = document.querySelector(`[data-biome-bg="${room.id}"]`);
-          if (biomeBg) biomeBg.setAttribute('opacity', '1');
-          const biomeIcon = document.querySelector(`[data-biome-icon="${room.id}"]`);
-          if (biomeIcon) biomeIcon.setAttribute('opacity', '1');
-        } else {
-          fillCol = isL ? 'rgba(168,85,247,0.18)' : 'rgba(245,158,11,0.18)';
-          strokeCol = isL ? 'rgba(168,85,247,0.55)' : 'rgba(245,158,11,0.55)';
-          const biomeBg = document.querySelector(`[data-biome-bg="${room.id}"]`);
-          if (biomeBg) biomeBg.setAttribute('opacity', '0');
-          const biomeIcon = document.querySelector(`[data-biome-icon="${room.id}"]`);
-          if (biomeIcon) biomeIcon.setAttribute('opacity', '0');
-        }
-
-        const pipCol = isL ? '#a855f7' : '#f59e0b';
+        // ── Update normal layer ──
         const rect = document.querySelector(`[data-room-rect="${room.id}"]`);
-        if (rect) { rect.setAttribute('fill', fillCol); rect.setAttribute('stroke', strokeCol); }
+        if (rect) {
+          rect.setAttribute('fill', isL ? 'rgba(168,85,247,0.2)' : 'rgba(245,158,11,0.2)');
+          rect.setAttribute('stroke', isL ? 'rgba(168,85,247,0.6)' : 'rgba(245,158,11,0.6)');
+        }
         const pip = document.querySelector(`[data-room-pip="${room.id}"]`);
-        if (pip) pip.setAttribute('fill', pipCol);
+        if (pip) pip.setAttribute('fill', isL ? '#a855f7' : '#f59e0b');
         const pipTxt = document.querySelector(`[data-room-pip-text="${room.id}"]`);
         if (pipTxt) pipTxt.textContent = data.owner;
+
+        // ── Update biome layer ──
+        const tPath = document.querySelector(`[data-territory-path="${room.id}"]`);
+        if (tPath) {
+          const fillBase = isL ? 'rgba(168,85,247,0.22)' : 'rgba(245,158,11,0.22)';
+          const strokeBase = isL ? 'rgba(168,85,247,0.55)' : 'rgba(245,158,11,0.55)';
+          const glowFilter = isL ? 'url(#lor-glow)' : 'url(#gia-glow)';
+          tPath.setAttribute('fill', fillBase);
+          tPath.setAttribute('stroke', strokeBase);
+          tPath.setAttribute('filter', glowFilter);
+        }
+        const bPip = document.querySelector(`[data-biome-pip="${room.id}"]`);
+        if (bPip) bPip.setAttribute('fill', isL ? '#a855f7' : '#f59e0b');
+        const bPipT = document.querySelector(`[data-biome-pip-text="${room.id}"]`);
+        if (bPipT) bPipT.textContent = data.owner;
       });
     }
 
     function toggleBiome() {
       biomeMode = !biomeMode;
-      const btn = document.getElementById('biome-toggle-btn');
-      btn.classList.toggle('active', biomeMode);
+      document.getElementById('biome-toggle-btn').classList.toggle('active', biomeMode);
       updateMap();
     }
 
@@ -1997,6 +2514,22 @@
           const d = document.createElement('div');
           d.className = 'dot' + (i < usedAtk ? ' used' : '');
           dotsEl.appendChild(d);
+        }
+
+        const gr = gameState.globalRules?.[p];
+        const grEl = document.getElementById(`gr-${p}`);
+        if (grEl) {
+          if (gr && gr.trim() !== '') {
+            grEl.textContent = `"${gr}"`;
+            grEl.style.color = 'var(--text)';
+            grEl.style.background = p === 'L' ? 'rgba(168, 85, 247, 0.1)' : 'rgba(245, 158, 11, 0.1)';
+            grEl.style.borderColor = p === 'L' ? 'var(--lor-border)' : 'var(--gia-border)';
+          } else {
+            grEl.textContent = "Nessuna legge globale. Clicca per impostare.";
+            grEl.style.color = 'var(--text-dim)';
+            grEl.style.background = 'rgba(0,0,0,0.15)';
+            grEl.style.borderColor = 'var(--border-dim)';
+          }
         }
       });
 
@@ -2080,6 +2613,8 @@
       ROOMS_DEF.forEach(room => {
         const data = gameState.rooms[room.id];
         if (!data || data.owner === attacker) return;
+        if (attacker === 'L' && room.id === 'camera-g') return;
+        if (attacker === 'G' && room.id === 'camera-l') return;
         const alreadyHit = (gameState.attackedToday?.[room.id] || []).includes(attacker);
         const opt = document.createElement('option');
         opt.value = room.id;
@@ -2120,6 +2655,8 @@
       const roomId = document.getElementById('sel-target').value;
 
       if (!roomId) { showToast('Seleziona una stanza da attaccare'); return; }
+      if (attacker === 'L' && roomId === 'camera-g') { showToast('Non puoi attaccare la camera di Giacomo! ⛔'); return; }
+      if (attacker === 'G' && roomId === 'camera-l') { showToast('Non puoi attaccare la camera di Lorenzo! ⛔'); return; }
 
       const maxAtk = maxAttacks(attacker);
       const usedAtk = gameState.attacks?.[attacker]?.used || 0;
@@ -2262,6 +2799,31 @@
     }
 
     // ═══════════════════════════════════════════
+    //  GLOBAL RULE MODAL
+    // ═══════════════════════════════════════════
+    let currentGrPlayer = null;
+
+    function openGlobalRuleModal(player) {
+      if (myProfile !== player) {
+        showToast('Puoi modificare solo la tua Legge globale! ⛔');
+        return;
+      }
+      currentGrPlayer = player;
+      const gr = gameState?.globalRules?.[player] || '';
+      document.getElementById('gr-textarea').value = gr;
+      openModal('globalrule-modal');
+    }
+
+    async function saveGlobalRule() {
+      if (!currentGrPlayer || !gameState) return;
+      const text = document.getElementById('gr-textarea').value.trim();
+      await gameRef.update({
+        [`globalRules.${currentGrPlayer}`]: text
+      });
+      showToast('Legge globale aggiornata! 📜');
+      closeModal('globalrule-modal');
+    }
+    // ═══════════════════════════════════════════
     //  ROOM MODAL
     // ═══════════════════════════════════════════
 
@@ -2385,7 +2947,7 @@
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-    ['dice-modal', 'room-modal', 'newday-modal', 'profile-modal', 'update-modal'].forEach(id => {
+    ['dice-modal', 'room-modal', 'newday-modal', 'profile-modal', 'update-modal', 'globalrule-modal'].forEach(id => {
       document.getElementById(id).addEventListener('click', function (e) {
         if (e.target === this) closeModal(id);
       });
