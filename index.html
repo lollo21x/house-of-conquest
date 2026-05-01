@@ -61,17 +61,19 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html,
-    body {
-      min-height: 100dvh;
+    html {
       background: var(--bg);
       color: var(--text);
       font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow-x: hidden;
       /* PWA Native Feel */
       user-select: none;
-      overscroll-behavior-y: none;
       -webkit-user-drag: none;
     }
 
@@ -148,19 +150,44 @@
       line-height: 1;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .btn-new-day {
-      font-family: 'Syne', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
       color: var(--bg);
       background: linear-gradient(135deg, var(--lor), #c084fc);
       border: none;
       border-radius: 9px;
-      padding: 8px 13px;
       cursor: pointer;
       transition: opacity .2s, transform .15s;
+    }
+
+    .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all .2s;
+      user-select: none;
+    }
+
+    .profile-icon:active {
+      transform: scale(.92);
     }
 
     .btn-new-day:active {
@@ -1261,7 +1288,10 @@
         <span>Giorno</span>
         <strong id="day-display">1</strong>
       </div>
-      <button class="btn-new-day" onclick="openModal('newday-modal')">Nuovo Giorno</button>
+      <div class="header-actions">
+        <button class="btn-new-day" onclick="openModal('newday-modal')">☀️</button>
+        <div class="profile-icon" id="profile-icon" onclick="openModal('profile-modal')">👤</div>
+      </div>
     </header>
 
     <main>
@@ -1353,12 +1383,16 @@
       <div class="attack-panel">
         <div style="display:flex;flex-direction:column;gap:12px">
 
-          <div class="select-group">
+          <div class="select-group" id="attacker-select-group" style="display:none">
             <span class="select-label">Chi attacca</span>
             <select id="sel-attacker" onchange="updateTargetSelect(); updateAttackButton();">
               <option value="L">👑 Lorenzo</option>
               <option value="G">🛡️ Giacomo</option>
             </select>
+          </div>
+
+          <div id="no-profile-msg" style="text-align:center;padding:10px;font-size:12px;color:var(--text-dim);background:var(--bg2);border-radius:10px;border:1px dashed var(--border)">
+            ⚠️ Seleziona un profilo in alto per attaccare
           </div>
 
           <div class="select-group">
@@ -1462,6 +1496,24 @@
     </div>
   </div>
 
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">👤 Seleziona Profilo</div>
+      <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.7">
+        Scegli chi sei. Questa scelta verrà ricordata e preimposterà il tuo nome durante la fase di attacco.
+      </p>
+      <div class="transfer-btns">
+        <button class="btn-player bp-l" id="prof-btn-L" onclick="setProfile('L')">👑 Lorenzo</button>
+        <button class="btn-player bp-g" id="prof-btn-G" onclick="setProfile('G')">🛡️ Giacomo</button>
+      </div>
+      <div class="modal-btns" style="margin-top: 12px;">
+        <button class="btn-sec" onclick="closeModal('profile-modal')">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
@@ -1543,6 +1595,7 @@
     let pendingAttk = null;
     let mapInitialized = false;
     let biomeMode = false;
+    let myProfile = localStorage.getItem('conquest_profile') || null;
 
     // ═══════════════════════════════════════════
     //  FIREBASE
@@ -1603,6 +1656,60 @@
     }
 
     function pName(p) { return p === 'L' ? 'Lorenzo' : 'Giacomo'; }
+
+    function setProfile(player) {
+      myProfile = player;
+      localStorage.setItem('conquest_profile', player);
+      applyProfile();
+      closeModal('profile-modal');
+      showToast('Profilo impostato: ' + (player === 'L' ? 'Lorenzo' : 'Giacomo'));
+    }
+
+    function applyProfile() {
+      const iconEl = document.getElementById('profile-icon');
+      if (!iconEl) return;
+      if (myProfile === 'L') {
+        iconEl.textContent = '👑';
+        iconEl.style.borderColor = 'var(--lor)';
+        iconEl.style.background = 'var(--lor-dim)';
+      } else if (myProfile === 'G') {
+        iconEl.textContent = '🛡️';
+        iconEl.style.borderColor = 'var(--gia)';
+        iconEl.style.background = 'var(--gia-dim)';
+      } else {
+        iconEl.textContent = '👤';
+        iconEl.style.borderColor = 'var(--border)';
+        iconEl.style.background = 'var(--bg2)';
+      }
+      
+      const btnL = document.getElementById('prof-btn-L');
+      const btnG = document.getElementById('prof-btn-G');
+      if (btnL) btnL.classList.toggle('active', myProfile === 'L');
+      if (btnG) btnG.classList.toggle('active', myProfile === 'G');
+
+      const noProfileMsg = document.getElementById('no-profile-msg');
+      const btnAttack = document.getElementById('btn-attack');
+      const selTarget = document.getElementById('sel-target');
+      const selAttacker = document.getElementById('sel-attacker');
+
+      if (myProfile) {
+        if (noProfileMsg) noProfileMsg.style.display = 'none';
+        if (btnAttack) btnAttack.disabled = false;
+        if (selTarget) selTarget.disabled = false;
+        if (selAttacker) {
+          selAttacker.value = myProfile;
+          updateTargetSelect();
+          updateAttackButton();
+        }
+      } else {
+        if (noProfileMsg) noProfileMsg.style.display = 'block';
+        if (btnAttack) btnAttack.disabled = true;
+        if (selTarget) {
+          selTarget.disabled = true;
+          selTarget.innerHTML = '<option value="">Scegli un profilo sopra...</option>';
+        }
+      }
+    }
 
     // ═══════════════════════════════════════════
     //  SVG MAP
@@ -1824,8 +1931,12 @@
 
     function updateTargetSelect() {
       if (!gameState) return;
-      const attacker = document.getElementById('sel-attacker').value;
       const sel = document.getElementById('sel-target');
+      if (!myProfile) {
+        sel.innerHTML = '<option value="">Scegli un profilo sopra...</option>';
+        return;
+      }
+      const attacker = myProfile;
       const currentVal = sel.value;
       sel.innerHTML = '<option value="">Seleziona una stanza…</option>';
 
@@ -1844,8 +1955,13 @@
     }
 
     function updateAttackButton() {
-      const attacker = document.getElementById('sel-attacker').value;
       const btn = document.getElementById('btn-attack');
+      if (!myProfile) {
+        btn.className = 'btn-attack';
+        btn.style.color = 'var(--text-dim)';
+        return;
+      }
+      const attacker = myProfile;
       if (attacker === 'L') {
         btn.className = 'btn-attack attack-lor';
         btn.style.color = 'var(--bg)';
@@ -1861,8 +1977,9 @@
 
     function initiateAttack() {
       if (!gameState) return;
+      if (!myProfile) { showToast('Seleziona un profilo in alto per attaccare'); return; }
 
-      const attacker = document.getElementById('sel-attacker').value;
+      const attacker = myProfile;
       const roomId = document.getElementById('sel-target').value;
 
       if (!roomId) { showToast('Seleziona una stanza da attaccare'); return; }
@@ -2063,7 +2180,7 @@
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-    ['dice-modal', 'room-modal', 'newday-modal'].forEach(id => {
+    ['dice-modal', 'room-modal', 'newday-modal', 'profile-modal'].forEach(id => {
       document.getElementById(id).addEventListener('click', function (e) {
         if (e.target === this) closeModal(id);
       });
@@ -2094,7 +2211,10 @@
     //  INIT
     // ═══════════════════════════════════════════
 
-    (function init() { connectFirebase(); })();
+    (function init() { 
+      connectFirebase(); 
+      applyProfile();
+    })();
   </script>
 </body>
 
