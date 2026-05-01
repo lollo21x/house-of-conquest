@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Conquest">
+  <meta name="theme-color" content="#07070f">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <title>🏠 House of Conquest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+    rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --bg: #07070f;
+      --bg2: #0e0e1c;
+      --surface: rgba(255, 255, 255, .035);
+      --surface2: rgba(255, 255, 255, .06);
+      --border: rgba(255, 255, 255, .08);
+      --border-dim: rgba(255, 255, 255, .04);
+
+      /* ── Lorenzo — Viola Imperiale ── */
+      --lor: #a855f7;
+      --lor-light: #d8b4fe;
+      --lor-dim: rgba(168, 85, 247, .14);
+      --lor-glow: rgba(168, 85, 247, .28);
+      --lor-border: rgba(168, 85, 247, .35);
+
+      /* ── Giacomo — Ambra Reale ── */
+      --gia: #f59e0b;
+      --gia-light: #fde68a;
+      --gia-dim: rgba(245, 158, 11, .14);
+      --gia-glow: rgba(245, 158, 11, .28);
+      --gia-border: rgba(245, 158, 11, .35);
+
+      --text: #ede8f8;
+      --text-dim: #5a5472;
+      --success: #34d399;
+      --danger: #f87171;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 70% 50% at 15% -5%, rgba(168, 85, 247, .07) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 40% at 85% 105%, rgba(245, 158, 11, .06) 0%, transparent 55%),
+        var(--bg);
+    }
+
+    ::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: calc(var(--safe-top) + 13px) 18px 13px;
+      background: rgba(7, 7, 15, .8);
+      backdrop-filter: blur(28px) saturate(1.3);
+      -webkit-backdrop-filter: blur(28px) saturate(1.3);
+      border-bottom: 1px solid var(--border-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      background: linear-gradient(135deg, var(--lor), var(--gia));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .day-badge {
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .day-badge span {
+      display: block;
+      font-size: 8px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .day-badge strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .btn-new-day {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--lor), #c084fc);
+      border: none;
+      border-radius: 9px;
+      padding: 8px 13px;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+
+    .btn-new-day:active {
+      opacity: .75;
+      transform: scale(.96);
+    }
+
+    /* ─────────────────────────────────────────
+       MAIN
+    ───────────────────────────────────────── */
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 20px 15px calc(var(--safe-bottom) + 44px);
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION TITLES
+    ───────────────────────────────────────── */
+    .sec-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-dim);
+    }
+
+    /* ─────────────────────────────────────────
+       PLAYER CARDS
+    ───────────────────────────────────────── */
+    .players-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+      margin-bottom: 12px;
+    }
+
+    .player-card {
+      border-radius: 20px;
+      padding: 16px 14px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform .2s;
+    }
+
+    .player-card:active {
+      transform: scale(.985);
+    }
+
+    .player-card.lorenzo {
+      background: linear-gradient(150deg, rgba(168, 85, 247, .1) 0%, rgba(255, 255, 255, .02) 70%);
+      border: 1px solid var(--lor-border);
+      box-shadow: 0 0 28px rgba(168, 85, 247, .1), inset 0 1px 0 rgba(168, 85, 247, .12);
+    }
+
+    .player-card.giacomo {
+      background: linear-gradient(150deg, rgba(245, 158, 11, .1) 0%, rgba(255, 255, 255, .02) 70%);
+      border: 1px solid var(--gia-border);
+      box-shadow: 0 0 28px rgba(245, 158, 11, .1), inset 0 1px 0 rgba(245, 158, 11, .12);
+    }
+
+    .player-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+    }
+
+    .player-card.lorenzo::before {
+      background: linear-gradient(90deg, transparent, var(--lor), transparent);
+    }
+
+    .player-card.giacomo::before {
+      background: linear-gradient(90deg, transparent, var(--gia), transparent);
+    }
+
+    .p-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .player-card.lorenzo .p-avatar {
+      background: var(--lor-dim);
+    }
+
+    .player-card.giacomo .p-avatar {
+      background: var(--gia-dim);
+    }
+
+    .p-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .player-card.lorenzo .p-name {
+      color: var(--lor-light);
+    }
+
+    .player-card.giacomo .p-name {
+      color: var(--gia-light);
+    }
+
+    .p-status {
+      display: inline-block;
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      padding: 2px 8px;
+      border-radius: 5px;
+      margin-bottom: 12px;
+    }
+
+    .s-impero {
+      background: var(--lor-dim);
+      color: var(--lor-light);
+      border: 1px solid var(--lor-border);
+    }
+
+    .s-regno {
+      background: var(--gia-dim);
+      color: var(--gia-light);
+      border: 1px solid var(--gia-border);
+    }
+
+    .s-impero-g {
+      background: var(--gia-dim);
+      color: var(--gia-light);
+      border: 1px solid var(--gia-border);
+    }
+
+    .s-regno-l {
+      background: var(--lor-dim);
+      color: var(--lor-light);
+      border: 1px solid var(--lor-border);
+    }
+
+    .p-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .p-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: .03em;
+    }
+
+    .p-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .player-card.lorenzo .p-value {
+      color: var(--lor);
+    }
+
+    .player-card.giacomo .p-value {
+      color: var(--gia);
+    }
+
+    .attack-dots {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid;
+      transition: background .3s;
+    }
+
+    .player-card.lorenzo .dot {
+      border-color: var(--lor);
+    }
+
+    .player-card.giacomo .dot {
+      border-color: var(--gia);
+    }
+
+    .player-card.lorenzo .dot.used {
+      background: var(--lor);
+    }
+
+    .player-card.giacomo .dot.used {
+      background: var(--gia);
+    }
+
+    /* ─────────────────────────────────────────
+       TERRITORY BAR
+    ───────────────────────────────────────── */
+    .territory-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-radius: 16px;
+      padding: 13px 16px;
+      margin-bottom: 26px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .territory-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 9px;
+    }
+
+    .t-player {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+    }
+
+    .t-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .t-dot-l {
+      background: var(--lor);
+      box-shadow: 0 0 6px var(--lor-glow);
+    }
+
+    .t-dot-g {
+      background: var(--gia);
+      box-shadow: 0 0 6px var(--gia-glow);
+    }
+
+    .t-player-l {
+      color: var(--lor-light);
+    }
+
+    .t-player-g {
+      color: var(--gia-light);
+    }
+
+    .territory-bar {
+      height: 7px;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .t-fill-l {
+      height: 100%;
+      background: linear-gradient(90deg, var(--lor), #c084fc);
+      border-radius: 4px 0 0 4px;
+      transition: width .55s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .t-fill-g {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gia), var(--gia-light));
+      border-radius: 0 4px 4px 0;
+      transition: width .55s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* ─────────────────────────────────────────
+       HOUSE MAP SVG
+    ───────────────────────────────────────── */
+    .map-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+    }
+
+    .map-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .map-legend {
+      display: flex;
+      gap: 16px;
+    }
+
+    .map-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+
+    .map-legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .map-legend-item.lor-item { color: var(--lor-light); }
+    .map-legend-item.gia-item { color: var(--gia-light); }
+
+    .biome-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 11px;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      transition: all .2s;
+      user-select: none;
+    }
+
+    .biome-toggle.active {
+      background: rgba(52,211,153,.12);
+      border-color: rgba(52,211,153,.5);
+      color: #34d399;
+    }
+
+    .biome-toggle-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background .2s;
+    }
+
+    .biome-toggle.active .biome-toggle-dot {
+      background: #34d399;
+      box-shadow: 0 0 6px #34d399;
+    }
+
+    #house-map {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    #house-map [data-room-rect] {
+      transition: fill .5s ease, stroke .5s ease;
+    }
+
+    #house-map [data-biome-bg] {
+      transition: opacity .5s ease;
+    }
+
+    #house-map [data-room-pip] {
+      transition: fill .4s ease;
+    }
+
+    #house-map [data-room-group] {
+      cursor: pointer;
+    }
+
+    #house-map [data-room-group]:active {
+      opacity: .7;
+    }
+
+    /* ─────────────────────────────────────────
+       ROOMS GRID
+    ───────────────────────────────────────── */
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 28px;
+    }
+
+    .room-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px 7px 11px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: transform .2s, border-color .3s, background .3s, box-shadow .3s;
+      user-select: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .room-card:active {
+      transform: scale(.91);
+    }
+
+    .room-card.owner-L {
+      border-color: var(--lor-border);
+      background: linear-gradient(160deg, rgba(168, 85, 247, .08), rgba(255, 255, 255, .02));
+      box-shadow: 0 0 16px rgba(168, 85, 247, .08);
+    }
+
+    .room-card.owner-G {
+      border-color: var(--gia-border);
+      background: linear-gradient(160deg, rgba(245, 158, 11, .08), rgba(255, 255, 255, .02));
+      box-shadow: 0 0 16px rgba(245, 158, 11, .08);
+    }
+
+    .room-strip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2.5px;
+      transition: background .35s;
+    }
+
+    .owner-L .room-strip {
+      background: var(--lor);
+    }
+
+    .owner-G .room-strip {
+      background: var(--gia);
+    }
+
+    .room-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .room-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: .03em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .room-rule-tag {
+      font-size: 8px;
+      color: var(--text-dim);
+      font-style: italic;
+      margin-top: 3px;
+      line-height: 1.2;
+      max-height: 24px;
+      overflow: hidden;
+    }
+
+    .room-owner-pip {
+      position: absolute;
+      bottom: 5px;
+      right: 6px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      font-size: 7px;
+      font-weight: 900;
+      font-family: 'Syne', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .owner-L .room-owner-pip {
+      background: var(--lor);
+      color: var(--bg);
+    }
+
+    .owner-G .room-owner-pip {
+      background: var(--gia);
+      color: var(--bg);
+    }
+
+    /* ─────────────────────────────────────────
+       ATTACK PANEL
+    ───────────────────────────────────────── */
+    .attack-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px 16px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .select-label {
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+
+    select {
+      width: 100%;
+      background: var(--bg2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 32px 11px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235a5472'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--lor);
+    }
+
+    select option {
+      background: #14142a;
+    }
+
+    .btn-attack {
+      width: 100%;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--lor), #c084fc);
+      border: none;
+      border-radius: 11px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-attack::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .18), transparent);
+      transform: translateX(-100%);
+      transition: transform .4s;
+    }
+
+    .btn-attack:hover::after {
+      transform: translateX(100%);
+    }
+
+    .btn-attack:active {
+      transform: scale(.97);
+      opacity: .9;
+    }
+
+    .btn-attack:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .btn-attack.attack-lor {
+      background: linear-gradient(135deg, var(--lor), #c084fc);
+    }
+
+    .btn-attack.attack-gia {
+      background: linear-gradient(135deg, var(--gia), var(--gia-light));
+      color: var(--bg);
+    }
+
+    /* ─────────────────────────────────────────
+       RULES
+    ───────────────────────────────────────── */
+    .rules-box {
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-radius: 16px;
+      padding: 15px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .rules-box strong {
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      letter-spacing: .06em;
+      font-weight: 700;
+    }
+
+    /* ─────────────────────────────────────────
+       MODALS
+    ───────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: calc(var(--safe-bottom));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(14, 14, 28, .97);
+      backdrop-filter: blur(36px) saturate(1.4);
+      -webkit-backdrop-filter: blur(36px) saturate(1.4);
+      border-radius: 28px 28px 0 0;
+      padding: 20px 20px 24px;
+      border-top: 1px solid var(--border);
+      transform: translateY(100%);
+      transition: transform .4s cubic-bezier(.16, 1, .3, 1);
+      max-height: 92dvh;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.open .modal-sheet {
+      transform: translateY(0);
+    }
+
+    .modal-handle {
+      width: 34px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 0 auto 18px;
+    }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* ─────────────────────────────────────────
+       DICE
+    ───────────────────────────────────────── */
+    .dice-players {
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-align: center;
+      margin-bottom: 8px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+
+    .dice-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .dice {
+      width: 46px;
+      height: 46px;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      transition: all .25s;
+      flex-shrink: 0;
+    }
+
+    .dice.d-attacker {
+      border-color: var(--lor-border);
+    }
+
+    .dice.d-defender {
+      border-color: var(--gia-border);
+    }
+
+    .dice.d-top-two {
+      border-color: var(--lor);
+      color: var(--lor);
+      background: var(--lor-dim);
+    }
+
+    .dice.d-used-def {
+      border-color: var(--gia);
+      color: var(--gia);
+      background: var(--gia-dim);
+    }
+
+    .dice.d-winner {
+      border-color: var(--success);
+      color: var(--success);
+      background: rgba(52, 211, 153, .1);
+    }
+
+    .dice.d-loser {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: rgba(248, 113, 113, .1);
+    }
+
+    @keyframes roll-anim {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      20% {
+        transform: rotate(15deg) scale(1.12);
+      }
+
+      40% {
+        transform: rotate(-12deg) scale(.94);
+      }
+
+      60% {
+        transform: rotate(18deg) scale(1.06);
+      }
+
+      80% {
+        transform: rotate(-5deg) scale(1.02);
+      }
+
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    .dice.rolling {
+      animation: roll-anim .7s ease-in-out;
+    }
+
+    .vs-line {
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      letter-spacing: .22em;
+      color: var(--text-dim);
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .result-banner {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      text-align: center;
+      margin: 14px 0;
+    }
+
+    .result-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .r-victory {
+      color: var(--success);
+    }
+
+    .r-defeat {
+      color: var(--danger);
+    }
+
+    .result-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ─────────────────────────────────────────
+       ROOM MODAL
+    ───────────────────────────────────────── */
+    .rm-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .rm-icon {
+      font-size: 36px;
+    }
+
+    .rm-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .rm-owner-label {
+      font-size: 12px;
+      margin-top: 3px;
+      color: var(--text-dim);
+    }
+
+    .transfer-label {
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+    }
+
+    .transfer-btns {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .btn-player {
+      flex: 1;
+      padding: 11px 8px;
+      border-radius: 10px;
+      border: 1px solid;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      background: transparent;
+    }
+
+    .btn-player.bp-l {
+      border-color: var(--lor-border);
+      color: var(--lor-light);
+    }
+
+    .btn-player.bp-g {
+      border-color: var(--gia-border);
+      color: var(--gia-light);
+    }
+
+    .btn-player.bp-l.active {
+      background: var(--lor-dim);
+      border-color: var(--lor);
+    }
+
+    .btn-player.bp-g.active {
+      background: var(--gia-dim);
+      border-color: var(--gia);
+    }
+
+    .btn-player:active {
+      transform: scale(.96);
+    }
+
+    textarea {
+      width: 100%;
+      background: var(--bg2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 68px;
+      margin-bottom: 14px;
+      transition: border-color .2s;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--lor);
+    }
+
+    /* ─────────────────────────────────────────
+       MODAL BUTTONS
+    ───────────────────────────────────────── */
+    .modal-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-sec {
+      flex: 1;
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .btn-sec:active {
+      opacity: .7;
+    }
+
+    .btn-pri {
+      flex: 2;
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--lor), #c084fc);
+      border: none;
+      border-radius: 11px;
+      padding: 13px;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .btn-pri:active {
+      opacity: .8;
+    }
+
+    .btn-pri:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    /* ─────────────────────────────────────────
+       TOAST
+    ───────────────────────────────────────── */
+    .toast {
+      position: fixed;
+      top: calc(var(--safe-top) + 70px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: rgba(20, 20, 40, .95);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 12px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: var(--text);
+      z-index: 400;
+      opacity: 0;
+      transition: all .3s;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ─────────────────────────────────────────
+       LOADING
+    ───────────────────────────────────────── */
+    #loading {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--lor);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      letter-spacing: .14em;
+      color: var(--text-dim);
+    }
+
+    /* ─────────────────────────────────────────
+       MOBILE TWEAKS
+    ───────────────────────────────────────── */
+    @media (max-width: 380px) {
+      .players-grid {
+        gap: 9px;
+      }
+
+      .player-card {
+        padding: 13px 11px;
+      }
+
+      .p-name {
+        font-size: 13px;
+      }
+
+      .rooms-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+      }
+
+      .room-card {
+        min-height: 82px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADING -->
+  <div id="loading" class="hidden">
+    <div class="spinner"></div>
+    <div class="loading-text">Connessione in corso…</div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="hidden">
+
+    <header>
+      <div class="logo">⚡ Conquest</div>
+      <div class="day-badge">
+        <span>Giorno</span>
+        <strong id="day-display">1</strong>
+      </div>
+      <button class="btn-new-day" onclick="openModal('newday-modal')">Nuovo Giorno</button>
+    </header>
+
+    <main>
+
+      <!-- PLAYERS -->
+      <div class="sec-title">Giocatori</div>
+      <div class="players-grid">
+
+        <div class="player-card lorenzo">
+          <div class="p-avatar">👑</div>
+          <div class="p-name">Lorenzo</div>
+          <div id="status-L" class="p-status s-impero">⭐ Impero</div>
+          <div class="p-stat">
+            <span class="p-label">Stanze</span>
+            <span class="p-value" id="rooms-L">7</span>
+          </div>
+          <div class="p-stat">
+            <span class="p-label">Attacchi</span>
+            <span class="p-value" id="atk-L">3/3</span>
+          </div>
+          <div class="attack-dots" id="dots-L"></div>
+        </div>
+
+        <div class="player-card giacomo">
+          <div class="p-avatar">🛡️</div>
+          <div class="p-name">Giacomo</div>
+          <div id="status-G" class="p-status s-regno">🛡️ Regno</div>
+          <div class="p-stat">
+            <span class="p-label">Stanze</span>
+            <span class="p-value" id="rooms-G">2</span>
+          </div>
+          <div class="p-stat">
+            <span class="p-label">Attacchi</span>
+            <span class="p-value" id="atk-G">2/2</span>
+          </div>
+          <div class="attack-dots" id="dots-G"></div>
+        </div>
+
+      </div>
+
+      <!-- TERRITORY BAR -->
+      <div class="territory-wrapper">
+        <div class="territory-top">
+          <div class="t-player t-player-l">
+            <div class="t-dot t-dot-l"></div>
+            <span>Lorenzo — <strong id="t-count-l">7</strong> stanze</span>
+          </div>
+          <div class="t-player t-player-g">
+            <span><strong id="t-count-g">2</strong> stanze — Giacomo</span>
+            <div class="t-dot t-dot-g"></div>
+          </div>
+        </div>
+        <div class="territory-bar">
+          <div class="t-fill-l" id="t-fill-l" style="width:77.8%"></div>
+          <div class="t-fill-g" id="t-fill-g" style="width:22.2%"></div>
+        </div>
+      </div>
+
+      <!-- LIVE MAP -->
+      <div class="sec-title">🏠 Mappa in Tempo Reale</div>
+      <div class="map-wrapper">
+        <div class="map-top-bar">
+          <div class="map-legend">
+            <div class="map-legend-item lor-item">
+              <div class="map-legend-dot" style="background:var(--lor);box-shadow:0 0 6px var(--lor-glow)"></div>
+              Lorenzo
+            </div>
+            <div class="map-legend-item gia-item">
+              <div class="map-legend-dot" style="background:var(--gia);box-shadow:0 0 6px var(--gia-glow)"></div>
+              Giacomo
+            </div>
+          </div>
+          <button class="biome-toggle" id="biome-toggle-btn" onclick="toggleBiome()">
+            <div class="biome-toggle-dot"></div>
+            BIOMI
+          </button>
+        </div>
+        <svg id="house-map" viewBox="0 0 300 246" xmlns="http://www.w3.org/2000/svg">
+          <!-- Rooms rendered by JS -->
+        </svg>
+      </div>
+
+      <!-- ROOMS GRID -->
+      <div class="sec-title">Stanze</div>
+      <div class="rooms-grid" id="rooms-grid"></div>
+
+      <!-- ATTACK -->
+      <div class="sec-title">🎯 Fase di Attacco</div>
+      <div class="attack-panel">
+        <div style="display:flex;flex-direction:column;gap:12px">
+
+          <div class="select-group">
+            <span class="select-label">Chi attacca</span>
+            <select id="sel-attacker" onchange="updateTargetSelect(); updateAttackButton();">
+              <option value="L">👑 Lorenzo</option>
+              <option value="G">🛡️ Giacomo</option>
+            </select>
+          </div>
+
+          <div class="select-group">
+            <span class="select-label">Stanza da conquistare</span>
+            <select id="sel-target">
+              <option value="">Seleziona una stanza…</option>
+            </select>
+          </div>
+
+          <button class="btn-attack attack-lor" id="btn-attack" onclick="initiateAttack()">🎯 Lancia i Dadi</button>
+        </div>
+      </div>
+
+      <!-- RULES -->
+      <div class="sec-title">📝 Regolamento</div>
+      <div class="rules-box">
+        <strong>CONQUISTA</strong> — Attaccante lancia 3d6, Difensore 2d6. Confronta i 2 dadi più alti: vince solo se
+        batte <em>entrambi</em> i confronti.<br><br>
+        <strong>LIMITE GIORNALIERO</strong> — Ogni stanza può essere attaccata una sola volta al giorno dallo stesso
+        giocatore.<br><br>
+        <strong>IMPERO</strong> — 6+ stanze → +1 attacco/giorno + diritto di imporre regole nelle stanze
+        possedute.<br><br>
+        <strong>ELIMINAZIONE</strong> — Chi rimane con 0 stanze perde la guerra.
+      </div>
+
+    </main>
+  </div>
+
+  <!-- DICE MODAL -->
+  <div class="modal-overlay" id="dice-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="dice-title">🎲 Battaglia!</div>
+
+      <div id="dice-attacker-label" class="dice-players" style="margin-bottom:8px"></div>
+      <div class="dice-row">
+        <div class="dice d-attacker" id="a0">?</div>
+        <div class="dice d-attacker" id="a1">?</div>
+        <div class="dice d-attacker" id="a2">?</div>
+      </div>
+
+      <div class="vs-line">— vs —</div>
+
+      <div id="dice-defender-label" class="dice-players" style="margin-bottom:8px"></div>
+      <div class="dice-row">
+        <div class="dice d-defender" id="d0">?</div>
+        <div class="dice d-defender" id="d1">?</div>
+      </div>
+
+      <div class="result-banner hidden" id="result-banner">
+        <div class="result-text" id="result-text"></div>
+        <div class="result-sub" id="result-sub"></div>
+      </div>
+
+      <div class="modal-btns" id="dice-modal-btns">
+        <button class="btn-sec" onclick="closeModal('dice-modal')">Annulla</button>
+        <button class="btn-pri" onclick="doRoll()">🎲 Lancia!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROOM MODAL -->
+  <div class="modal-overlay" id="room-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="rm-header">
+        <div class="rm-icon" id="rm-icon"></div>
+        <div>
+          <div class="rm-name" id="rm-name"></div>
+          <div class="rm-owner-label" id="rm-owner-label"></div>
+        </div>
+      </div>
+      <div class="transfer-label">Cambia proprietario</div>
+      <div class="transfer-btns">
+        <button class="btn-player bp-l" id="rm-btn-L" onclick="pendingOwner='L'; highlightOwner('L')">👑
+          Lorenzo</button>
+        <button class="btn-player bp-g" id="rm-btn-G" onclick="pendingOwner='G'; highlightOwner('G')">🛡️
+          Giacomo</button>
+      </div>
+      <div class="transfer-label">Regola della stanza</div>
+      <textarea id="rm-rule" placeholder="Nessuna regola attiva…"></textarea>
+      <div class="modal-btns">
+        <button class="btn-sec" onclick="closeModal('room-modal')">Chiudi</button>
+        <button class="btn-pri" onclick="saveRoom()">Salva</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW DAY MODAL -->
+  <div class="modal-overlay" id="newday-modal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">📆 Nuovo Giorno?</div>
+      <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.7">
+        Questo azzererà tutti gli attacchi usati oggi e avanzerà il calendario di una giornata. Sei sicuro?
+      </p>
+      <div class="modal-btns">
+        <button class="btn-sec" onclick="closeModal('newday-modal')">Annulla</button>
+        <button class="btn-pri" onclick="newDay()">✅ Sì, nuovo giorno</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- SCRIPTS -->
+  <script>
+    'use strict';
+
+    // ═══════════════════════════════════════════
+    //  CONSTANTS
+    // ═══════════════════════════════════════════
+
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyA_3pMSUwSy3GHWq7H_mnmQZKYPbfNwYZQ",
+      authDomain: "house-of-conquest.firebaseapp.com",
+      projectId: "house-of-conquest",
+      storageBucket: "house-of-conquest.firebasestorage.app",
+      messagingSenderId: "1039625101731",
+      appId: "1:1039625101731:web:558cbcd4765fd9f0403a16",
+      measurementId: "G-BNTSRKJKGJ"
+    };
+
+    const ROOMS_DEF = [
+      { id: 'cucina',    name: 'Cucina',          icon: '🍳' },
+      { id: 'sala',      name: 'Sala',             icon: '🛋️' },
+      { id: 'bagno1',    name: 'Bagno 1',          icon: '🚿' },
+      { id: 'camera-l',  name: 'Camera Lorenzo',   icon: '🛏️' },
+      { id: 'corridoio', name: 'Corridoio',         icon: '🚪' },
+      { id: 'camera-gen',name: 'Cam. Genitori',    icon: '👨‍👩' },
+      { id: 'bagno2',    name: 'Bagno 2',          icon: '🛁' },
+      { id: 'camera-g',  name: 'Camera Giacomo',   icon: '🛏️' },
+      { id: 'studio',    name: 'Studio',           icon: '📚' },
+    ];
+
+    // SVG floor plan layout: viewBox 0 0 300 246
+    // 3 rows of 82px each, 0-gap between rows (walls drawn as stroke)
+    // Left→Right order per row matches requested order
+    const ROOM_RECTS = {
+      // Row 1: Cucina | Sala | Bagno1
+      'cucina':     { x:0,   y:0,   w:106, h:80, lines:['Cucina'],      biome:'desert',   biomeIcon:'🏜️', biomeColor:'#d4824a', biomeFill:'rgba(212,130,74,.22)' },
+      'sala':       { x:112, y:0,   w:100, h:80, lines:['Sala'],         biome:'lake',     biomeIcon:'🏞️', biomeColor:'#38bdf8', biomeFill:'rgba(56,189,248,.18)' },
+      'bagno1':     { x:218, y:0,   w:82,  h:80, lines:['Bagno 1'],      biome:'river',    biomeIcon:'🌊', biomeColor:'#7dd3fc', biomeFill:'rgba(125,211,252,.18)' },
+      // Row 2: Cam.Lorenzo | Corridoio | Cam.Genitori
+      'camera-l':   { x:0,   y:86,  w:96,  h:80, lines:['Cam.','Lorenzo'], biome:'mountain', biomeIcon:'⛰️', biomeColor:'#94a3b8', biomeFill:'rgba(148,163,184,.18)' },
+      'corridoio':  { x:102, y:86,  w:54,  h:80, lines:['Corridoio'],   biome:'forest',   biomeIcon:'🌿', biomeColor:'#4ade80', biomeFill:'rgba(74,222,128,.15)' },
+      'camera-gen': { x:162, y:86,  w:138, h:80, lines:['Cam.','Genitori'], biome:'valley', biomeIcon:'🌸', biomeColor:'#c084fc', biomeFill:'rgba(192,132,252,.15)' },
+      // Row 3: Bagno2 | Cam.Giacomo | Studio
+      'bagno2':     { x:0,   y:172, w:72,  h:74, lines:['Bagno 2'],      biome:'river',    biomeIcon:'🌊', biomeColor:'#7dd3fc', biomeFill:'rgba(125,211,252,.18)' },
+      'camera-g':   { x:78,  y:172, w:110, h:74, lines:['Cam.','Giacomo'], biome:'volcano', biomeIcon:'🌋', biomeColor:'#fb923c', biomeFill:'rgba(251,146,60,.18)' },
+      'studio':     { x:194, y:172, w:106, h:74, lines:['Studio'],        biome:'mountain', biomeIcon:'⛰️', biomeColor:'#94a3b8', biomeFill:'rgba(148,163,184,.18)' },
+    };
+
+    const DEFAULT_STATE = {
+      day: 1,
+      rooms: {
+        'camera-l': { owner: 'L', rule: '' },
+        'bagno1': { owner: 'L', rule: '' },
+        'bagno2': { owner: 'L', rule: '' },
+        'corridoio': { owner: 'L', rule: '' },
+        'studio': { owner: 'L', rule: '' },
+        'camera-g': { owner: 'G', rule: '' },
+        'cucina': { owner: 'L', rule: '' },
+        'sala': { owner: 'G', rule: '' },
+        'camera-gen': { owner: 'L', rule: '' },
+      },
+      attacks: { L: { used: 0 }, G: { used: 0 } },
+      attackedToday: {},
+    };
+
+    // ═══════════════════════════════════════════
+    //  STATE
+    // ═══════════════════════════════════════════
+
+    let db = null;
+    let gameRef = null;
+    let unsubscribe = null;
+    let gameState = null;
+    let currentRoom = null;
+    let pendingOwner = null;
+    let pendingAttk = null;
+    let mapInitialized = false;
+    let biomeMode = false;
+
+    // ═══════════════════════════════════════════
+    //  FIREBASE
+    // ═══════════════════════════════════════════
+
+    function connectFirebase() {
+      show('loading');
+      try {
+        if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+        db = firebase.firestore();
+        gameRef = db.collection('games').doc('house-of-conquest');
+        subscribeToGame();
+      } catch (err) {
+        showToast('Errore Firebase: ' + err.message);
+        document.getElementById('loading').classList.add('hidden');
+      }
+    }
+
+    async function subscribeToGame() {
+      try {
+        const snap = await gameRef.get();
+        if (!snap.exists) await gameRef.set(DEFAULT_STATE);
+
+        if (unsubscribe) unsubscribe();
+        unsubscribe = gameRef.onSnapshot(doc => {
+          if (doc.exists) {
+            gameState = doc.data();
+            if (!mapInitialized) { initMap(); mapInitialized = true; }
+            renderApp();
+            show('app');
+          }
+        }, err => {
+          console.error(err);
+          showToast('Errore sincronizzazione: ' + err.message);
+          document.getElementById('loading').classList.add('hidden');
+        });
+      } catch (err) {
+        console.error(err);
+        showToast('Connessione fallita: ' + err.message);
+        document.getElementById('loading').classList.add('hidden');
+      }
+    }
+
+    // ═══════════════════════════════════════════
+    //  HELPERS
+    // ═══════════════════════════════════════════
+
+    function show(id) {
+      ['loading', 'app'].forEach(x =>
+        document.getElementById(x).classList.toggle('hidden', x !== id)
+      );
+    }
+
+    function maxAttacks(player) {
+      if (!gameState) return 2;
+      const count = Object.values(gameState.rooms).filter(r => r.owner === player).length;
+      return count >= 6 ? 3 : 2;
+    }
+
+    function pName(p) { return p === 'L' ? 'Lorenzo' : 'Giacomo'; }
+
+    // ═══════════════════════════════════════════
+    //  SVG MAP
+    // ═══════════════════════════════════════════
+
+    function initMap() {
+      const svg = document.getElementById('house-map');
+      const NS = 'http://www.w3.org/2000/svg';
+
+      ROOMS_DEF.forEach(room => {
+        const r = ROOM_RECTS[room.id];
+        if (!r) return;
+        const cx = r.x + r.w / 2;
+        const cy = r.y + r.h / 2;
+
+        const g = document.createElementNS(NS, 'g');
+        g.setAttribute('data-room-group', room.id);
+        g.addEventListener('click', () => openRoomModal(room.id));
+
+        // Biome background (hidden by default)
+        const biomeBg = document.createElementNS(NS, 'rect');
+        biomeBg.setAttribute('x', r.x + 1); biomeBg.setAttribute('y', r.y + 1);
+        biomeBg.setAttribute('width', r.w - 2); biomeBg.setAttribute('height', r.h - 2);
+        biomeBg.setAttribute('rx', '7');
+        biomeBg.setAttribute('fill', r.biomeFill || 'transparent');
+        biomeBg.setAttribute('opacity', '0');
+        biomeBg.setAttribute('data-biome-bg', room.id);
+        g.appendChild(biomeBg);
+
+        // Biome icon (top-left, hidden by default)
+        const biomeIconEl = document.createElementNS(NS, 'text');
+        biomeIconEl.setAttribute('x', r.x + 7);
+        biomeIconEl.setAttribute('y', r.y + 13);
+        biomeIconEl.setAttribute('font-size', '10');
+        biomeIconEl.setAttribute('opacity', '0');
+        biomeIconEl.setAttribute('data-biome-icon', room.id);
+        biomeIconEl.textContent = r.biomeIcon || '';
+        g.appendChild(biomeIconEl);
+
+        // Owner rect
+        const rect = document.createElementNS(NS, 'rect');
+        rect.setAttribute('x', r.x + 1); rect.setAttribute('y', r.y + 1);
+        rect.setAttribute('width', r.w - 2); rect.setAttribute('height', r.h - 2);
+        rect.setAttribute('rx', '7');
+        rect.setAttribute('fill', 'rgba(255,255,255,0.03)');
+        rect.setAttribute('stroke', 'rgba(255,255,255,0.09)');
+        rect.setAttribute('stroke-width', '1.5');
+        rect.setAttribute('data-room-rect', room.id);
+        g.appendChild(rect);
+
+        // Room icon
+        const hasMultiLine = r.lines.length > 1;
+        const iconY = hasMultiLine ? cy - 15 : cy - 11;
+        const iconEl = document.createElementNS(NS, 'text');
+        iconEl.setAttribute('x', cx); iconEl.setAttribute('y', iconY);
+        iconEl.setAttribute('text-anchor', 'middle');
+        iconEl.setAttribute('dominant-baseline', 'central');
+        iconEl.setAttribute('font-size', '14');
+        iconEl.textContent = room.icon;
+        g.appendChild(iconEl);
+
+        // Label lines
+        const labelBaseY = hasMultiLine ? cy + 4 : cy + 8;
+        r.lines.forEach((line, i) => {
+          const t = document.createElementNS(NS, 'text');
+          t.setAttribute('x', cx);
+          t.setAttribute('y', labelBaseY + i * 9);
+          t.setAttribute('text-anchor', 'middle');
+          t.setAttribute('dominant-baseline', 'central');
+          t.setAttribute('font-size', '5.8');
+          t.setAttribute('font-weight', '600');
+          t.setAttribute('font-family', 'Syne, sans-serif');
+          t.setAttribute('fill', 'rgba(255,255,255,0.7)');
+          t.setAttribute('letter-spacing', '0.02em');
+          t.textContent = line;
+          g.appendChild(t);
+        });
+
+        // Owner pip
+        const pipCx = r.x + r.w - 13;
+        const pipCy = r.y + r.h - 13;
+        const pip = document.createElementNS(NS, 'circle');
+        pip.setAttribute('cx', pipCx); pip.setAttribute('cy', pipCy); pip.setAttribute('r', '9');
+        pip.setAttribute('fill', '#a855f7');
+        pip.setAttribute('data-room-pip', room.id);
+        g.appendChild(pip);
+
+        const pipT = document.createElementNS(NS, 'text');
+        pipT.setAttribute('x', pipCx); pipT.setAttribute('y', pipCy);
+        pipT.setAttribute('text-anchor', 'middle');
+        pipT.setAttribute('dominant-baseline', 'central');
+        pipT.setAttribute('font-size', '6.5');
+        pipT.setAttribute('font-weight', '900');
+        pipT.setAttribute('font-family', 'Syne, sans-serif');
+        pipT.setAttribute('fill', '#07070f');
+        pipT.setAttribute('data-room-pip-text', room.id);
+        pipT.textContent = 'L';
+        g.appendChild(pipT);
+
+        svg.appendChild(g);
+      });
+    }
+
+    function updateMap() {
+      if (!gameState) return;
+      ROOMS_DEF.forEach(room => {
+        const data = gameState.rooms[room.id] || { owner: 'L' };
+        const r = ROOM_RECTS[room.id];
+        const isL = data.owner === 'L';
+
+        let fillCol, strokeCol;
+        if (biomeMode && r) {
+          // In biome mode: tint the border by owner, fill is biome
+          strokeCol = isL ? 'rgba(168,85,247,0.7)' : 'rgba(245,158,11,0.7)';
+          fillCol = 'rgba(255,255,255,0.02)';
+          const biomeBg = document.querySelector(`[data-biome-bg="${room.id}"]`);
+          if (biomeBg) biomeBg.setAttribute('opacity', '1');
+          const biomeIcon = document.querySelector(`[data-biome-icon="${room.id}"]`);
+          if (biomeIcon) biomeIcon.setAttribute('opacity', '1');
+        } else {
+          fillCol = isL ? 'rgba(168,85,247,0.18)' : 'rgba(245,158,11,0.18)';
+          strokeCol = isL ? 'rgba(168,85,247,0.55)' : 'rgba(245,158,11,0.55)';
+          const biomeBg = document.querySelector(`[data-biome-bg="${room.id}"]`);
+          if (biomeBg) biomeBg.setAttribute('opacity', '0');
+          const biomeIcon = document.querySelector(`[data-biome-icon="${room.id}"]`);
+          if (biomeIcon) biomeIcon.setAttribute('opacity', '0');
+        }
+
+        const pipCol = isL ? '#a855f7' : '#f59e0b';
+        const rect = document.querySelector(`[data-room-rect="${room.id}"]`);
+        if (rect) { rect.setAttribute('fill', fillCol); rect.setAttribute('stroke', strokeCol); }
+        const pip = document.querySelector(`[data-room-pip="${room.id}"]`);
+        if (pip) pip.setAttribute('fill', pipCol);
+        const pipTxt = document.querySelector(`[data-room-pip-text="${room.id}"]`);
+        if (pipTxt) pipTxt.textContent = data.owner;
+      });
+    }
+
+    function toggleBiome() {
+      biomeMode = !biomeMode;
+      const btn = document.getElementById('biome-toggle-btn');
+      btn.classList.toggle('active', biomeMode);
+      updateMap();
+    }
+
+    // ═══════════════════════════════════════════
+    //  RENDER
+    // ═══════════════════════════════════════════
+
+    function renderApp() {
+      if (!gameState) return;
+
+      // Day
+      document.getElementById('day-display').textContent = gameState.day || 1;
+
+      // Players
+      ['L', 'G'].forEach(p => {
+        const roomCt = Object.values(gameState.rooms).filter(r => r.owner === p).length;
+        const maxAtk = maxAttacks(p);
+        const usedAtk = gameState.attacks?.[p]?.used || 0;
+        const avail = Math.max(0, maxAtk - usedAtk);
+        const isImpero = roomCt >= 6;
+
+        document.getElementById(`rooms-${p}`).textContent = roomCt;
+        document.getElementById(`atk-${p}`).textContent = `${avail}/${maxAtk}`;
+
+        const sEl = document.getElementById(`status-${p}`);
+        if (p === 'L') {
+          sEl.textContent = isImpero ? '⭐ Impero' : '🛡️ Regno';
+          sEl.className = `p-status ${isImpero ? 's-impero' : 's-regno-l'}`;
+        } else {
+          sEl.textContent = isImpero ? '⭐ Impero' : '🛡️ Regno';
+          sEl.className = `p-status ${isImpero ? 's-impero-g' : 's-regno'}`;
+        }
+
+        const dotsEl = document.getElementById(`dots-${p}`);
+        dotsEl.innerHTML = '';
+        for (let i = 0; i < maxAtk; i++) {
+          const d = document.createElement('div');
+          d.className = 'dot' + (i < usedAtk ? ' used' : '');
+          dotsEl.appendChild(d);
+        }
+      });
+
+      // Territory bar
+      const total = ROOMS_DEF.length;
+      const lCount = Object.values(gameState.rooms).filter(r => r.owner === 'L').length;
+      const gCount = total - lCount;
+      const lPct = (lCount / total * 100).toFixed(1);
+      const gPct = (gCount / total * 100).toFixed(1);
+      document.getElementById('t-fill-l').style.width = lPct + '%';
+      document.getElementById('t-fill-g').style.width = gPct + '%';
+      document.getElementById('t-count-l').textContent = lCount;
+      document.getElementById('t-count-g').textContent = gCount;
+
+      // SVG Map
+      updateMap();
+
+      // Rooms grid
+      const grid = document.getElementById('rooms-grid');
+      grid.innerHTML = '';
+      ROOMS_DEF.forEach(room => {
+        const data = gameState.rooms[room.id] || { owner: 'L', rule: '' };
+        const card = document.createElement('div');
+        card.className = `room-card owner-${data.owner}`;
+        card.onclick = () => openRoomModal(room.id);
+        card.innerHTML = `
+      <div class="room-strip"></div>
+      <div class="room-icon">${room.icon}</div>
+      <div class="room-name">${room.name}</div>
+      ${data.rule ? `<div class="room-rule-tag">"${data.rule}"</div>` : ''}
+      <div class="room-owner-pip">${data.owner}</div>
+    `;
+        grid.appendChild(card);
+      });
+
+      updateTargetSelect();
+    }
+
+    function updateTargetSelect() {
+      if (!gameState) return;
+      const attacker = document.getElementById('sel-attacker').value;
+      const sel = document.getElementById('sel-target');
+      const currentVal = sel.value;
+      sel.innerHTML = '<option value="">Seleziona una stanza…</option>';
+
+      ROOMS_DEF.forEach(room => {
+        const data = gameState.rooms[room.id];
+        if (!data || data.owner === attacker) return;
+        const alreadyHit = (gameState.attackedToday?.[room.id] || []).includes(attacker);
+        const opt = document.createElement('option');
+        opt.value = room.id;
+        opt.textContent = room.name + (alreadyHit ? ' (già attaccata)' : '');
+        opt.disabled = alreadyHit;
+        sel.appendChild(opt);
+      });
+
+      if (currentVal) sel.value = currentVal;
+    }
+
+    function updateAttackButton() {
+      const attacker = document.getElementById('sel-attacker').value;
+      const btn = document.getElementById('btn-attack');
+      if (attacker === 'L') {
+        btn.className = 'btn-attack attack-lor';
+        btn.style.color = 'var(--bg)';
+      } else {
+        btn.className = 'btn-attack attack-gia';
+        btn.style.color = 'var(--bg)';
+      }
+    }
+
+    // ═══════════════════════════════════════════
+    //  ATTACK FLOW
+    // ═══════════════════════════════════════════
+
+    function initiateAttack() {
+      if (!gameState) return;
+
+      const attacker = document.getElementById('sel-attacker').value;
+      const roomId = document.getElementById('sel-target').value;
+
+      if (!roomId) { showToast('Seleziona una stanza da attaccare'); return; }
+
+      const maxAtk = maxAttacks(attacker);
+      const usedAtk = gameState.attacks?.[attacker]?.used || 0;
+
+      if (usedAtk >= maxAtk) { showToast('Attacchi esauriti per oggi! 🚫'); return; }
+      if ((gameState.attackedToday?.[roomId] || []).includes(attacker)) {
+        showToast('Questa stanza è già stata attaccata oggi!'); return;
+      }
+
+      const room = ROOMS_DEF.find(r => r.id === roomId);
+      const defender = gameState.rooms[roomId].owner;
+      pendingAttk = { attacker, defender, roomId };
+
+      document.getElementById('dice-title').textContent = `🎯 ${pName(attacker)} attacca "${room.name}"`;
+      document.getElementById('dice-attacker-label').textContent = `${pName(attacker).toUpperCase()} — 3 dadi`;
+      document.getElementById('dice-defender-label').textContent = `${pName(defender).toUpperCase()} difende — 2 dadi`;
+
+      ['a0', 'a1', 'a2'].forEach(id => {
+        const el = document.getElementById(id);
+        el.textContent = '?';
+        el.className = 'dice d-attacker';
+      });
+      ['d0', 'd1'].forEach(id => {
+        const el = document.getElementById(id);
+        el.textContent = '?';
+        el.className = 'dice d-defender';
+      });
+
+      document.getElementById('result-banner').classList.add('hidden');
+      document.getElementById('dice-modal-btns').innerHTML = `
+    <button class="btn-sec" onclick="closeModal('dice-modal')">Annulla</button>
+    <button class="btn-pri" onclick="doRoll()">🎲 Lancia!</button>
+  `;
+
+      openModal('dice-modal');
+    }
+
+    function doRoll() {
+      if (!pendingAttk) return;
+
+      const { attacker, defender, roomId } = pendingAttk;
+
+      const aDice = Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1);
+      const dDice = Array.from({ length: 2 }, () => Math.floor(Math.random() * 6) + 1);
+
+      ['a0', 'a1', 'a2', 'd0', 'd1'].forEach(id => document.getElementById(id).classList.add('rolling'));
+
+      setTimeout(() => {
+        ['a0', 'a1', 'a2', 'd0', 'd1'].forEach(id => document.getElementById(id).classList.remove('rolling'));
+
+        const aSorted = [...aDice].sort((a, b) => b - a);
+        const dSorted = [...dDice].sort((a, b) => b - a);
+
+        aSorted.forEach((v, i) => {
+          const el = document.getElementById(['a0', 'a1', 'a2'][i]);
+          el.textContent = v;
+          el.className = `dice ${i < 2 ? 'd-top-two' : 'd-attacker'}`;
+        });
+        dSorted.forEach((v, i) => {
+          const el = document.getElementById(['d0', 'd1'][i]);
+          el.textContent = v;
+          el.className = 'dice d-used-def';
+        });
+
+        const win1 = aSorted[0] > dSorted[0];
+        const win2 = aSorted[1] > dSorted[1];
+        const victory = win1 && win2;
+
+        document.getElementById('a0').className = `dice ${win1 ? 'd-winner' : 'd-loser'}`;
+        document.getElementById('a1').className = `dice ${win2 ? 'd-winner' : 'd-loser'}`;
+        document.getElementById('d0').className = `dice ${win1 ? 'd-loser' : 'd-winner'}`;
+        document.getElementById('d1').className = `dice ${win2 ? 'd-loser' : 'd-winner'}`;
+
+        const room = ROOMS_DEF.find(r => r.id === roomId);
+        const banner = document.getElementById('result-banner');
+        banner.classList.remove('hidden');
+
+        if (victory) {
+          document.getElementById('result-text').textContent = '🎉 CONQUISTA!';
+          document.getElementById('result-text').className = 'result-text r-victory';
+          document.getElementById('result-sub').textContent = `${pName(attacker)} conquista "${room.name}"!`;
+          document.getElementById('dice-modal-btns').innerHTML = `
+        <button class="btn-sec" onclick="resolveAttack(false)">Annulla</button>
+        <button class="btn-pri" onclick="resolveAttack(true)">✅ Conferma conquista</button>
+      `;
+        } else {
+          document.getElementById('result-text').textContent = '🛡️ DIFESA!';
+          document.getElementById('result-text').className = 'result-text r-defeat';
+          const sub = (win1 || win2)
+            ? 'Vittoria parziale — non abbastanza per conquistare'
+            : `"${room.name}" resiste completamente`;
+          document.getElementById('result-sub').textContent = sub;
+          document.getElementById('dice-modal-btns').innerHTML = `
+        <button class="btn-pri" onclick="resolveAttack(false)">OK</button>
+      `;
+        }
+
+        pendingAttk.victory = victory;
+      }, 700);
+    }
+
+    async function resolveAttack(conquered) {
+      if (!pendingAttk) return;
+      const { attacker, roomId, victory } = pendingAttk;
+
+      const updates = {};
+      const used = gameState.attacks?.[attacker]?.used || 0;
+      updates[`attacks.${attacker}.used`] = used + 1;
+
+      const prev = gameState.attackedToday?.[roomId] || [];
+      updates[`attackedToday.${roomId}`] = [...prev, attacker];
+
+      if (conquered && victory) {
+        updates[`rooms.${roomId}.owner`] = attacker;
+      }
+
+      await gameRef.update(updates);
+      closeModal('dice-modal');
+
+      const room = ROOMS_DEF.find(r => r.id === roomId);
+      if (conquered && victory) {
+        showToast(`${pName(attacker)} conquista ${room.name}! 🏆`);
+      } else {
+        showToast(`${room.name} si difende! 🛡️`);
+      }
+      pendingAttk = null;
+    }
+
+    // ═══════════════════════════════════════════
+    //  ROOM MODAL
+    // ═══════════════════════════════════════════
+
+    function openRoomModal(roomId) {
+      const room = ROOMS_DEF.find(r => r.id === roomId);
+      const data = gameState.rooms[roomId] || { owner: 'L', rule: '' };
+      currentRoom = roomId;
+      pendingOwner = data.owner;
+
+      document.getElementById('rm-icon').textContent = room.icon;
+      document.getElementById('rm-name').textContent = room.name;
+
+      const ownerColor = data.owner === 'L' ? 'var(--lor-light)' : 'var(--gia-light)';
+      document.getElementById('rm-owner-label').innerHTML =
+        `Proprietà di <span style="color:${ownerColor}">${pName(data.owner)}</span>`;
+
+      document.getElementById('rm-rule').value = data.rule || '';
+      highlightOwner(data.owner);
+      openModal('room-modal');
+    }
+
+    function highlightOwner(p) {
+      document.getElementById('rm-btn-L').className = `btn-player bp-l${p === 'L' ? ' active' : ''}`;
+      document.getElementById('rm-btn-G').className = `btn-player bp-g${p === 'G' ? ' active' : ''}`;
+      const ownerColor = p === 'L' ? 'var(--lor-light)' : 'var(--gia-light)';
+      document.getElementById('rm-owner-label').innerHTML =
+        `Proprietà di <span style="color:${ownerColor}">${pName(p)}</span>`;
+    }
+
+    async function saveRoom() {
+      if (!currentRoom || !gameState) return;
+      const rule = document.getElementById('rm-rule').value.trim();
+      const owner = pendingOwner || gameState.rooms[currentRoom]?.owner || 'L';
+
+      await gameRef.update({
+        [`rooms.${currentRoom}.rule`]: rule,
+        [`rooms.${currentRoom}.owner`]: owner,
+      });
+
+      showToast('Stanza aggiornata! ✅');
+      closeModal('room-modal');
+      currentRoom = null;
+      pendingOwner = null;
+    }
+
+    // ═══════════════════════════════════════════
+    //  NEW DAY
+    // ═══════════════════════════════════════════
+
+    async function newDay() {
+      if (!gameState) return;
+      const nextDay = (gameState.day || 1) + 1;
+      await gameRef.update({
+        day: nextDay,
+        attacks: { L: { used: 0 }, G: { used: 0 } },
+        attackedToday: {},
+      });
+      closeModal('newday-modal');
+      showToast(`Giorno ${nextDay} iniziato! ✨`);
+    }
+
+    // ═══════════════════════════════════════════
+    //  MODAL HELPERS
+    // ═══════════════════════════════════════════
+
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    ['dice-modal', 'room-modal', 'newday-modal'].forEach(id => {
+      document.getElementById(id).addEventListener('click', function (e) {
+        if (e.target === this) closeModal(id);
+      });
+    });
+
+    // ═══════════════════════════════════════════
+    //  TOAST
+    // ═══════════════════════════════════════════
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    // ═══════════════════════════════════════════
+    //  SERVICE WORKER
+    // ═══════════════════════════════════════════
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => { });
+    }
+
+    // ═══════════════════════════════════════════
+    //  INIT
+    // ═══════════════════════════════════════════
+
+    (function init() { connectFirebase(); })();
+  </script>
+</body>
+
+</html>

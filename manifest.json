@@ -1,0 +1,22 @@
+{
+  "name": "House of Conquest",
+  "short_name": "Conquest",
+  "description": "Gestione territoriale in tempo reale per la guerra domestica.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#07070f",
+  "theme_color": "#07070f",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
