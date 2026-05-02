@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="logo.png">
   <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-  <title>House of Conquest</title>
+  <title>🏠 House of Conquest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1430,7 +1430,7 @@
           </div>
           <div class="p-stat">
             <span class="p-label">Attacchi</span>
-            <span class="p-value" id="atk-L">3/3</span>
+            <span class="p-value" id="atk-L">8/8</span>
           </div>
           <div class="attack-dots" id="dots-L"></div>
           <div class="global-rule" id="gr-L" onclick="openGlobalRuleModal('L')" style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
@@ -1448,7 +1448,7 @@
           </div>
           <div class="p-stat">
             <span class="p-label">Attacchi</span>
-            <span class="p-value" id="atk-G">2/2</span>
+            <span class="p-value" id="atk-G">5/5</span>
           </div>
           <div class="attack-dots" id="dots-G"></div>
           <div class="global-rule" id="gr-G" onclick="openGlobalRuleModal('G')" style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
@@ -1546,7 +1546,7 @@
         batte <em>entrambi</em> i confronti.<br><br>
         <strong>LIMITE GIORNALIERO</strong> — Ogni stanza può essere attaccata una sola volta al giorno dallo stesso
         giocatore.<br><br>
-        <strong>IMPERO</strong> — 6+ stanze → +1 attacco/giorno + diritto di imporre regole nelle stanze
+        <strong>IMPERO</strong> — 6+ stanze → +3 attacchi/giorno (8 totali) + diritto di imporre regole nelle stanze
         possedute.
       </div>
 
@@ -1828,9 +1828,9 @@
     }
 
     function maxAttacks(player) {
-      if (!gameState) return 2;
+      if (!gameState) return 5;
       const count = Object.values(gameState.rooms).filter(r => r.owner === player).length;
-      return count >= 6 ? 3 : 2;
+      return count >= 6 ? 8 : 5;
     }
 
     function pName(p) { return p === 'L' ? 'Lorenzo' : 'Giacomo'; }
