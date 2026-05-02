@@ -23,36 +23,39 @@
 
   <style>
     :root {
-      --bg: #05050e;
-      --bg2: #0b0b1a;
-      --surface: rgba(255, 255, 255, .042);
-      --surface2: rgba(255, 255, 255, .07);
-      --surface3: rgba(255, 255, 255, .11);
-      --border: rgba(255, 255, 255, .09);
-      --border-dim: rgba(255, 255, 255, .045);
-      --border-bright: rgba(255, 255, 255, .16);
+      --bg: #03030b;
+      --bg2: #070714;
+      --bg3: #0c0c1e;
+      --surface: rgba(255, 255, 255, .038);
+      --surface2: rgba(255, 255, 255, .065);
+      --surface3: rgba(255, 255, 255, .10);
+      --border: rgba(255, 255, 255, .08);
+      --border-dim: rgba(255, 255, 255, .038);
+      --border-bright: rgba(255, 255, 255, .18);
 
       /* ── Lorenzo — Viola Imperiale ── */
       --lor: #a855f7;
       --lor-light: #d8b4fe;
       --lor-mid: #b76ef8;
-      --lor-dim: rgba(168, 85, 247, .16);
-      --lor-glow: rgba(168, 85, 247, .35);
-      --lor-border: rgba(168, 85, 247, .38);
+      --lor-dim: rgba(168, 85, 247, .14);
+      --lor-glow: rgba(168, 85, 247, .4);
+      --lor-border: rgba(168, 85, 247, .32);
+      --lor-bright: rgba(168, 85, 247, .55);
 
       /* ── Giacomo — Ambra Reale ── */
       --gia: #f59e0b;
       --gia-light: #fde68a;
       --gia-mid: #f8b42e;
-      --gia-dim: rgba(245, 158, 11, .16);
-      --gia-glow: rgba(245, 158, 11, .35);
-      --gia-border: rgba(245, 158, 11, .38);
+      --gia-dim: rgba(245, 158, 11, .14);
+      --gia-glow: rgba(245, 158, 11, .4);
+      --gia-border: rgba(245, 158, 11, .32);
+      --gia-bright: rgba(245, 158, 11, .55);
 
-      --text: #ede8f8;
-      --text-muted: #8b8099;
-      --text-dim: #4e4868;
+      --text: #eee8fc;
+      --text-muted: #7a7090;
+      --text-dim: #3e3858;
       --success: #34d399;
-      --success-dim: rgba(52,211,153,.15);
+      --success-dim: rgba(52, 211, 153, .14);
       --danger: #f87171;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -62,6 +65,13 @@
       --parchment2: #e8d9a8;
       --ink: #3d2b1f;
       --ink-light: #6b4c3b;
+
+      /* Glass card base */
+      --glass: rgba(255, 255, 255, .028);
+      --glass-border: rgba(255, 255, 255, .07);
+      --glass-inset: rgba(255, 255, 255, .06);
+      --card-radius: 24px;
+      --card-shadow: 0 8px 48px rgba(0, 0, 0, .45), 0 2px 12px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255, 255, 255, .07);
     }
 
     *,
@@ -84,16 +94,15 @@
     body {
       min-height: 100dvh;
       overflow-x: hidden;
-      /* PWA Native Feel */
       user-select: none;
       -webkit-user-drag: none;
-    }
-
-    body {
+      /* Richer atmospheric background */
       background:
-        radial-gradient(ellipse 80% 60% at 10% -10%, rgba(168, 85, 247, .12) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 45% at 90% 110%, rgba(245, 158, 11, .10) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(100, 50, 200, .04) 0%, transparent 60%),
+        radial-gradient(ellipse 90% 55% at 8% -5%, rgba(168, 85, 247, .18) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 92% 105%, rgba(245, 158, 11, .14) 0%, transparent 55%),
+        radial-gradient(ellipse 55% 45% at 55% 45%, rgba(120, 60, 220, .06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 35% at 20% 80%, rgba(168, 85, 247, .05) 0%, transparent 50%),
+        radial-gradient(ellipse 30% 30% at 85% 20%, rgba(245, 158, 11, .04) 0%, transparent 45%),
         var(--bg);
     }
 
@@ -121,26 +130,45 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: calc(var(--safe-top) + 14px) 18px 14px;
-      background: rgba(5, 5, 14, .75);
-      backdrop-filter: blur(40px) saturate(1.6) brightness(1.05);
-      -webkit-backdrop-filter: blur(40px) saturate(1.6) brightness(1.05);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-      box-shadow: 0 1px 0 rgba(255,255,255,.04), 0 4px 32px rgba(0,0,0,.4);
+      padding: calc(var(--safe-top) + 15px) 20px 15px;
+      background: rgba(3, 3, 11, .72);
+      backdrop-filter: blur(48px) saturate(1.8) brightness(1.06);
+      -webkit-backdrop-filter: blur(48px) saturate(1.8) brightness(1.06);
+      border-bottom: 1px solid rgba(255, 255, 255, .055);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, .05),
+        0 6px 40px rgba(0, 0, 0, .5),
+        inset 0 -1px 0 rgba(255, 255, 255, .03);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
 
+    /* Bottom gradient accent line on header */
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(168, 85, 247, .3) 30%,
+          rgba(245, 158, 11, .25) 70%,
+          transparent 100%);
+    }
+
     .logo {
       font-family: 'Syne', sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: -.01em;
-      background: linear-gradient(135deg, var(--lor), var(--gia));
+      letter-spacing: -.02em;
+      background: linear-gradient(135deg, var(--lor-light) 0%, var(--lor) 40%, var(--gia) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, .25));
     }
 
     .day-badge {
@@ -150,17 +178,20 @@
 
     .day-badge span {
       display: block;
-      font-size: 8px;
-      letter-spacing: .22em;
+      font-size: 7.5px;
+      letter-spacing: .26em;
       text-transform: uppercase;
       color: var(--text-dim);
     }
 
     .day-badge strong {
       display: block;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
-      color: var(--text);
+      background: linear-gradient(180deg, var(--text) 40%, rgba(238, 232, 252, .55) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       line-height: 1;
     }
 
@@ -174,30 +205,32 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      font-size: 14px;
-      color: var(--bg);
-      background: linear-gradient(135deg, var(--lor), #c084fc);
+      width: 34px;
+      height: 34px;
+      font-size: 15px;
+      color: #fff;
+      background: linear-gradient(135deg, #7c3aed, var(--lor), #c084fc);
       border: none;
-      border-radius: 9px;
+      border-radius: 11px;
       cursor: pointer;
-      transition: opacity .2s, transform .15s;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(168, 85, 247, .35), inset 0 1px 0 rgba(255, 255, 255, .2);
     }
 
     .profile-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: var(--bg2);
+      background: var(--bg3);
       border: 1px solid var(--border);
-      font-size: 14px;
+      font-size: 15px;
       cursor: pointer;
       transition: all .2s;
       user-select: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .3), inset 0 1px 0 rgba(255, 255, 255, .07);
     }
 
     .profile-icon:active {
@@ -205,8 +238,8 @@
     }
 
     .btn-new-day:active {
-      opacity: .75;
-      transform: scale(.96);
+      opacity: .8;
+      transform: scale(.95);
     }
 
     /* ─────────────────────────────────────────
@@ -215,7 +248,7 @@
     main {
       max-width: 640px;
       margin: 0 auto;
-      padding: 20px 15px var(--safe-bottom);
+      padding: 22px 16px calc(var(--safe-bottom) + 20px);
     }
 
     /* ─────────────────────────────────────────
@@ -225,10 +258,10 @@
       font-family: 'Syne', sans-serif;
       font-size: 9px;
       font-weight: 700;
-      letter-spacing: .24em;
+      letter-spacing: .28em;
       text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 13px;
+      color: rgba(168, 85, 247, .55);
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -238,7 +271,7 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: var(--border-dim);
+      background: linear-gradient(90deg, rgba(168, 85, 247, .18), transparent);
     }
 
     /* ─────────────────────────────────────────
@@ -247,18 +280,18 @@
     .players-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 11px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     .player-card {
-      border-radius: 22px;
-      padding: 17px 15px;
+      border-radius: var(--card-radius);
+      padding: 18px 16px 16px;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(32px) saturate(1.4);
-      -webkit-backdrop-filter: blur(32px) saturate(1.4);
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+      backdrop-filter: blur(40px) saturate(1.6);
+      -webkit-backdrop-filter: blur(40px) saturate(1.6);
+      transition: transform .22s cubic-bezier(.34, 1.56, .64, 1), box-shadow .3s;
     }
 
     .player-card:active {
@@ -266,58 +299,105 @@
     }
 
     .player-card.lorenzo {
-      background: linear-gradient(145deg, rgba(168, 85, 247, .14) 0%, rgba(168,85,247,.04) 50%, rgba(255, 255, 255, .02) 100%);
+      background:
+        linear-gradient(150deg,
+          rgba(168, 85, 247, .18) 0%,
+          rgba(130, 60, 210, .09) 40%,
+          rgba(168, 85, 247, .03) 70%,
+          rgba(255, 255, 255, .015) 100%);
       border: 1px solid var(--lor-border);
-      box-shadow: 0 0 40px rgba(168, 85, 247, .15), 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(168, 85, 247, .2);
+      box-shadow:
+        0 0 0 1px rgba(168, 85, 247, .08),
+        0 0 48px rgba(168, 85, 247, .18),
+        0 12px 40px rgba(0, 0, 0, .45),
+        inset 0 1px 0 rgba(168, 85, 247, .28),
+        inset 0 -1px 0 rgba(0, 0, 0, .2);
     }
 
     .player-card.giacomo {
-      background: linear-gradient(145deg, rgba(245, 158, 11, .14) 0%, rgba(245,158,11,.04) 50%, rgba(255, 255, 255, .02) 100%);
+      background:
+        linear-gradient(150deg,
+          rgba(245, 158, 11, .17) 0%,
+          rgba(200, 130, 10, .09) 40%,
+          rgba(245, 158, 11, .03) 70%,
+          rgba(255, 255, 255, .015) 100%);
       border: 1px solid var(--gia-border);
-      box-shadow: 0 0 40px rgba(245, 158, 11, .15), 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(245, 158, 11, .2);
+      box-shadow:
+        0 0 0 1px rgba(245, 158, 11, .08),
+        0 0 48px rgba(245, 158, 11, .16),
+        0 12px 40px rgba(0, 0, 0, .45),
+        inset 0 1px 0 rgba(245, 158, 11, .25),
+        inset 0 -1px 0 rgba(0, 0, 0, .2);
     }
 
+    /* Top glow line */
     .player-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
+      height: 1.5px;
     }
 
     .player-card.lorenzo::before {
-      background: linear-gradient(90deg, transparent, var(--lor), transparent);
+      background: linear-gradient(90deg, transparent 5%, var(--lor-bright) 35%, var(--lor-light) 55%, var(--lor-bright) 75%, transparent 95%);
     }
 
     .player-card.giacomo::before {
-      background: linear-gradient(90deg, transparent, var(--gia), transparent);
+      background: linear-gradient(90deg, transparent 5%, var(--gia-bright) 35%, var(--gia-light) 55%, var(--gia-bright) 75%, transparent 95%);
+    }
+
+    /* Ambient corner glow */
+    .player-card::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .player-card.lorenzo::after {
+      background: radial-gradient(circle, rgba(168, 85, 247, .22) 0%, transparent 70%);
+    }
+
+    .player-card.giacomo::after {
+      background: radial-gradient(circle, rgba(245, 158, 11, .20) 0%, transparent 70%);
     }
 
     .p-avatar {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 16px;
       margin-bottom: 10px;
+      position: relative;
     }
 
     .player-card.lorenzo .p-avatar {
-      background: var(--lor-dim);
+      background: radial-gradient(circle at 35% 35%, rgba(168, 85, 247, .35), rgba(168, 85, 247, .12));
+      box-shadow: 0 0 16px rgba(168, 85, 247, .3), inset 0 1px 0 rgba(168, 85, 247, .3);
+      border: 1px solid rgba(168, 85, 247, .3);
     }
 
     .player-card.giacomo .p-avatar {
-      background: var(--gia-dim);
+      background: radial-gradient(circle at 35% 35%, rgba(245, 158, 11, .33), rgba(245, 158, 11, .11));
+      box-shadow: 0 0 16px rgba(245, 158, 11, .28), inset 0 1px 0 rgba(245, 158, 11, .3);
+      border: 1px solid rgba(245, 158, 11, .28);
     }
 
     .p-name {
       font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 800;
       margin-bottom: 5px;
+      letter-spacing: -.01em;
     }
 
     .player-card.lorenzo .p-name {
@@ -331,69 +411,74 @@
     .p-status {
       display: inline-block;
       font-family: 'Syne', sans-serif;
-      font-size: 9px;
+      font-size: 8.5px;
       font-weight: 700;
-      letter-spacing: .06em;
-      padding: 2px 8px;
-      border-radius: 5px;
-      margin-bottom: 12px;
+      letter-spacing: .07em;
+      padding: 3px 9px;
+      border-radius: 6px;
+      margin-bottom: 13px;
     }
 
     .s-impero {
-      background: var(--lor-dim);
+      background: linear-gradient(135deg, rgba(168, 85, 247, .22), rgba(168, 85, 247, .1));
       color: var(--lor-light);
-      border: 1px solid var(--lor-border);
+      border: 1px solid rgba(168, 85, 247, .32);
+      box-shadow: 0 0 10px rgba(168, 85, 247, .15);
     }
 
     .s-regno {
-      background: var(--gia-dim);
+      background: linear-gradient(135deg, rgba(245, 158, 11, .2), rgba(245, 158, 11, .08));
       color: var(--gia-light);
-      border: 1px solid var(--gia-border);
+      border: 1px solid rgba(245, 158, 11, .28);
     }
 
     .s-impero-g {
-      background: var(--gia-dim);
+      background: linear-gradient(135deg, rgba(245, 158, 11, .22), rgba(245, 158, 11, .1));
       color: var(--gia-light);
-      border: 1px solid var(--gia-border);
+      border: 1px solid rgba(245, 158, 11, .32);
+      box-shadow: 0 0 10px rgba(245, 158, 11, .15);
     }
 
     .s-regno-l {
-      background: var(--lor-dim);
+      background: linear-gradient(135deg, rgba(168, 85, 247, .2), rgba(168, 85, 247, .08));
       color: var(--lor-light);
-      border: 1px solid var(--lor-border);
+      border: 1px solid rgba(168, 85, 247, .28);
     }
 
     .p-stat {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
 
     .p-label {
       font-size: 10px;
-      color: var(--text-dim);
-      letter-spacing: .03em;
+      color: var(--text-muted);
+      letter-spacing: .04em;
     }
 
     .p-value {
       font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 800;
     }
 
     .player-card.lorenzo .p-value {
       color: var(--lor);
+      filter: drop-shadow(0 0 6px rgba(168, 85, 247, .4));
     }
 
     .player-card.giacomo .p-value {
       color: var(--gia);
+      filter: drop-shadow(0 0 6px rgba(245, 158, 11, .35));
     }
 
     .attack-dots {
       display: flex;
       gap: 5px;
-      margin-top: 10px;
+      margin-top: 11px;
+      flex-wrap: wrap;
     }
 
     .dot {
@@ -401,69 +486,73 @@
       height: 8px;
       border-radius: 50%;
       border: 1.5px solid;
-      transition: background .3s;
+      transition: background .3s, box-shadow .3s;
     }
 
     .player-card.lorenzo .dot {
-      border-color: var(--lor);
+      border-color: rgba(168, 85, 247, .4);
     }
 
     .player-card.giacomo .dot {
-      border-color: var(--gia);
+      border-color: rgba(245, 158, 11, .4);
     }
 
     .player-card.lorenzo .dot.used {
       background: var(--lor);
+      border-color: var(--lor);
+      box-shadow: 0 0 5px rgba(168, 85, 247, .5);
     }
 
     .player-card.giacomo .dot.used {
       background: var(--gia);
+      border-color: var(--gia);
+      box-shadow: 0 0 5px rgba(245, 158, 11, .5);
     }
 
     /* ─────────────────────────────────────────
        TERRITORY BAR
     ───────────────────────────────────────── */
     .territory-wrapper {
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px 17px;
-      margin-bottom: 26px;
-      backdrop-filter: blur(28px) saturate(1.3);
-      -webkit-backdrop-filter: blur(28px) saturate(1.3);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 4px 24px rgba(0,0,0,.25);
+      background: linear-gradient(135deg, rgba(168, 85, 247, .05) 0%, rgba(255, 255, 255, .025) 50%, rgba(245, 158, 11, .04) 100%);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 15px 18px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(36px) saturate(1.5);
+      -webkit-backdrop-filter: blur(36px) saturate(1.5);
+      box-shadow: var(--card-shadow);
     }
 
     .territory-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 9px;
+      margin-bottom: 10px;
     }
 
     .t-player {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 11px;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
     }
 
     .t-dot {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
     }
 
     .t-dot-l {
       background: var(--lor);
-      box-shadow: 0 0 6px var(--lor-glow);
+      box-shadow: 0 0 8px var(--lor-glow);
     }
 
     .t-dot-g {
       background: var(--gia);
-      box-shadow: 0 0 6px var(--gia-glow);
+      box-shadow: 0 0 8px var(--gia-glow);
     }
 
     .t-player-l {
@@ -475,62 +564,63 @@
     }
 
     .territory-bar {
-      height: 8px;
-      border-radius: 5px;
+      height: 10px;
+      border-radius: 6px;
       overflow: hidden;
       display: flex;
-      background: rgba(255, 255, 255, .05);
-      box-shadow: inset 0 1px 3px rgba(0,0,0,.4);
+      background: rgba(255, 255, 255, .04);
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, .5), inset 0 -1px 0 rgba(255, 255, 255, .04);
     }
 
     .t-fill-l {
       height: 100%;
-      background: linear-gradient(90deg, #7c3aed, var(--lor), #c084fc);
-      border-radius: 5px 0 0 5px;
-      transition: width .65s cubic-bezier(.4, 0, .2, 1);
-      box-shadow: 2px 0 8px var(--lor-glow);
+      background: linear-gradient(90deg, #5b21b6, #8b5cf6, var(--lor), #c084fc);
+      border-radius: 6px 0 0 6px;
+      transition: width .7s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 3px 0 10px var(--lor-glow);
     }
 
     .t-fill-g {
       height: 100%;
       background: linear-gradient(90deg, var(--gia), var(--gia-light), #fcd34d);
-      border-radius: 0 5px 5px 0;
-      transition: width .65s cubic-bezier(.4, 0, .2, 1);
-      box-shadow: -2px 0 8px var(--gia-glow);
+      border-radius: 0 6px 6px 0;
+      transition: width .7s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: -3px 0 10px var(--gia-glow);
     }
 
     /* ─────────────────────────────────────────
        HOUSE MAP SVG
     ───────────────────────────────────────── */
     .map-wrapper {
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 15px;
+      background: linear-gradient(150deg, rgba(168, 85, 247, .05) 0%, var(--glass) 40%, rgba(245, 158, 11, .035) 100%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--card-radius);
+      padding: 16px;
       margin-bottom: 28px;
-      backdrop-filter: blur(32px) saturate(1.3);
-      -webkit-backdrop-filter: blur(32px) saturate(1.3);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(40px) saturate(1.5);
+      -webkit-backdrop-filter: blur(40px) saturate(1.5);
+      box-shadow: var(--card-shadow);
       transition: all .5s ease;
     }
 
     .map-wrapper.kingdom-active {
-      border-color: rgba(168,85,247,.25);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06),
-                  0 0 60px rgba(168,85,247,.08),
-                  0 8px 48px rgba(0,0,0,.5);
+      border-color: rgba(168, 85, 247, .22);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .07),
+        0 0 80px rgba(168, 85, 247, .1),
+        0 12px 56px rgba(0, 0, 0, .55);
     }
 
     .map-top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 13px;
     }
 
     .map-legend {
       display: flex;
-      gap: 16px;
+      gap: 18px;
     }
 
     .map-legend-item {
@@ -539,7 +629,7 @@
       gap: 6px;
       font-size: 11px;
       font-family: 'Syne', sans-serif;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .map-legend-dot {
@@ -560,34 +650,35 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .07);
       border-radius: 20px;
-      padding: 6px 12px;
+      padding: 6px 13px;
       cursor: pointer;
       font-family: 'Syne', sans-serif;
       font-size: 10px;
       font-weight: 700;
       color: var(--text-muted);
       letter-spacing: .07em;
-      transition: all .3s cubic-bezier(.34,1.56,.64,1);
+      transition: all .3s cubic-bezier(.34, 1.56, .64, 1);
       user-select: none;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .06);
     }
 
     .biome-toggle.active {
-      background: rgba(168,85,247,.15);
-      border-color: rgba(168,85,247,.5);
+      background: rgba(168, 85, 247, .14);
+      border-color: rgba(168, 85, 247, .45);
       color: var(--lor-light);
-      box-shadow: 0 0 16px rgba(168,85,247,.15);
+      box-shadow: 0 0 20px rgba(168, 85, 247, .2), 0 2px 8px rgba(0, 0, 0, .2);
     }
 
     .biome-toggle-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--border);
+      background: rgba(255, 255, 255, .2);
       transition: all .3s;
     }
 
@@ -600,7 +691,7 @@
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 12px;
+      border-radius: 14px;
       transition: background .5s ease;
     }
 
@@ -624,7 +715,6 @@
       opacity: .7;
     }
 
-    /* Organic territory paths */
     .territory-path {
       transition: fill .6s ease, stroke .6s ease, opacity .5s ease;
       filter: url(#territory-glow);
@@ -635,8 +725,13 @@
     }
 
     @keyframes kingdom-enter {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     .map-wrapper.kingdom-active #house-map {
@@ -649,44 +744,56 @@
     .rooms-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
+      gap: 10px;
       margin-bottom: 32px;
     }
 
     .room-card {
-      background: rgba(255,255,255,.035);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px 7px 12px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 14px 8px 13px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      min-height: 92px;
+      min-height: 96px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1), border-color .3s, background .3s, box-shadow .3s;
+      transition: transform .22s cubic-bezier(.34, 1.56, .64, 1), border-color .3s, background .3s, box-shadow .3s;
       user-select: none;
-      backdrop-filter: blur(24px) saturate(1.3);
-      -webkit-backdrop-filter: blur(24px) saturate(1.3);
+      backdrop-filter: blur(32px) saturate(1.4);
+      -webkit-backdrop-filter: blur(32px) saturate(1.4);
     }
 
     .room-card:active {
-      transform: scale(.92);
+      transform: scale(.91);
     }
 
     .room-card.owner-L {
       border-color: var(--lor-border);
-      background: linear-gradient(150deg, rgba(168, 85, 247, .11), rgba(168,85,247,.03) 60%, rgba(255, 255, 255, .015) 100%);
-      box-shadow: 0 0 24px rgba(168, 85, 247, .1), 0 4px 16px rgba(0,0,0,.3), inset 0 1px 0 rgba(168,85,247,.15);
+      background: linear-gradient(160deg,
+          rgba(168, 85, 247, .13) 0%,
+          rgba(168, 85, 247, .05) 50%,
+          rgba(255, 255, 255, .013) 100%);
+      box-shadow:
+        0 0 28px rgba(168, 85, 247, .12),
+        0 6px 20px rgba(0, 0, 0, .35),
+        inset 0 1px 0 rgba(168, 85, 247, .18);
     }
 
     .room-card.owner-G {
       border-color: var(--gia-border);
-      background: linear-gradient(150deg, rgba(245, 158, 11, .11), rgba(245,158,11,.03) 60%, rgba(255, 255, 255, .015) 100%);
-      box-shadow: 0 0 24px rgba(245, 158, 11, .1), 0 4px 16px rgba(0,0,0,.3), inset 0 1px 0 rgba(245,158,11,.15);
+      background: linear-gradient(160deg,
+          rgba(245, 158, 11, .13) 0%,
+          rgba(245, 158, 11, .05) 50%,
+          rgba(255, 255, 255, .013) 100%);
+      box-shadow:
+        0 0 28px rgba(245, 158, 11, .12),
+        0 6px 20px rgba(0, 0, 0, .35),
+        inset 0 1px 0 rgba(245, 158, 11, .18);
     }
 
     .room-strip {
@@ -694,35 +801,35 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 2.5px;
+      height: 2px;
       transition: background .35s;
     }
 
     .owner-L .room-strip {
-      background: var(--lor);
+      background: linear-gradient(90deg, transparent, var(--lor), var(--lor-light), var(--lor), transparent);
     }
 
     .owner-G .room-strip {
-      background: var(--gia);
+      background: linear-gradient(90deg, transparent, var(--gia), var(--gia-light), var(--gia), transparent);
     }
 
     .room-icon {
-      font-size: 20px;
-      margin-bottom: 4px;
+      font-size: 22px;
+      margin-bottom: 5px;
     }
 
     .room-name {
       font-family: 'Syne', sans-serif;
       font-size: 8.5px;
-      font-weight: 600;
-      letter-spacing: .03em;
+      font-weight: 700;
+      letter-spacing: .04em;
       color: var(--text);
       line-height: 1.3;
     }
 
     .room-rule-tag {
-      font-size: 8px;
-      color: var(--text-dim);
+      font-size: 7.5px;
+      color: var(--text-muted);
       font-style: italic;
       margin-top: 3px;
       line-height: 1.2;
@@ -732,10 +839,10 @@
 
     .room-owner-pip {
       position: absolute;
-      bottom: 5px;
-      right: 6px;
-      width: 15px;
-      height: 15px;
+      bottom: 6px;
+      right: 7px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       font-size: 7px;
       font-weight: 900;
@@ -746,20 +853,22 @@
     }
 
     .owner-L .room-owner-pip {
-      background: var(--lor);
-      color: var(--bg);
+      background: linear-gradient(135deg, var(--lor), var(--lor-mid));
+      color: #fff;
+      box-shadow: 0 0 8px rgba(168, 85, 247, .5);
     }
 
     .owner-G .room-owner-pip {
-      background: var(--gia);
-      color: var(--bg);
+      background: linear-gradient(135deg, var(--gia), var(--gia-light));
+      color: #070714;
+      box-shadow: 0 0 8px rgba(245, 158, 11, .5);
     }
 
     /* ─────────────────────────────────────────
        ATTACK PANEL
     ───────────────────────────────────────── */
     .attack-panel {
-      background: rgba(255,255,255,.035);
+      background: rgba(255, 255, 255, .035);
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 20px 17px;
@@ -768,7 +877,7 @@
       overflow: hidden;
       backdrop-filter: blur(32px) saturate(1.4);
       -webkit-backdrop-filter: blur(32px) saturate(1.4);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 40px rgba(0,0,0,.3);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 8px 40px rgba(0, 0, 0, .3);
     }
 
     .select-group {
@@ -840,9 +949,7 @@
       transition: transform .4s;
     }
 
-    .btn-attack:hover::after {
-      transform: translateX(100%);
-    }
+
 
     .btn-attack:active {
       transform: scale(.97);
@@ -917,10 +1024,10 @@
       -webkit-backdrop-filter: blur(48px) saturate(1.6);
       border-radius: 30px 30px 0 0;
       padding: 22px 20px 26px;
-      border-top: 1px solid rgba(255,255,255,.1);
-      border-left: 1px solid rgba(255,255,255,.05);
-      border-right: 1px solid rgba(255,255,255,.05);
-      box-shadow: 0 -8px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
+      border-top: 1px solid rgba(255, 255, 255, .1);
+      border-left: 1px solid rgba(255, 255, 255, .05);
+      border-right: 1px solid rgba(255, 255, 255, .05);
+      box-shadow: 0 -8px 60px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .08);
       transform: translateY(100%);
       transition: transform .45s cubic-bezier(.16, 1, .3, 1);
       max-height: 92dvh;
@@ -1099,7 +1206,7 @@
     }
 
     .active-rule-card {
-      background: rgba(255,255,255,.04);
+      background: rgba(255, 255, 255, .04);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 15px;
@@ -1108,7 +1215,7 @@
       gap: 6px;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 4px 16px rgba(0,0,0,.2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 4px 16px rgba(0, 0, 0, .2);
     }
 
     .active-rule-header {
@@ -1366,6 +1473,174 @@
     /* ─────────────────────────────────────────
        MOBILE TWEAKS
     ───────────────────────────────────────── */
+    /* ─────────────────────────────────────────
+       BATTLE LOG
+    ───────────────────────────────────────── */
+    .battle-log {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 32px;
+    }
+
+    .battle-log-item {
+      background: rgba(255, 255, 255, .032);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: opacity .3s;
+    }
+
+    .battle-log-item.log-L {
+      border-left: 2.5px solid var(--lor);
+    }
+
+    .battle-log-item.log-G {
+      border-left: 2.5px solid var(--gia);
+    }
+
+    .battle-log-item.log-def {
+      border-left: 2.5px solid var(--text-dim);
+    }
+
+    .battle-log-icon {
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .battle-log-msg {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .battle-log-empty {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 14px;
+      background: var(--bg2);
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+    }
+
+    /* ─────────────────────────────────────────
+       FORTIFY
+    ───────────────────────────────────────── */
+    .fortify-panel {
+      border-top: 1px solid var(--border-dim);
+      padding-top: 14px;
+      margin-top: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .btn-fortify {
+      width: 100%;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: linear-gradient(135deg, #10b981, var(--success));
+      border: none;
+      border-radius: 11px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-fortify::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
+      transform: translateX(-100%);
+      transition: transform .4s;
+    }
+
+
+
+    .btn-fortify:active {
+      transform: scale(.97);
+      opacity: .9;
+    }
+
+    .btn-fortify:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .room-fortify-badge {
+      position: absolute;
+      top: 5px;
+      left: 6px;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    /* ─────────────────────────────────────────
+       STREAK & GOLDEN DICE
+    ───────────────────────────────────────── */
+    .streak-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(251, 146, 60, .14);
+      border: 1px solid rgba(251, 146, 60, .35);
+      color: #fb923c;
+    }
+
+    .golden-dice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(250, 204, 21, .16);
+      border: 1px solid rgba(250, 204, 21, .4);
+      color: #facc15;
+      animation: pulse-glow .9s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-glow {
+      from {
+        box-shadow: 0 0 4px rgba(250, 204, 21, .2);
+      }
+
+      to {
+        box-shadow: 0 0 12px rgba(250, 204, 21, .5);
+      }
+    }
+
     @media (max-width: 380px) {
       .players-grid {
         gap: 9px;
@@ -1433,8 +1708,9 @@
             <span class="p-value" id="atk-L">8/8</span>
           </div>
           <div class="attack-dots" id="dots-L"></div>
-          <div class="global-rule" id="gr-L" onclick="openGlobalRuleModal('L')" style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
-             Nessuna legge globale. Clicca per impostare.
+          <div class="global-rule" id="gr-L" onclick="openGlobalRuleModal('L')"
+            style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
+            Nessuna legge globale. Clicca per impostare.
           </div>
         </div>
 
@@ -1451,8 +1727,9 @@
             <span class="p-value" id="atk-G">5/5</span>
           </div>
           <div class="attack-dots" id="dots-G"></div>
-          <div class="global-rule" id="gr-G" onclick="openGlobalRuleModal('G')" style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
-             Nessuna legge globale. Clicca per impostare.
+          <div class="global-rule" id="gr-G" onclick="openGlobalRuleModal('G')"
+            style="cursor:pointer; margin-top: 12px; font-size: 10.5px; color: var(--text-dim); background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; font-style: italic; border: 1px solid var(--border-dim); transition: all 0.2s;">
+            Nessuna legge globale. Clicca per impostare.
           </div>
         </div>
 
@@ -1500,6 +1777,12 @@
         </svg>
       </div>
 
+      <!-- BATTLE LOG -->
+      <div class="sec-title">⚔️ Ultimi eventi</div>
+      <div class="battle-log" id="battle-log">
+        <div class="battle-log-empty">Nessuna battaglia ancora. Chi si farà avanti?</div>
+      </div>
+
       <!-- ROOMS GRID -->
       <div class="sec-title">Stanze</div>
       <div class="rooms-grid" id="rooms-grid"></div>
@@ -1523,13 +1806,24 @@
           </div>
 
           <div class="select-group">
-            <span class="select-label">Stanza da conquistare</span>
+            <span class="select-label">⚔️ conquista una stanza</span>
             <select id="sel-target">
               <option value="">Seleziona una stanza…</option>
             </select>
           </div>
 
           <button class="btn-attack attack-lor" id="btn-attack" onclick="initiateAttack()">🎯 Lancia i Dadi</button>
+
+          <!-- FORTIFY -->
+          <div class="fortify-panel">
+            <div class="select-group">
+              <span class="select-label">🛡️ Fortifica una stanza tua</span>
+              <select id="sel-fortify">
+                <option value="">Seleziona una stanza…</option>
+              </select>
+            </div>
+            <button class="btn-fortify" id="btn-fortify" onclick="initiateFortify()" disabled>🛡️ Fortifica stanza</button>
+          </div>
         </div>
       </div>
 
@@ -1547,7 +1841,11 @@
         <strong>LIMITE GIORNALIERO</strong> — Ogni stanza può essere attaccata una sola volta al giorno dallo stesso
         giocatore.<br><br>
         <strong>IMPERO</strong> — 6+ stanze → +3 attacchi/giorno (8 totali) + diritto di imporre regole nelle stanze
-        possedute.
+        possedute.<br><br>
+        <strong>FORTIFICA 🛡️</strong> — Usa 1 attacco per rafforzare una stanza tua: il difensore ottiene +1 al dado
+        più alto nel prossimo scontro. Si azzera a fine giornata o in caso di conquista.<br><br>
+        <strong>STRISCIA 🔥</strong> — 2 vittorie consecutive nello stesso giorno → il terzo attacco riceve un
+        <em>Dado d'Oro</em> (+1 al dado migliore dell'attaccante).
       </div>
 
     </main>
@@ -1598,8 +1896,10 @@
       </div>
       <div class="transfer-label">Cambia proprietario</div>
       <div class="transfer-btns">
-        <button class="btn-player bp-l" id="rm-btn-L" onclick="pendingOwner='L'; highlightOwner('L')">👑 Lorenzo</button>
-        <button class="btn-player bp-g" id="rm-btn-G" onclick="pendingOwner='G'; highlightOwner('G')">🛡️ Giacomo</button>
+        <button class="btn-player bp-l" id="rm-btn-L" onclick="pendingOwner='L'; highlightOwner('L')">👑
+          Lorenzo</button>
+        <button class="btn-player bp-g" id="rm-btn-G" onclick="pendingOwner='G'; highlightOwner('G')">🛡️
+          Giacomo</button>
       </div>
       <div class="transfer-label">Regola della stanza</div>
       <textarea id="rm-rule" placeholder="Nessuna regola attiva…"></textarea>
@@ -1616,7 +1916,7 @@
       <div class="modal-handle"></div>
       <div class="modal-title">📆 Nuovo giorno?</div>
       <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.7">
-        Questo azzererà tutti gli attacchi usati oggi e avanzerà il calendario di una giornata. Sei sicuro?
+        Questo azzererà tutti gli attacchi usati oggi, le fortezze e avanzerà il calendario di una giornata. Sei sicuro?
       </p>
       <div class="modal-btns">
         <button class="btn-sec" onclick="closeModal('newday-modal')">Annulla</button>
@@ -1651,14 +1951,18 @@
       <p style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:16px;line-height:1.7">
         Una nuova versione di <strong>House of Conquest</strong> è pronta.
       </p>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:20px;">
+      <div
+        style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:20px;">
         <div style="font-size:12px;color:var(--text-dim);line-height:1.5;text-align:center;">
-          L'aggiornamento avviene in-app: <strong>non perderai i progressi.</strong><br>L'app si riavvierà automaticamente.
+          L'aggiornamento avviene in-app: <strong>non perderai i progressi.</strong><br>L'app si riavvierà
+          automaticamente.
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="btn-pri" id="btn-update-confirm" style="width:100%;justify-content:center;">✅ Aggiorna ora</button>
-        <button class="btn-sec" id="btn-update-dismiss" style="width:100%;justify-content:center;">⏳ Ricordamelo tra una settimana</button>
+        <button class="btn-pri" id="btn-update-confirm" style="width:100%;justify-content:center;">✅ Aggiorna
+          ora</button>
+        <button class="btn-sec" id="btn-update-dismiss" style="width:100%;justify-content:center;">⏳ Ricordamelo tra una
+          settimana</button>
       </div>
     </div>
   </div>
@@ -1717,47 +2021,50 @@
     // Left→Right order per row matches requested order
     const ROOM_RECTS = {
       // Row 1: Cucina | Sala | Bagno1
-      'cucina':    { x: 0,   y: 0,   w: 106, h: 80, lines: ['Cucina'],    biome: 'desert',   biomeIcon: '🏜️', biomeColor: '#d4824a', biomeFill: 'rgba(212,130,74,.22)',  biomeMapFill: 'rgba(210,160,90,.55)' },
-      'sala':      { x: 112, y: 0,   w: 100, h: 80, lines: ['Sala'],      biome: 'lake',     biomeIcon: '🏞️', biomeColor: '#38bdf8', biomeFill: 'rgba(56,189,248,.18)',  biomeMapFill: 'rgba(100,190,230,.45)' },
-      'bagno1':    { x: 218, y: 0,   w: 82,  h: 80, lines: ['Bagno 1'],   biome: 'river',    biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)', biomeMapFill: 'rgba(120,200,240,.42)' },
+      'cucina': { x: 0, y: 0, w: 106, h: 80, lines: ['Cucina'], biome: 'desert', biomeIcon: '🏜️', biomeColor: '#d4824a', biomeFill: 'rgba(212,130,74,.22)', biomeMapFill: 'rgba(210,160,90,.55)' },
+      'sala': { x: 112, y: 0, w: 100, h: 80, lines: ['Sala'], biome: 'lake', biomeIcon: '🏞️', biomeColor: '#38bdf8', biomeFill: 'rgba(56,189,248,.18)', biomeMapFill: 'rgba(100,190,230,.45)' },
+      'bagno1': { x: 218, y: 0, w: 82, h: 80, lines: ['Bagno 1'], biome: 'river', biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)', biomeMapFill: 'rgba(120,200,240,.42)' },
       // Row 2: Cam.Lorenzo | Corridoio | Cam.Genitori
-      'camera-l':  { x: 0,   y: 86,  w: 96,  h: 80, lines: ['Cam.','Lorenzo'],   biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)', biomeMapFill: 'rgba(160,160,150,.45)' },
-      'corridoio': { x: 102, y: 86,  w: 54,  h: 80, lines: ['Corridoio'], biome: 'forest',   biomeIcon: '🌿', biomeColor: '#4ade80', biomeFill: 'rgba(74,222,128,.15)',  biomeMapFill: 'rgba(90,180,100,.45)' },
-      'camera-gen':{ x: 162, y: 86,  w: 138, h: 80, lines: ['Cam.','Genitori'],  biome: 'valley',   biomeIcon: '🌸', biomeColor: '#c084fc', biomeFill: 'rgba(192,132,252,.15)', biomeMapFill: 'rgba(195,160,210,.42)' },
+      'camera-l': { x: 0, y: 86, w: 96, h: 80, lines: ['Cam.', 'Lorenzo'], biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)', biomeMapFill: 'rgba(160,160,150,.45)' },
+      'corridoio': { x: 102, y: 86, w: 54, h: 80, lines: ['Corridoio'], biome: 'forest', biomeIcon: '🌿', biomeColor: '#4ade80', biomeFill: 'rgba(74,222,128,.15)', biomeMapFill: 'rgba(90,180,100,.45)' },
+      'camera-gen': { x: 162, y: 86, w: 138, h: 80, lines: ['Cam.', 'Genitori'], biome: 'valley', biomeIcon: '🌸', biomeColor: '#c084fc', biomeFill: 'rgba(192,132,252,.15)', biomeMapFill: 'rgba(195,160,210,.42)' },
       // Row 3: Bagno2 | Cam.Giacomo | Studio
-      'bagno2':    { x: 0,   y: 172, w: 72,  h: 74, lines: ['Bagno 2'],   biome: 'river',    biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)', biomeMapFill: 'rgba(120,200,240,.42)' },
-      'camera-g':  { x: 78,  y: 172, w: 110, h: 74, lines: ['Cam.','Giacomo'],   biome: 'volcano',  biomeIcon: '🌋', biomeColor: '#fb923c', biomeFill: 'rgba(251,146,60,.18)',  biomeMapFill: 'rgba(220,120,80,.48)' },
-      'studio':    { x: 194, y: 172, w: 106, h: 74, lines: ['Studio'],    biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)', biomeMapFill: 'rgba(160,160,150,.45)' },
+      'bagno2': { x: 0, y: 172, w: 72, h: 74, lines: ['Bagno 2'], biome: 'river', biomeIcon: '🌊', biomeColor: '#7dd3fc', biomeFill: 'rgba(125,211,252,.18)', biomeMapFill: 'rgba(120,200,240,.42)' },
+      'camera-g': { x: 78, y: 172, w: 110, h: 74, lines: ['Cam.', 'Giacomo'], biome: 'volcano', biomeIcon: '🌋', biomeColor: '#fb923c', biomeFill: 'rgba(251,146,60,.18)', biomeMapFill: 'rgba(220,120,80,.48)' },
+      'studio': { x: 194, y: 172, w: 106, h: 74, lines: ['Studio'], biome: 'mountain', biomeIcon: '⛰️', biomeColor: '#94a3b8', biomeFill: 'rgba(148,163,184,.18)', biomeMapFill: 'rgba(160,160,150,.45)' },
     };
 
     // Organic territory paths — wavy borders for the dark kingdom map
     const ORGANIC_PATHS = {
-      'cucina':    'M 0,0 L 109,0 C 106,14 113,28 108,42 C 103,56 112,68 109,82 C 106,83 103,86 99,85 C 92,84 85,78 75,81 C 50,88 20,79 0,83 Z',
-      'sala':      'M 109,0 L 215,0 C 218,12 211,28 216,42 C 221,56 213,68 215,81 C 195,87 175,80 159,84 C 140,88 120,79 109,82 C 112,68 103,56 108,42 C 113,28 106,14 109,0 Z',
-      'bagno1':    'M 215,0 L 300,0 L 300,83 L 285,80 C 265,87 240,78 215,81 C 213,68 221,56 216,42 C 211,28 218,12 215,0 Z',
-      'camera-l':  'M 0,83 C 20,79 50,88 75,81 C 85,78 92,84 99,85 C 96,98 103,112 98,126 C 93,140 102,154 99,168 C 90,166 82,170 75,172 C 70,173 65,175 55,173 C 35,167 15,174 0,170 Z',
+      'cucina': 'M 0,0 L 109,0 C 106,14 113,28 108,42 C 103,56 112,68 109,82 C 106,83 103,86 99,85 C 92,84 85,78 75,81 C 50,88 20,79 0,83 Z',
+      'sala': 'M 109,0 L 215,0 C 218,12 211,28 216,42 C 221,56 213,68 215,81 C 195,87 175,80 159,84 C 140,88 120,79 109,82 C 112,68 103,56 108,42 C 113,28 106,14 109,0 Z',
+      'bagno1': 'M 215,0 L 300,0 L 300,83 L 285,80 C 265,87 240,78 215,81 C 213,68 221,56 216,42 C 211,28 218,12 215,0 Z',
+      'camera-l': 'M 0,83 C 20,79 50,88 75,81 C 85,78 92,84 99,85 C 96,98 103,112 98,126 C 93,140 102,154 99,168 C 90,166 82,170 75,172 C 70,173 65,175 55,173 C 35,167 15,174 0,170 Z',
       'corridoio': 'M 99,85 C 103,86 106,83 109,82 C 120,79 140,88 159,84 C 162,97 155,112 160,127 C 165,142 156,156 159,171 C 135,167 115,173 99,168 C 102,154 93,140 98,126 C 103,112 96,98 99,85 Z',
-      'camera-gen':'M 159,84 C 175,80 195,87 215,81 C 240,78 265,87 285,80 L 300,83 L 300,170 L 275,168 C 245,175 215,165 191,169 C 180,166 170,174 159,171 C 156,156 165,142 160,127 C 155,112 162,97 159,84 Z',
-      'bagno2':    'M 0,170 C 15,174 35,167 55,173 C 65,175 70,173 75,172 C 72,186 79,200 74,214 C 69,228 78,240 75,246 L 0,246 Z',
-      'camera-g':  'M 75,172 C 82,170 90,166 99,168 C 115,173 135,167 159,171 C 170,174 180,166 191,169 C 194,183 187,198 192,212 C 197,226 189,238 191,246 L 75,246 C 78,240 69,228 74,214 C 79,200 72,186 75,172 Z',
-      'studio':    'M 191,169 C 215,165 245,175 275,168 L 300,170 L 300,246 L 191,246 C 189,238 197,226 192,212 C 187,198 194,183 191,169 Z',
+      'camera-gen': 'M 159,84 C 175,80 195,87 215,81 C 240,78 265,87 285,80 L 300,83 L 300,170 L 275,168 C 245,175 215,165 191,169 C 180,166 170,174 159,171 C 156,156 165,142 160,127 C 155,112 162,97 159,84 Z',
+      'bagno2': 'M 0,170 C 15,174 35,167 55,173 C 65,175 70,173 75,172 C 72,186 79,200 74,214 C 69,228 78,240 75,246 L 0,246 Z',
+      'camera-g': 'M 75,172 C 82,170 90,166 99,168 C 115,173 135,167 159,171 C 170,174 180,166 191,169 C 194,183 187,198 192,212 C 197,226 189,238 191,246 L 75,246 C 78,240 69,228 74,214 C 79,200 72,186 75,172 Z',
+      'studio': 'M 191,169 C 215,165 245,175 275,168 L 300,170 L 300,246 L 191,246 C 189,238 197,226 192,212 C 187,198 194,183 191,169 Z',
     };
 
     const DEFAULT_STATE = {
       day: 1,
       rooms: {
-        'camera-l': { owner: 'L', rule: '' },
-        'bagno1': { owner: 'L', rule: '' },
-        'bagno2': { owner: 'L', rule: '' },
-        'corridoio': { owner: 'L', rule: '' },
-        'studio': { owner: 'L', rule: '' },
-        'camera-g': { owner: 'G', rule: '' },
-        'cucina': { owner: 'L', rule: '' },
-        'sala': { owner: 'G', rule: '' },
-        'camera-gen': { owner: 'L', rule: '' },
+        'camera-l': { owner: 'L', rule: '', fortified: false },
+        'bagno1': { owner: 'L', rule: '', fortified: false },
+        'bagno2': { owner: 'L', rule: '', fortified: false },
+        'corridoio': { owner: 'L', rule: '', fortified: false },
+        'studio': { owner: 'L', rule: '', fortified: false },
+        'camera-g': { owner: 'G', rule: '', fortified: false },
+        'cucina': { owner: 'L', rule: '', fortified: false },
+        'sala': { owner: 'G', rule: '', fortified: false },
+        'camera-gen': { owner: 'L', rule: '', fortified: false },
       },
       attacks: { L: { used: 0 }, G: { used: 0 } },
       attackedToday: {},
+      battleLog: [],
+      streak: { L: 0, G: 0 },
+      goldenDice: { L: false, G: false },
     };
 
     // ═══════════════════════════════════════════
@@ -1846,7 +2153,7 @@
     function applyProfile() {
       const iconEl = document.getElementById('profile-icon');
       if (!iconEl) return;
-      
+
       const myRoomsCount = gameState ? Object.values(gameState.rooms).filter(r => r.owner === myProfile).length : 0;
       const isEmpire = myRoomsCount >= 6;
       const iconAvatar = isEmpire ? '👑' : '🛡️';
@@ -2055,19 +2362,19 @@
           bg.setAttribute('fill', 'url(#sand-grad)');
           bg.setAttribute('opacity', '0.6');
           g.appendChild(bg);
-          
+
           // Sand dunes with layered curves
           for (let i = 0; i < 4; i++) {
             const p = cl('path');
             const dy = y + 15 + i * 15;
-            p.setAttribute('d', `M ${x-10},${dy} Q ${x+w*0.3},${dy-10} ${x+w*0.5},${dy} T ${x+w+10},${dy+5}`);
+            p.setAttribute('d', `M ${x - 10},${dy} Q ${x + w * 0.3},${dy - 10} ${x + w * 0.5},${dy} T ${x + w + 10},${dy + 5}`);
             p.setAttribute('stroke', '#b47b3a'); p.setAttribute('stroke-width', '1.2');
             p.setAttribute('fill', 'none'); p.setAttribute('opacity', '0.4');
             g.appendChild(p);
-            
+
             // Dune shadow highlight
             const p2 = cl('path');
-            p2.setAttribute('d', `M ${x-10},${dy+1} Q ${x+w*0.3},${dy-9} ${x+w*0.5},${dy+1} T ${x+w+10},${dy+6}`);
+            p2.setAttribute('d', `M ${x - 10},${dy + 1} Q ${x + w * 0.3},${dy - 9} ${x + w * 0.5},${dy + 1} T ${x + w + 10},${dy + 6}`);
             p2.setAttribute('stroke', '#e0b576'); p2.setAttribute('stroke-width', '0.8');
             p2.setAttribute('fill', 'none'); p2.setAttribute('opacity', '0.3');
             g.appendChild(p2);
@@ -2077,17 +2384,17 @@
         if (biome === 'lake') {
           // Lake base
           const e = cl('ellipse');
-          e.setAttribute('cx', x + w*0.5); e.setAttribute('cy', y + h*0.55);
-          e.setAttribute('rx', w*0.35); e.setAttribute('ry', h*0.25);
+          e.setAttribute('cx', x + w * 0.5); e.setAttribute('cy', y + h * 0.55);
+          e.setAttribute('rx', w * 0.35); e.setAttribute('ry', h * 0.25);
           e.setAttribute('fill', 'url(#lake-grad)');
           e.setAttribute('filter', 'url(#water-blur)');
           e.setAttribute('opacity', '0.85');
           g.appendChild(e);
-          
+
           // Shoreline
           const e2 = cl('ellipse');
-          e2.setAttribute('cx', x + w*0.5); e2.setAttribute('cy', y + h*0.55);
-          e2.setAttribute('rx', w*0.35); e2.setAttribute('ry', h*0.25);
+          e2.setAttribute('cx', x + w * 0.5); e2.setAttribute('cy', y + h * 0.55);
+          e2.setAttribute('rx', w * 0.35); e2.setAttribute('ry', h * 0.25);
           e2.setAttribute('fill', 'none'); e2.setAttribute('stroke', '#7dd3fc');
           e2.setAttribute('stroke-width', '0.8'); e2.setAttribute('opacity', '0.6');
           g.appendChild(e2);
@@ -2095,9 +2402,9 @@
           // Ripples
           for (let i = 0; i < 4; i++) {
             const p = cl('path');
-            const ry = y + h*0.4 + i*8;
-            const rw = w*0.15 + (i%2)*w*0.1;
-            p.setAttribute('d', `M ${x+w*0.5-rw},${ry} Q ${x+w*0.5},${ry-3} ${x+w*0.5+rw},${ry}`);
+            const ry = y + h * 0.4 + i * 8;
+            const rw = w * 0.15 + (i % 2) * w * 0.1;
+            p.setAttribute('d', `M ${x + w * 0.5 - rw},${ry} Q ${x + w * 0.5},${ry - 3} ${x + w * 0.5 + rw},${ry}`);
             p.setAttribute('stroke', '#bae6fd'); p.setAttribute('stroke-width', '0.6');
             p.setAttribute('fill', 'none'); p.setAttribute('opacity', '0.7');
             g.appendChild(p);
@@ -2107,7 +2414,7 @@
         if (biome === 'river') {
           // Main river bed
           const pBase = cl('path');
-          const dPath = `M ${x+w*0.2},${y-10} C ${x+w*0.6},${y+h*0.3} ${x+w*0.1},${y+h*0.6} ${x+w*0.7},${y+h+10}`;
+          const dPath = `M ${x + w * 0.2},${y - 10} C ${x + w * 0.6},${y + h * 0.3} ${x + w * 0.1},${y + h * 0.6} ${x + w * 0.7},${y + h + 10}`;
           pBase.setAttribute('d', dPath);
           pBase.setAttribute('stroke', 'url(#lake-grad)'); pBase.setAttribute('stroke-width', '8');
           pBase.setAttribute('fill', 'none'); pBase.setAttribute('stroke-linecap', 'round');
@@ -2121,9 +2428,9 @@
           pLine1.setAttribute('stroke', '#7dd3fc'); pLine1.setAttribute('stroke-width', '1.5');
           pLine1.setAttribute('fill', 'none'); pLine1.setAttribute('opacity', '0.6');
           g.appendChild(pLine1);
-          
+
           const pLine2 = cl('path');
-          pLine2.setAttribute('d', `M ${x+w*0.3},${y} C ${x+w*0.5},${y+h*0.4} ${x+w*0.2},${y+h*0.5} ${x+w*0.6},${y+h}`);
+          pLine2.setAttribute('d', `M ${x + w * 0.3},${y} C ${x + w * 0.5},${y + h * 0.4} ${x + w * 0.2},${y + h * 0.5} ${x + w * 0.6},${y + h}`);
           pLine2.setAttribute('stroke', '#bae6fd'); pLine2.setAttribute('stroke-width', '0.8');
           pLine2.setAttribute('fill', 'none'); pLine2.setAttribute('opacity', '0.5');
           g.appendChild(pLine2);
@@ -2132,35 +2439,35 @@
         if (biome === 'mountain') {
           // Layered mountains
           const peaks = [
-            {px: 0.3, ph: 0.5, bg: true}, {px: 0.7, ph: 0.6, bg: true},
-            {px: 0.2, ph: 0.65}, {px: 0.5, ph: 0.8}, {px: 0.8, ph: 0.55}
+            { px: 0.3, ph: 0.5, bg: true }, { px: 0.7, ph: 0.6, bg: true },
+            { px: 0.2, ph: 0.65 }, { px: 0.5, ph: 0.8 }, { px: 0.8, ph: 0.55 }
           ];
-          
-          peaks.forEach(({px, ph, bg}) => {
+
+          peaks.forEach(({ px, ph, bg }) => {
             const mx = x + w * px, mBase = y + h * (bg ? 0.6 : 0.85);
             const mH = h * ph * 0.55;
             const mW = mH * 0.8;
-            
+
             // Mountain body
             const tri = cl('path');
-            tri.setAttribute('d', `M ${mx},${mBase-mH} Q ${mx+mW*0.3},${mBase-mH*0.5} ${mx+mW},${mBase} L ${mx-mW},${mBase} Q ${mx-mW*0.3},${mBase-mH*0.5} ${mx},${mBase-mH} Z`);
+            tri.setAttribute('d', `M ${mx},${mBase - mH} Q ${mx + mW * 0.3},${mBase - mH * 0.5} ${mx + mW},${mBase} L ${mx - mW},${mBase} Q ${mx - mW * 0.3},${mBase - mH * 0.5} ${mx},${mBase - mH} Z`);
             tri.setAttribute('fill', bg ? '#334155' : 'url(#mountain-grad)');
             tri.setAttribute('stroke', '#1e293b'); tri.setAttribute('stroke-width', '0.5');
             tri.setAttribute('opacity', bg ? '0.7' : '0.9');
             g.appendChild(tri);
-            
+
             // Snow cap jagged
             if (!bg) {
               const snow = cl('path');
               const sH = mH * 0.35;
               const sW = mW * 0.35;
-              snow.setAttribute('d', `M ${mx},${mBase-mH} Q ${mx+sW*0.5},${mBase-mH+sH*0.5} ${mx+sW},${mBase-mH+sH} L ${mx+sW*0.5},${mBase-mH+sH*0.7} L ${mx},${mBase-mH+sH*1.1} L ${mx-sW*0.5},${mBase-mH+sH*0.7} L ${mx-sW},${mBase-mH+sH} Q ${mx-sW*0.5},${mBase-mH+sH*0.5} ${mx},${mBase-mH} Z`);
+              snow.setAttribute('d', `M ${mx},${mBase - mH} Q ${mx + sW * 0.5},${mBase - mH + sH * 0.5} ${mx + sW},${mBase - mH + sH} L ${mx + sW * 0.5},${mBase - mH + sH * 0.7} L ${mx},${mBase - mH + sH * 1.1} L ${mx - sW * 0.5},${mBase - mH + sH * 0.7} L ${mx - sW},${mBase - mH + sH} Q ${mx - sW * 0.5},${mBase - mH + sH * 0.5} ${mx},${mBase - mH} Z`);
               snow.setAttribute('fill', 'rgba(255,255,255,0.85)');
               g.appendChild(snow);
-              
+
               // Shadow side
               const shadow = cl('path');
-              shadow.setAttribute('d', `M ${mx},${mBase-mH} L ${mx},${mBase} L ${mx+mW},${mBase} Q ${mx+mW*0.3},${mBase-mH*0.5} ${mx},${mBase-mH} Z`);
+              shadow.setAttribute('d', `M ${mx},${mBase - mH} L ${mx},${mBase} L ${mx + mW},${mBase} Q ${mx + mW * 0.3},${mBase - mH * 0.5} ${mx},${mBase - mH} Z`);
               shadow.setAttribute('fill', '#000');
               shadow.setAttribute('opacity', '0.15');
               g.appendChild(shadow);
@@ -2176,13 +2483,13 @@
           bg.setAttribute('fill', 'url(#forest-grad)');
           bg.setAttribute('opacity', '0.4');
           g.appendChild(bg);
-          
+
           // Clustered Trees
           const treePts = [];
-          for(let i=0; i<15; i++) treePts.push([Math.random()*0.8+0.1, Math.random()*0.8+0.1]);
+          for (let i = 0; i < 15; i++) treePts.push([Math.random() * 0.8 + 0.1, Math.random() * 0.8 + 0.1]);
           // Sort by Y for proper overlap
-          treePts.sort((a,b) => a[1] - b[1]);
-          
+          treePts.sort((a, b) => a[1] - b[1]);
+
           treePts.forEach(([tx, ty]) => {
             const treeX = x + w * tx, treeY = y + h * ty;
             // Trunk
@@ -2191,22 +2498,22 @@
             trunk.setAttribute('x2', treeX); trunk.setAttribute('y2', treeY + 8);
             trunk.setAttribute('stroke', '#451a03'); trunk.setAttribute('stroke-width', '1.2');
             g.appendChild(trunk);
-            
+
             // Canopy (layered circles for realistic look)
             const c1 = cl('circle');
             c1.setAttribute('cx', treeX); c1.setAttribute('cy', treeY);
             c1.setAttribute('r', '4');
             c1.setAttribute('fill', '#15803d'); c1.setAttribute('opacity', '0.9');
             g.appendChild(c1);
-            
+
             const c2 = cl('circle');
-            c2.setAttribute('cx', treeX-1.5); c2.setAttribute('cy', treeY-1.5);
+            c2.setAttribute('cx', treeX - 1.5); c2.setAttribute('cy', treeY - 1.5);
             c2.setAttribute('r', '2.5');
             c2.setAttribute('fill', '#22c55e');
             g.appendChild(c2);
-            
+
             const c3 = cl('circle');
-            c3.setAttribute('cx', treeX+1.5); c3.setAttribute('cy', treeY-1);
+            c3.setAttribute('cx', treeX + 1.5); c3.setAttribute('cy', treeY - 1);
             c3.setAttribute('r', '2');
             c3.setAttribute('fill', '#4ade80');
             g.appendChild(c3);
@@ -2224,24 +2531,24 @@
 
           // Detailed Flowers
           const flowerColors = ['#f472b6', '#fbbf24', '#c084fc', '#60a5fa'];
-          for(let i=0; i<12; i++) {
-            const fX = x + w * (Math.random()*0.8+0.1);
-            const fY = y + h * (Math.random()*0.8+0.1);
-            
+          for (let i = 0; i < 12; i++) {
+            const fX = x + w * (Math.random() * 0.8 + 0.1);
+            const fY = y + h * (Math.random() * 0.8 + 0.1);
+
             // Stem
             const stem = cl('path');
-            stem.setAttribute('d', `M ${fX},${fY} Q ${fX-2},${fY+3} ${fX},${fY+6}`);
+            stem.setAttribute('d', `M ${fX},${fY} Q ${fX - 2},${fY + 3} ${fX},${fY + 6}`);
             stem.setAttribute('stroke', '#22c55e'); stem.setAttribute('stroke-width', '0.8');
             stem.setAttribute('fill', 'none');
             g.appendChild(stem);
-            
+
             // Petals
             const fc = flowerColors[i % flowerColors.length];
             const p = cl('path');
-            p.setAttribute('d', `M ${fX},${fY-2} A 1.5 1.5 0 0 1 ${fX+2},${fY} A 1.5 1.5 0 0 1 ${fX},${fY+2} A 1.5 1.5 0 0 1 ${fX-2},${fY} A 1.5 1.5 0 0 1 ${fX},${fY-2}`);
+            p.setAttribute('d', `M ${fX},${fY - 2} A 1.5 1.5 0 0 1 ${fX + 2},${fY} A 1.5 1.5 0 0 1 ${fX},${fY + 2} A 1.5 1.5 0 0 1 ${fX - 2},${fY} A 1.5 1.5 0 0 1 ${fX},${fY - 2}`);
             p.setAttribute('fill', fc); p.setAttribute('opacity', '0.85');
             g.appendChild(p);
-            
+
             // Center
             const center = cl('circle');
             center.setAttribute('cx', fX); center.setAttribute('cy', fY);
@@ -2253,11 +2560,11 @@
         if (biome === 'volcano') {
           const vx = x + w * 0.5, vBase = y + h * 0.85;
           const vW = w * 0.4;
-          
+
           // Magma base glow
           const glow = cl('ellipse');
           glow.setAttribute('cx', vx); glow.setAttribute('cy', vBase);
-          glow.setAttribute('rx', vW*1.2); glow.setAttribute('ry', h*0.2);
+          glow.setAttribute('rx', vW * 1.2); glow.setAttribute('ry', h * 0.2);
           glow.setAttribute('fill', 'url(#lava-grad)');
           glow.setAttribute('filter', 'url(#water-blur)');
           glow.setAttribute('opacity', '0.3');
@@ -2265,20 +2572,20 @@
 
           // Volcano body
           const cone = cl('path');
-          cone.setAttribute('d', `M ${vx-vW*0.25},${y+h*0.3} Q ${vx},${y+h*0.35} ${vx+vW*0.25},${y+h*0.3} L ${vx+vW},${vBase} Q ${vx},${vBase+h*0.1} ${vx-vW},${vBase} Z`);
+          cone.setAttribute('d', `M ${vx - vW * 0.25},${y + h * 0.3} Q ${vx},${y + h * 0.35} ${vx + vW * 0.25},${y + h * 0.3} L ${vx + vW},${vBase} Q ${vx},${vBase + h * 0.1} ${vx - vW},${vBase} Z`);
           cone.setAttribute('fill', '#292524'); cone.setAttribute('stroke', '#1c1917');
           cone.setAttribute('stroke-width', '1');
           g.appendChild(cone);
-          
+
           // Lava flowing down sides
           const lavaFlow = cl('path');
-          lavaFlow.setAttribute('d', `M ${vx-vW*0.1},${y+h*0.32} Q ${vx-vW*0.15},${y+h*0.5} ${vx-vW*0.3},${y+h*0.7} L ${vx-vW*0.1},${y+h*0.75} Q ${vx},${y+h*0.5} ${vx},${y+h*0.34} Z`);
+          lavaFlow.setAttribute('d', `M ${vx - vW * 0.1},${y + h * 0.32} Q ${vx - vW * 0.15},${y + h * 0.5} ${vx - vW * 0.3},${y + h * 0.7} L ${vx - vW * 0.1},${y + h * 0.75} Q ${vx},${y + h * 0.5} ${vx},${y + h * 0.34} Z`);
           lavaFlow.setAttribute('fill', 'url(#lava-grad)');
           lavaFlow.setAttribute('opacity', '0.8');
           g.appendChild(lavaFlow);
-          
+
           const lavaFlow2 = cl('path');
-          lavaFlow2.setAttribute('d', `M ${vx+vW*0.1},${y+h*0.32} Q ${vx+vW*0.2},${y+h*0.6} ${vx+vW*0.4},${y+h*0.8} L ${vx+vW*0.2},${y+h*0.82} Q ${vx+vW*0.05},${y+h*0.6} ${vx},${y+h*0.34} Z`);
+          lavaFlow2.setAttribute('d', `M ${vx + vW * 0.1},${y + h * 0.32} Q ${vx + vW * 0.2},${y + h * 0.6} ${vx + vW * 0.4},${y + h * 0.8} L ${vx + vW * 0.2},${y + h * 0.82} Q ${vx + vW * 0.05},${y + h * 0.6} ${vx},${y + h * 0.34} Z`);
           lavaFlow2.setAttribute('fill', '#ef4444');
           lavaFlow2.setAttribute('opacity', '0.9');
           g.appendChild(lavaFlow2);
@@ -2286,14 +2593,14 @@
           // Crater opening
           const crater = cl('ellipse');
           crater.setAttribute('cx', vx); crater.setAttribute('cy', y + h * 0.3);
-          crater.setAttribute('rx', vW*0.25); crater.setAttribute('ry', '4');
+          crater.setAttribute('rx', vW * 0.25); crater.setAttribute('ry', '4');
           crater.setAttribute('fill', '#7f1d1d'); crater.setAttribute('stroke', '#450a0a');
           g.appendChild(crater);
-          
+
           // Crater lava
           const craterLava = cl('ellipse');
           craterLava.setAttribute('cx', vx); craterLava.setAttribute('cy', y + h * 0.3);
-          craterLava.setAttribute('rx', vW*0.18); craterLava.setAttribute('ry', '2');
+          craterLava.setAttribute('rx', vW * 0.18); craterLava.setAttribute('ry', '2');
           craterLava.setAttribute('fill', '#fde047');
           craterLava.setAttribute('filter', 'url(#water-blur)');
           g.appendChild(craterLava);
@@ -2301,12 +2608,12 @@
           // Thick smoke clouds
           for (let i = 0; i < 6; i++) {
             const sc = cl('circle');
-            const sx = vx + (Math.random()-0.5)*vW;
-            const sy = y + h*0.2 - Math.random()*h*0.2;
+            const sx = vx + (Math.random() - 0.5) * vW;
+            const sy = y + h * 0.2 - Math.random() * h * 0.2;
             sc.setAttribute('cx', sx); sc.setAttribute('cy', sy);
-            sc.setAttribute('r', 4 + Math.random()*5);
+            sc.setAttribute('r', 4 + Math.random() * 5);
             sc.setAttribute('fill', '#57534e');
-            sc.setAttribute('opacity', 0.4 + Math.random()*0.3);
+            sc.setAttribute('opacity', 0.4 + Math.random() * 0.3);
             sc.setAttribute('filter', 'url(#water-blur)');
             g.appendChild(sc);
           }
@@ -2498,13 +2805,13 @@
         if (avatarEl) {
           avatarEl.textContent = isImpero ? '👑' : '🛡️';
         }
-        
+
         const optAtk = document.getElementById(`opt-atk-${p}`);
         if (optAtk) optAtk.textContent = `${isImpero ? '👑' : '🛡️'} ${p === 'L' ? 'Lorenzo' : 'Giacomo'}`;
-        
+
         const rmBtn = document.getElementById(`rm-btn-${p}`);
         if (rmBtn) rmBtn.innerHTML = `${isImpero ? '👑' : '🛡️'} ${p === 'L' ? 'Lorenzo' : 'Giacomo'}`;
-        
+
         const profBtn = document.getElementById(`prof-btn-${p}`);
         if (profBtn) profBtn.innerHTML = `${isImpero ? '👑' : '🛡️'} ${p === 'L' ? 'Lorenzo' : 'Giacomo'}`;
 
@@ -2514,6 +2821,30 @@
           const d = document.createElement('div');
           d.className = 'dot' + (i < usedAtk ? ' used' : '');
           dotsEl.appendChild(d);
+        }
+
+        // Streak & golden dice badges
+        let streakRowEl = document.getElementById(`streak-row-${p}`);
+        if (!streakRowEl) {
+          streakRowEl = document.createElement('div');
+          streakRowEl.id = `streak-row-${p}`;
+          streakRowEl.className = 'streak-row';
+          dotsEl.parentNode.insertBefore(streakRowEl, dotsEl.nextSibling);
+        }
+        streakRowEl.innerHTML = '';
+        const streak = gameState.streak?.[p] || 0;
+        const golden = gameState.goldenDice?.[p] || false;
+        if (streak > 0) {
+          const sb = document.createElement('div');
+          sb.className = 'streak-badge';
+          sb.textContent = `🔥 ${streak} vittoria${streak > 1 ? ' consecutive' : ''}`;
+          streakRowEl.appendChild(sb);
+        }
+        if (golden) {
+          const gb = document.createElement('div');
+          gb.className = 'golden-dice-badge';
+          gb.textContent = '✨ Dado d\'Oro attivo!';
+          streakRowEl.appendChild(gb);
         }
 
         const gr = gameState.globalRules?.[p];
@@ -2557,6 +2888,7 @@
         card.onclick = () => openRoomModal(room.id);
         card.innerHTML = `
       <div class="room-strip"></div>
+      ${data.fortified ? '<div class="room-fortify-badge">🛡️</div>' : ''}
       <div class="room-icon">${room.icon}</div>
       <div class="room-name">${room.name}</div>
       ${data.rule ? `<div class="room-rule-tag">"${data.rule}"</div>` : ''}
@@ -2594,9 +2926,11 @@
           rulesList.innerHTML = '<div class="no-rules-msg">Nessuna regola impostata attualmente.</div>';
         }
       }
-      
+
       applyProfile();
       updateTargetSelect();
+      updateFortifySelect();
+      renderBattleLog();
     }
 
     function updateTargetSelect() {
@@ -2699,8 +3033,24 @@
 
       const { attacker, defender, roomId } = pendingAttk;
 
-      const aDice = Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1);
-      const dDice = Array.from({ length: 2 }, () => Math.floor(Math.random() * 6) + 1);
+      let aDice = Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1);
+      let dDice = Array.from({ length: 2 }, () => Math.floor(Math.random() * 6) + 1);
+
+      // Golden Dice: +1 to attacker's highest die
+      const hasGolden = gameState.goldenDice?.[attacker] === true;
+      if (hasGolden) {
+        const maxIdx = aDice.indexOf(Math.max(...aDice));
+        aDice[maxIdx] = Math.min(6, aDice[maxIdx] + 1);
+        pendingAttk.usedGoldenDice = true;
+      }
+
+      // Fortification: +1 to defender's highest die
+      const isFortified = gameState.rooms[roomId]?.fortified === true;
+      if (isFortified) {
+        const maxIdx = dDice.indexOf(Math.max(...dDice));
+        dDice[maxIdx] = Math.min(6, dDice[maxIdx] + 1);
+        pendingAttk.wasfortified = true;
+      }
 
       ['a0', 'a1', 'a2', 'd0', 'd1'].forEach(id => document.getElementById(id).classList.add('rolling'));
 
@@ -2734,10 +3084,16 @@
         const banner = document.getElementById('result-banner');
         banner.classList.remove('hidden');
 
+        // Build bonus hints
+        const bonusHints = [];
+        if (hasGolden) bonusHints.push('✨ Dado d\'Oro usato');
+        if (isFortified) bonusHints.push('🛡️ Stanza Fortificata (+1 difesa)');
+
         if (victory) {
           document.getElementById('result-text').textContent = '🎉 CONQUISTA!';
           document.getElementById('result-text').className = 'result-text r-victory';
-          document.getElementById('result-sub').textContent = `${pName(attacker)} conquista "${room.name}"!`;
+          document.getElementById('result-sub').textContent =
+            `${pName(attacker)} conquista "${room.name}"!` + (bonusHints.length ? '\n' + bonusHints.join(' · ') : '');
           document.getElementById('dice-modal-btns').innerHTML = `
         <button class="btn-sec" onclick="resolveAttack(false)">Annulla</button>
         <button class="btn-pri" onclick="resolveAttack(true)">✅ Conferma conquista</button>
@@ -2748,7 +3104,7 @@
           const sub = (win1 || win2)
             ? 'Vittoria parziale — non abbastanza per conquistare'
             : `"${room.name}" resiste completamente`;
-          document.getElementById('result-sub').textContent = sub;
+          document.getElementById('result-sub').textContent = sub + (bonusHints.length ? '\n' + bonusHints.join(' · ') : '');
           document.getElementById('dice-modal-btns').innerHTML = `
         <button class="btn-pri" onclick="resolveAttack(false)">OK</button>
       `;
@@ -2760,7 +3116,7 @@
 
     async function resolveAttack(conquered) {
       if (!pendingAttk) return;
-      const { attacker, roomId, victory } = pendingAttk;
+      const { attacker, roomId, victory, usedGoldenDice } = pendingAttk;
 
       const updates = {};
       const used = gameState.attacks?.[attacker]?.used || 0;
@@ -2769,11 +3125,43 @@
       const prev = gameState.attackedToday?.[roomId] || [];
       updates[`attackedToday.${roomId}`] = [...prev, attacker];
 
+      const room = ROOMS_DEF.find(r => r.id === roomId);
+      const defender = gameState.rooms[roomId]?.owner;
+
+      // ── Streak & Golden Dice ──
+      const currentStreak = gameState.streak?.[attacker] || 0;
+      if (conquered && victory) {
+        const newStreak = currentStreak + 1;
+        updates[`streak.${attacker}`] = newStreak;
+        // Activate golden dice when streak reaches 2 (bonus for 3rd attack)
+        if (newStreak >= 2) {
+          updates[`goldenDice.${attacker}`] = true;
+        }
+      } else {
+        updates[`streak.${attacker}`] = 0;
+      }
+
+      // Consume golden dice if it was used this roll
+      if (usedGoldenDice) {
+        updates[`goldenDice.${attacker}`] = false;
+      }
+
+      // ── Battle Log ──
+      const currentLog = Array.isArray(gameState.battleLog) ? gameState.battleLog : [];
+      let logEntry;
+      if (conquered && victory) {
+        logEntry = { msg: `${pName(attacker)} ha conquistato ${room.name}!`, player: attacker, ts: Date.now() };
+      } else {
+        logEntry = { msg: `${pName(defender)} ha difeso ${room.name}`, player: 'def', ts: Date.now() };
+      }
+      const newLog = [logEntry, ...currentLog].slice(0, 5);
+      updates['battleLog'] = newLog;
+
       if (conquered && victory) {
         updates[`rooms.${roomId}.owner`] = attacker;
         updates[`rooms.${roomId}.rule`] = '';
+        updates[`rooms.${roomId}.fortified`] = false; // Fortification lost on conquest
 
-        const defender = gameState.rooms[roomId]?.owner;
         if (defender && defender !== attacker) {
           const defenderRooms = Object.entries(gameState.rooms).filter(([id, r]) => r.owner === defender);
           if (defenderRooms.length === 6) {
@@ -2789,13 +3177,105 @@
       await gameRef.update(updates);
       closeModal('dice-modal');
 
-      const room = ROOMS_DEF.find(r => r.id === roomId);
       if (conquered && victory) {
         showToast(`${pName(attacker)} conquista ${room.name}! 🏆`);
       } else {
         showToast(`${room.name} si difende! 🛡️`);
       }
       pendingAttk = null;
+    }
+
+    // ═══════════════════════════════════════════
+    //  BATTLE LOG
+    // ═══════════════════════════════════════════
+
+    function renderBattleLog() {
+      const container = document.getElementById('battle-log');
+      if (!container) return;
+      const log = Array.isArray(gameState?.battleLog) ? gameState.battleLog : [];
+      if (log.length === 0) {
+        container.innerHTML = '<div class="battle-log-empty">Nessuna battaglia ancora. Chi si farà avanti?</div>';
+        return;
+      }
+      container.innerHTML = '';
+      log.forEach(entry => {
+        const item = document.createElement('div');
+        const cls = entry.player === 'L' ? 'log-L' : entry.player === 'G' ? 'log-G' : 'log-def';
+        item.className = `battle-log-item ${cls}`;
+        const icon = entry.player === 'L' ? '⚔️' : entry.player === 'G' ? '⚔️' : '🛡️';
+        item.innerHTML = `<span class="battle-log-icon">${icon}</span><span class="battle-log-msg">${entry.msg}</span>`;
+        container.appendChild(item);
+      });
+    }
+
+    // ═══════════════════════════════════════════
+    //  FORTIFY
+    // ═══════════════════════════════════════════
+
+    function updateFortifySelect() {
+      if (!gameState) return;
+      const sel = document.getElementById('sel-fortify');
+      const btn = document.getElementById('btn-fortify');
+      if (!sel || !btn) return;
+
+      if (!myProfile) {
+        sel.innerHTML = '<option value="">Scegli un profilo sopra...</option>';
+        btn.disabled = true;
+        return;
+      }
+
+      const attacker = myProfile;
+      const maxAtk = maxAttacks(attacker);
+      const usedAtk = gameState.attacks?.[attacker]?.used || 0;
+      const hasAttacks = usedAtk < maxAtk;
+
+      const currentVal = sel.value;
+      sel.innerHTML = '<option value="">Seleziona una stanza…</option>';
+
+      ROOMS_DEF.forEach(room => {
+        const data = gameState.rooms[room.id];
+        if (!data || data.owner !== attacker) return;
+        const opt = document.createElement('option');
+        opt.value = room.id;
+        const alreadyFortified = data.fortified === true;
+        opt.textContent = room.name + (alreadyFortified ? ' (già fortificata)' : '');
+        opt.disabled = alreadyFortified;
+        sel.appendChild(opt);
+      });
+
+      if (currentVal) sel.value = currentVal;
+      btn.disabled = !hasAttacks;
+    }
+
+    async function initiateFortify() {
+      if (!gameState || !myProfile) return;
+      const attacker = myProfile;
+      const roomId = document.getElementById('sel-fortify').value;
+
+      if (!roomId) { showToast('Seleziona una stanza da fortificare'); return; }
+
+      const data = gameState.rooms[roomId];
+      if (!data || data.owner !== attacker) { showToast('Puoi fortificare solo stanze tue! ⛔'); return; }
+      if (data.fortified) { showToast('Stanza già fortificata! 🛡️'); return; }
+
+      const maxAtk = maxAttacks(attacker);
+      const usedAtk = gameState.attacks?.[attacker]?.used || 0;
+      if (usedAtk >= maxAtk) { showToast('Attacchi esauriti per oggi! 🚫'); return; }
+
+      const room = ROOMS_DEF.find(r => r.id === roomId);
+
+      const updates = {};
+      updates[`attacks.${attacker}.used`] = usedAtk + 1;
+      updates[`rooms.${roomId}.fortified`] = true;
+
+      // Add to battle log
+      const currentLog = Array.isArray(gameState.battleLog) ? gameState.battleLog : [];
+      const logEntry = { msg: `${pName(attacker)} ha fortificato ${room.name}`, player: attacker, ts: Date.now() };
+      updates['battleLog'] = [logEntry, ...currentLog].slice(0, 5);
+
+      await gameRef.update(updates);
+      showToast(`${room.name} è ora Fortificata! 🛡️`);
+      document.getElementById('sel-fortify').value = '';
     }
 
     // ═══════════════════════════════════════════
@@ -2884,19 +3364,19 @@
 
     async function saveRoom() {
       if (!currentRoom || !gameState) return;
-      
+
       const data = gameState.rooms[currentRoom] || { owner: 'L', rule: '' };
       const isOwner = myProfile === data.owner;
       const myRoomsCount = Object.values(gameState.rooms).filter(r => r.owner === myProfile).length;
       const isEmpire = myRoomsCount >= 6;
-      
+
       if (!isOwner) return;
 
       let rule = data.rule;
       if (isEmpire) {
         rule = document.getElementById('rm-rule').value.trim();
       }
-      
+
       const owner = pendingOwner || data.owner;
 
       const updates = {
@@ -2931,10 +3411,16 @@
     async function newDay() {
       if (!gameState) return;
       const nextDay = (gameState.day || 1) + 1;
+      // Clear fortifications on new day
+      const roomUpdates = {};
+      ROOMS_DEF.forEach(r => { roomUpdates[`rooms.${r.id}.fortified`] = false; });
       await gameRef.update({
         day: nextDay,
         attacks: { L: { used: 0 }, G: { used: 0 } },
         attackedToday: {},
+        streak: { L: 0, G: 0 },
+        goldenDice: { L: false, G: false },
+        ...roomUpdates,
       });
       closeModal('newday-modal');
       showToast(`Giorno ${nextDay} iniziato! ✨`);
