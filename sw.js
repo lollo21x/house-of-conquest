@@ -1,4 +1,4 @@
-const CACHE_NAME = 'conquest-v1.3'; // Incrementato versione
+const CACHE_NAME = 'conquest-v1.4'; // Incrementato versione
 const ASSETS = [
   './',
   './index.html',
